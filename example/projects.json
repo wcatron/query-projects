@@ -1,0 +1,19 @@
+{
+  "projects": [
+    {
+      "name": "next.js",
+      "path": "./projects/next.js",
+      "repoUrl": "https://github.com/vercel/next.js.git"
+    },
+    {
+      "name": "ai",
+      "path": "./projects/ai",
+      "repoUrl": "https://github.com/vercel/ai.git"
+    },
+    {
+      "name": "storage",
+      "path": "./projects/storage",
+      "repoUrl": "https://github.com/vercel/storage.git"
+    }
+  ]
+}
