@@ -263,8 +263,8 @@ async function runScriptsForAllProjects(
  * @returns The extracted TypeScript code.
  */
 function extractTypeScriptCode(response: string): string | null {
-    // Regex pattern to match TypeScript code block in markdown (```typescript ... ```)
-    const codeBlockRegex = /```typescript\n([\s\S]*?)\n```/;
+    // Regex pattern to match TypeScript code block in markdown (```typescript ... ``` or ```ts ... ```)
+    const codeBlockRegex = /```(?:typescript|ts)\s+([\s\S]+?)\s*```/;
 
     // Search for the TypeScript code block in the response
     const match = response.match(codeBlockRegex);
