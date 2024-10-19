@@ -448,6 +448,13 @@ async function main() {
             await createPullRequest(message);
             break;
         }
+        case "pull": {
+            const projects = loadProjects();
+            for (const project of projects.projects) {
+                await cloneRepository(project.repoUrl, project.path);
+            }
+            break;
+        }
         default:
             console.error(
                 "Unknown command. Available commands: add, query, run, pr",
