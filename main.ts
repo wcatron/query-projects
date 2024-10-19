@@ -214,7 +214,7 @@ async function runScriptsForAllProjects(
         return [
             result.projectPath,
             result.status,
-            result.stdoutText,
+            result.stdoutText.trim(),
             result.outputFilePath,
             result.errorFilePath,
         ];
