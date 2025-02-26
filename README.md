@@ -39,7 +39,7 @@ It also updates (or creates) the projects.json file with the new project’s inf
 Confirm your project was added:
 
 ```
-cat projects.json
+query-projects info
 ```
 
 You should see a JSON entry for your new repository.
