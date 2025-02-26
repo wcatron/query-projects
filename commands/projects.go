@@ -8,8 +8,6 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
-	"io/ioutil"
-	"github.com/spf13/cobra"
 )
 
 const (

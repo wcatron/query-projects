@@ -1,2 +1,8 @@
+# Aider cache files
 .aider*
+
+# Environment variables
 .env
+
+# Compiled binary
+query-projects
