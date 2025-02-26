@@ -9,6 +9,7 @@ import (
 	"regexp"
 	"strings"
 	"io/ioutil"
+	"github.com/spf13/cobra"
 
 const (
 	projectsFile  = "projects.json"
@@ -55,6 +56,7 @@ func displayInfo() error {
 	}
 
 	return nil
+}
 
 type ProjectsJSON struct {
 	Projects []Project `json:"projects"`
