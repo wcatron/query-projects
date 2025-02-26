@@ -1,6 +1,6 @@
-| Project Path | Status | Output | Output File | Error File |
-| --- | --- | --- | --- | --- |
-| ./projects/next.js | Success | 5.5.3 | results/what-version-of-typescript-is-being-used/._projects_next.js_out.log | results/what-version-of-typescript-is-being-used/._projects_next.js_err.log |
-| ./projects/ai | Success | N/A | results/what-version-of-typescript-is-being-used/._projects_ai_out.log | results/what-version-of-typescript-is-being-used/._projects_ai_err.log |
-| ./projects/storage | Success | 5.6.2 | results/what-version-of-typescript-is-being-used/._projects_storage_out.log | results/what-version-of-typescript-is-being-used/._projects_storage_err.log |
-| ./projects/swr | Success | 5.1.3 | results/what-version-of-typescript-is-being-used/._projects_swr_out.log | results/what-version-of-typescript-is-being-used/._projects_swr_err.log |
+| Project Path | Status | Output (Truncated) |
+| --- | --- | --- | 
+| ./projects/next.js | Success | 5.7.2 |
+| ./projects/ai | Success | 5.6.3 |
+| ./projects/storage | Success | 5.7.3 |
+| ./projects/swr | Success | 5.1.3 |

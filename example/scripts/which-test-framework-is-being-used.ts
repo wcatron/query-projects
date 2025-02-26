@@ -14,16 +14,12 @@ try {
     const packageJson = JSON.parse(decoder.decode(packageJsonContent));
 
     // Check for test framework in scripts or devDependencies
-    const testFramework =
-        packageJson.scripts && packageJson.scripts.test
-            ? packageJson.scripts.test.split(' ')[0] // Extract the first word of the test script
-            : packageJson.devDependencies && packageJson.devDependencies.jest
+    const testFramework = packageJson.devDependencies && packageJson.devDependencies.jest
             ? 'Jest'
             : packageJson.devDependencies && packageJson.devDependencies.mocha
             ? 'Mocha'
             : packageJson.devDependencies && packageJson.devDependencies['@testing-library']
-            ? 'Testing Library'
-            : null;
+            ? 'Testing Library' : null;
 
     // # Log results
     // If test framework is found, print the name, otherwise print "N/A"
