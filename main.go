@@ -21,6 +21,7 @@ func main() {
 	rootCmd.AddCommand(commands.RunCmd)
 	rootCmd.AddCommand(commands.PRCmd)
 	rootCmd.AddCommand(commands.PullCmd)
+	rootCmd.AddCommand(commands.InfoCmd)
 
 	// Execute the root command
 	if err := rootCmd.Execute(); err != nil {
