@@ -10,6 +10,7 @@ import (
 	"strings"
 	"io/ioutil"
 	"github.com/spf13/cobra"
+)
 
 const (
 	projectsFile  = "projects.json"
