@@ -19,7 +19,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v3
         with:
-          go-version: '1.19'  # or your desired Go version
+          go-version: '1.24'  # or your desired Go version
 
       # Cache Go modules for faster builds (optional but recommended)
       - name: Cache Go modules
