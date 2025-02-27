@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"query-projects/commands"
+	"github.com/wcatron/query-projects/commands"
 )
 
 func main() {

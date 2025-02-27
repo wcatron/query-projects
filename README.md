@@ -10,7 +10,7 @@ Go 1.18+ installed on your system.
 Install the CLI directly from GitHub:
 
 ```
-go install github.com/username/query-projects@latest
+go install github.com/wcatron/query-projects@latest
 ```
 
 This command fetches, builds, and installs the query-projects executable into your Go bin directory. Make sure your PATH is configured to include $GOPATH/bin (or the appropriate Go bin folder on your system).
