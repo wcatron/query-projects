@@ -7,14 +7,10 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  smoke:
     runs-on: ubuntu-latest
 
     steps:
-      # Check out the code from your repository
-      - name: Check out code
-        uses: actions/checkout@v3
-
       # Set up the Go environment
       - name: Set up Go
         uses: actions/setup-go@v3
