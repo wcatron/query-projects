@@ -1,4 +1,4 @@
-module github.com/wcatron/query-projects
+module query-projects
 
 go 1.24.0
 
