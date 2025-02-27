@@ -14,6 +14,8 @@ jobs:
       # Check out the code from your repository
       - name: Check out code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
 
       # Set up the Go environment
       - name: Set up Go
@@ -34,6 +36,13 @@ jobs:
       - name: Build
         run: go build ./...
 
+      # Determine the next version based on conventional commits
+      - name: Determine Next Version
+        id: determine_version
+        uses: paulhatch/semantic-version@v3
+        with:
+          branch: main    
+
       # Determine the next version and tag the commit
       - name: Tag and Release
         id: tag_release
@@ -46,10 +55,3 @@ jobs:
           draft: false
           prerelease: false
 
-      # Determine the next version based on conventional commits
-      - name: Determine Next Version
-        id: determine_version
-        uses: paulhatch/semantic-version@v3
-        with:
-          branch: main
-          token: ${{ secrets.GITHUB_TOKEN }}
