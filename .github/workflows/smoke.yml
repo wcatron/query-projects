@@ -32,4 +32,6 @@ jobs:
 
       - name: Run
         working-directory: examples
-        run: query-projects info
+        run: |
+            export PATH="${PATH}:$(go env GOPATH)/bin"
+            query-projects info
