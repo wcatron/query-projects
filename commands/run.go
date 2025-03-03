@@ -146,11 +146,21 @@ func runScriptsForAllProjects(scriptPath string, projects []Project, count bool)
 }
 
 func countUniqueResponses(results []result) {
-	uniqueResponses := make(map[string]struct{})
+	responseCounts := make(map[string]int)
 	for _, r := range results {
-			uniqueResponses[r.stdoutText] = struct{}{}
+		responseCounts[r.stdoutText]++
 	}
-	fmt.Printf("Number of unique responses: %d\n", len(uniqueResponses))
+
+	fmt.Println("--------------------------------------------------")
+	fmt.Printf("| %-30s | %-10s |\n", "Unique Response", "Count")
+	fmt.Println("--------------------------------------------------")
+
+	for response, count := range responseCounts {
+		truncatedResponse := truncateOutput(response, 30) // Adjust length as desired
+		fmt.Printf("| %-30s | %-10d |\n", truncatedResponse, count)
+	}
+
+	fmt.Println("--------------------------------------------------")
 }
 
 // runScriptForProject runs a TypeScript script (with Deno) in the specified project directory.
