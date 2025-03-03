@@ -30,7 +30,7 @@ func filterProjectsByTopics(projects []Project, topics []string) []Project {
     for _, project := range projects {
         include := true
         for _, topic := range topics {
-            if strings.HasPrefix(topic, "!") {
+            if strings.HasPrefix(topic, "-") {
                 // Exclude projects with this topic
                 if contains(project.Topics, topic[1:]) {
                     include = false

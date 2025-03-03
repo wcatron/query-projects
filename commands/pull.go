@@ -10,16 +10,13 @@ var PullCmd = &cobra.Command{
 	Use:   "pull",
 	Short: "Pull the latest changes for all repositories in projects.json",
 	RunE: WrapWithMetrics(func(cmd *cobra.Command, args []string) error {
-		return pullAllRepositories()
+		return pullAllRepositories(cmd)
 	}),
 }
 
-func init() {
-    PullCmd.Flags().StringSliceVar(&topics, "topics", nil, "Filter projects by topics")
-}
-
 // pullAllRepositories pulls the latest changes for all repositories listed in projects.json.
-func pullAllRepositories() error {
+func pullAllRepositories(cmd *cobra.Command) error {
+	topics, err := cmd.Flags().GetStringSlice("topics")
 	projects, err := loadProjects()
 	if err != nil {
 		return err

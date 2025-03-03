@@ -23,6 +23,9 @@ func main() {
 	rootCmd.AddCommand(commands.PullCmd)
 	rootCmd.AddCommand(commands.InfoCmd)
 
+	// Add flags for the root command
+	rootCmd.PersistentFlags().StringSliceP("topics", "t", nil, "Filter projects by topics")
+
 	// Execute the root command
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println("Error:", err)
