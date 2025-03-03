@@ -98,7 +98,7 @@ func runScript(cmd *cobra.Command, scriptName string) error {
 
 	// Actually run the script(s)
 	for _, sp := range scriptPaths {
-		if err := runScriptsForAllProjects(sp, filteredProjects); err != nil {
+		if err := runScriptsForAllProjects(sp, filteredProjects, count); err != nil {
 			fmt.Printf("Error while running script %s: %v\n", sp, err)
 		}
 	}
@@ -115,7 +115,7 @@ type result struct {
 }
 
 // runScriptsForAllProjects executes the specified .ts script against all projects.
-func runScriptsForAllProjects(scriptPath string, projects []Project) error {
+func runScriptsForAllProjects(scriptPath string, projects []Project, count bool) error {
 	var results []result
 
 	// Get cwd
@@ -143,6 +143,14 @@ func runScriptsForAllProjects(scriptPath string, projects []Project) error {
 	}
 
 	return nil
+}
+
+func countUniqueResponses(results []result) {
+	uniqueResponses := make(map[string]struct{})
+	for _, r := range results {
+			uniqueResponses[r.stdoutText] = struct{}{}
+	}
+	fmt.Printf("Number of unique responses: %d\n", len(uniqueResponses))
 }
 
 // runScriptForProject runs a TypeScript script (with Deno) in the specified project directory.
