@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -13,11 +14,15 @@ var PRCmd = &cobra.Command{
 	Short: "Open a pull request for each repository (placeholder).",
 	Args:  cobra.ArbitraryArgs,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		start := time.Now() // Start timing
 		if len(args) == 0 {
 			return errors.New("please provide a pull request message after 'pr'")
 		}
 		message := strings.Join(args, " ")
-		return createPullRequest(message)
+		err := createPullRequest(message)
+		duration := time.Since(start) // Calculate duration
+		fmt.Printf("Command 'pr' executed in %s\n", duration)
+		return err
 	},
 }
 

@@ -4,13 +4,18 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"time"
 )
 
 var PullCmd = &cobra.Command{
 	Use:   "pull",
 	Short: "Pull the latest changes for all repositories in projects.json",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return pullAllRepositories()
+		start := time.Now() // Start timing
+		err := pullAllRepositories()
+		duration := time.Since(start) // Calculate duration
+		fmt.Printf("Command 'pull' executed in %s\n", duration)
+		return err
 	},
 }
 

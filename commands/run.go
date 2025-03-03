@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -19,12 +20,16 @@ var RunCmd = &cobra.Command{
 	Short: "Run a script (or all .ts scripts) across all projects",
 	Args:  cobra.MaximumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
+		start := time.Now() // Start timing
 		// Optional argument: the user can provide a script name or path
 		var scriptName string
 		if len(args) == 1 {
 			scriptName = args[0]
 		}
-		return runScript(scriptName)
+		err := runScript(scriptName)
+		duration := time.Since(start) // Calculate duration
+		fmt.Printf("Command 'run' executed in %s\n", duration)
+		return err
 	},
 }
 
