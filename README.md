@@ -60,8 +60,8 @@ This command runs scripts on projects that have topic `a` or `b`, must have `c`,
 
 ### Next Steps:
 
-- **Run Scripts**: Use the `run` command to execute TypeScript scripts across all tracked projects.
 - **Query GPT**: Use the `query` command to generate new scripts via OpenAI (assuming you have `OPENAI_API_KEY` set in your environment).
+- **Run Scripts**: Use the `run` command to execute TypeScript scripts across all tracked projects.
 - **Pull Updates**: Use the `pull` command to update all tracked repositories with the latest changes.
 
 
