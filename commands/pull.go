@@ -14,7 +14,9 @@ var PullCmd = &cobra.Command{
 	}),
 }
 
-PullCmd.Flags().StringSliceVar(&topics, "topics", nil, "Filter projects by topics")
+func init() {
+    PullCmd.Flags().StringSliceVar(&topics, "topics", nil, "Filter projects by topics")
+}
 
 // pullAllRepositories pulls the latest changes for all repositories listed in projects.json.
 func pullAllRepositories() error {

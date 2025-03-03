@@ -28,7 +28,9 @@ var RunCmd = &cobra.Command{
 	}),
 }
 
-RunCmd.Flags().StringSliceVar(&topics, "topics", nil, "Filter projects by topics")
+func init() {
+    RunCmd.Flags().StringSliceVar(&topics, "topics", nil, "Filter projects by topics")
+}
 
 // runScript decides which scripts to run:
 //  1) If the user gave a path (e.g., `scripts/foo.ts` or `/abs/path.ts`), just run that.
