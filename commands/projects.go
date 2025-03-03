@@ -19,9 +19,45 @@ const (
 
 // Project and ProjectsJSON store information about cloned repos
 type Project struct {
-	Name    string `json:"name"`
-	Path    string `json:"path"`
-	RepoURL string `json:"repoUrl"`
+	Name    string   `json:"name"`
+	Path    string   `json:"path"`
+	RepoURL string   `json:"repoUrl"`
+	Topics  []string `json:"topics"`
+}
+
+func filterProjectsByTopics(projects []Project, topics []string) []Project {
+    var filteredProjects []Project
+    for _, project := range projects {
+        include := true
+        for _, topic := range topics {
+            if strings.HasPrefix(topic, "!") {
+                // Exclude projects with this topic
+                if contains(project.Topics, topic[1:]) {
+                    include = false
+                    break
+                }
+            } else {
+                // Include only projects with this topic
+                if !contains(project.Topics, topic) {
+                    include = false
+                    break
+                }
+            }
+        }
+        if include {
+            filteredProjects = append(filteredProjects, project)
+        }
+    }
+    return filteredProjects
+}
+
+func contains(slice []string, item string) bool {
+    for _, s := range slice {
+        if s == item {
+            return true
+        }
+    }
+    return false
 }
 
 

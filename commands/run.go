@@ -14,6 +14,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var topics []string
+
 var RunCmd = &cobra.Command{
 	Use:   "run [scriptName]",
 	Short: "Run a script (or all .ts scripts) across all projects",
@@ -28,6 +30,8 @@ var RunCmd = &cobra.Command{
 	}),
 }
 
+RunCmd.Flags().StringSliceVar(&topics, "topics", nil, "Filter projects by topics")
+
 // runScript decides which scripts to run:
 //  1) If the user gave a path (e.g., `scripts/foo.ts` or `/abs/path.ts`), just run that.
 //  2) If the user gave a simple filename (e.g. `foo.ts`), we prepend the scripts folder.
@@ -38,6 +42,7 @@ func runScript(scriptName string) error {
 		return err
 	}
 
+	filteredProjects := filterProjectsByTopics(projects.Projects, topics)
 	var scriptPaths []string
 
 	// Case 1 & 2: The user specified some script name/path
@@ -87,7 +92,7 @@ func runScript(scriptName string) error {
 
 	// Actually run the script(s)
 	for _, sp := range scriptPaths {
-		if err := runScriptsForAllProjects(sp, projects.Projects); err != nil {
+		if err := runScriptsForAllProjects(sp, filteredProjects); err != nil {
 			fmt.Printf("Error while running script %s: %v\n", sp, err)
 		}
 	}
