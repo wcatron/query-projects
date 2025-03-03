@@ -28,6 +28,12 @@ var RunCmd = &cobra.Command{
 	}),
 }
 
+func RunCmdInit(cmd *cobra.Command) {
+	cmd.PersistentFlags().StringSliceP("topics", "t", nil, "Filter projects by topics")
+	// Add count flag
+	cmd.PersistentFlags().Bool("count", false, "Count the unique responses from the script")
+}
+
 // runScript decides which scripts to run:
 //  1) If the user gave a path (e.g., `scripts/foo.ts` or `/abs/path.ts`), just run that.
 //  2) If the user gave a simple filename (e.g. `foo.ts`), we prepend the scripts folder.
@@ -35,6 +41,8 @@ var RunCmd = &cobra.Command{
 func runScript(cmd *cobra.Command, scriptName string) error {
 	// Get the topics from the command line flags
 	topics, err := cmd.Flags().GetStringSlice("topics")
+	count, err := cmd.Flags().GetBool("count")
+
 	projects, err := loadProjects()
 	if err != nil {
 		return err
@@ -94,6 +102,7 @@ func runScript(cmd *cobra.Command, scriptName string) error {
 			fmt.Printf("Error while running script %s: %v\n", sp, err)
 		}
 	}
+	
 	return nil
 }
 
@@ -127,6 +136,9 @@ func runScriptsForAllProjects(scriptPath string, projects []Project) error {
 	if err := writeMarkdownTable(scriptPath, results); err != nil {
 		return err
 	}
+
+	// If the user asked for a count, we can do that here
+
 	return nil
 }
 
