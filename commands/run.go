@@ -14,8 +14,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var topics []string
-
 var RunCmd = &cobra.Command{
 	Use:   "run [scriptName]",
 	Short: "Run a script (or all .ts scripts) across all projects",
