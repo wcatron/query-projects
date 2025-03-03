@@ -10,6 +10,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/spf13/cobra"
+
 const (
 	projectsFile  = "projects.json"
 	scriptsFolder = "scripts"
