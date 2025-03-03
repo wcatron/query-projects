@@ -58,6 +58,16 @@ query-projects run --topics a,b,+c,-d
 ```
 This command runs scripts on projects that have topic `a` or `b`, must have `c`, and must not have `d`.
 
+### Counting Unique Responses
+
+The `run` command includes a `--count` flag that allows you to count the number of unique responses from the scripts executed across all projects. This can be useful for analyzing the diversity of outputs from your scripts.
+
+Example usage:
+```
+query-projects run --count
+```
+This command will execute the specified script and print a table showing each unique response and the count of occurrences.
+
 ### Next Steps:
 
 - **Query GPT**: Use the `query` command to generate new scripts via OpenAI (assuming you have `OPENAI_API_KEY` set in your environment).
