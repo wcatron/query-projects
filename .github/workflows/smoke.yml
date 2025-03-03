@@ -14,7 +14,9 @@ jobs:
       # Check out the code from your repository
       - name: Check out code
         uses: actions/checkout@v3
-        
+        with:
+          fetch-depth: 1
+
       # Set up the Go environment
       - name: Set up Go
         uses: actions/setup-go@v3
@@ -35,7 +37,7 @@ jobs:
         run: go install github.com/wcatron/query-projects@latest
 
       - name: Run
-        working-directory: examples
+        working-directory: ./../examples
         run: |
             export PATH="${PATH}:$(go env GOPATH)/bin"
             query-projects info
