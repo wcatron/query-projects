@@ -13,17 +13,13 @@ var PRCmd = &cobra.Command{
 	Use:   "pr <message>",
 	Short: "Open a pull request for each repository (placeholder).",
 	Args:  cobra.ArbitraryArgs,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		start := time.Now() // Start timing
+	RunE: WrapWithMetrics(func(cmd *cobra.Command, args []string) error {
 		if len(args) == 0 {
 			return errors.New("please provide a pull request message after 'pr'")
 		}
 		message := strings.Join(args, " ")
-		err := createPullRequest(message)
-		duration := time.Since(start) // Calculate duration
-		fmt.Printf("Command 'pr' executed in %s\n", duration)
-		return err
-	},
+		return createPullRequest(message)
+	}),
 }
 
 // createPullRequest is a placeholder function for opening PRs for each project.

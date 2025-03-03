@@ -19,18 +19,14 @@ var RunCmd = &cobra.Command{
 	Use:   "run [scriptName]",
 	Short: "Run a script (or all .ts scripts) across all projects",
 	Args:  cobra.MaximumNArgs(1),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		start := time.Now() // Start timing
+	RunE: WrapWithMetrics(func(cmd *cobra.Command, args []string) error {
 		// Optional argument: the user can provide a script name or path
 		var scriptName string
 		if len(args) == 1 {
 			scriptName = args[0]
 		}
-		err := runScript(scriptName)
-		duration := time.Since(start) // Calculate duration
-		fmt.Printf("Command 'run' executed in %s\n", duration)
-		return err
-	},
+		return runScript(scriptName)
+	}),
 }
 
 // runScript decides which scripts to run:

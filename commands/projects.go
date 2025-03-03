@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
-)
+	"time"
 
 const (
 	projectsFile  = "projects.json"
@@ -29,7 +29,16 @@ type ProjectsJSON struct {
 	Projects []Project `json:"projects"`
 }
 
-// loadProjects reads projects.json into a ProjectsJSON struct.
+ // WrapWithMetrics wraps a command function to log its execution duration.
+func WrapWithMetrics(fn func(cmd *cobra.Command, args []string) error) func(cmd *cobra.Command, args []string) error {
+    return func(cmd *cobra.Command, args []string) error {
+        start := time.Now() // Start timing
+        err := fn(cmd, args)
+        duration := time.Since(start) // Calculate duration
+        fmt.Printf("Command '%s' executed in %s\n", cmd.Name(), duration)
+        return err
+    }
+}
 func loadProjects() (*ProjectsJSON, error) {
 	data, err := os.ReadFile(projectsFile)
 	if err != nil {
