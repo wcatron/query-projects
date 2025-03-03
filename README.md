@@ -44,13 +44,25 @@ query-projects info
 
 You should see a JSON entry for your new repository.
 
+### Topic Filtering
+
+You can filter projects by topics when using the `run` and `pull` commands. The filtering logic supports:
+
+- **Required Topics**: Prefix with `+` to include only projects with this topic.
+- **Excluded Topics**: Prefix with `-` to exclude projects with this topic.
+- **Optional Topics**: No prefix, includes projects with at least one of these topics.
+
+Example usage:
+```
+query-projects run --topics a,b,+c,-d
+```
+This command runs scripts on projects that have topic `a` or `b`, must have `c`, and must not have `d`.
+
 ### Next Steps:
 
-Run Scripts: Use the `run` command to execute TypeScript scripts across all tracked projects.
-
-Query GPT: Use the `query` command to generate new scripts via OpenAI (assuming you have `OPENAI_API_KEY` set in your environment).
-
-Pull Updates: Use the pull command to update all tracked repositories with the latest changes.
+- **Run Scripts**: Use the `run` command to execute TypeScript scripts across all tracked projects.
+- **Query GPT**: Use the `query` command to generate new scripts via OpenAI (assuming you have `OPENAI_API_KEY` set in your environment).
+- **Pull Updates**: Use the `pull` command to update all tracked repositories with the latest changes.
 
 
 ## Contributing
