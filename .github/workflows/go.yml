@@ -39,7 +39,7 @@ jobs:
       # Determine the next version based on conventional commits
       - name: Determine Next Version
         id: determine_version
-        uses: paulhatch/semantic-version@v3
+        uses: paulhatch/semantic-version@v5.4.0
         with:
           branch: main    
 
