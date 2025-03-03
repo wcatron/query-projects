@@ -8,9 +8,6 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
-	"time"
-
-	"github.com/spf13/cobra"
 )
 
 const (
