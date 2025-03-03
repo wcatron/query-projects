@@ -28,23 +28,31 @@ type Project struct {
 func filterProjectsByTopics(projects []Project, topics []string) []Project {
     var filteredProjects []Project
     for _, project := range projects {
-        include := true
+        include := false
+        mustInclude := true
+
         for _, topic := range topics {
-            if strings.HasPrefix(topic, "-") {
+            if strings.HasPrefix(topic, "+") {
+                // Must include projects with this topic
+                if !contains(project.Topics, topic[1:]) {
+                    mustInclude = false
+                    break
+                }
+            } else if strings.HasPrefix(topic, "-") {
                 // Exclude projects with this topic
                 if contains(project.Topics, topic[1:]) {
-                    include = false
+                    mustInclude = false
                     break
                 }
             } else {
-                // Include only projects with this topic
-                if !contains(project.Topics, topic) {
-                    include = false
-                    break
+                // Include if at least one topic matches
+                if contains(project.Topics, topic) {
+                    include = true
                 }
             }
         }
-        if include {
+
+        if mustInclude && (include || len(topics) == 0) {
             filteredProjects = append(filteredProjects, project)
         }
     }
