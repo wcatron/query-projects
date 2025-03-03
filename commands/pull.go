@@ -6,6 +6,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var topics []string
+
 var PullCmd = &cobra.Command{
 	Use:   "pull",
 	Short: "Pull the latest changes for all repositories in projects.json",
