@@ -129,15 +129,18 @@ func runScriptsForAllProjects(scriptPath string, projects []Project) error {
 		results = append(results, r)
 	}
 
-	// Print to stdout in an ASCII-like table
-	printResultTable(results)
+	// Check if the count flag is set
+	if count {
+		countUniqueResponses(results)
+	} else {
+		// Print to stdout in an ASCII-like table
+		printResultTable(results)
 
-	// Write a Markdown table with the output
-	if err := writeMarkdownTable(scriptPath, results); err != nil {
-		return err
+		// Write a Markdown table with the output
+		if err := writeMarkdownTable(scriptPath, results); err != nil {
+			return err
+		}
 	}
-
-	// If the user asked for a count, we can do that here
 
 	return nil
 }
