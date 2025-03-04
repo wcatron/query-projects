@@ -273,35 +273,6 @@ func printResultTable(results []result) {
 	fmt.Println("--------------------------------------------------------------------------------")
 }
 
-// writeMarkdownTable creates a .md table summarizing the results with their output (truncated).
-func writeMarkdownTable(scriptPath string, results []result) error {
-	filename := filepath.Base(scriptPath)
-	resultsFilenameForScript := strings.TrimSuffix(filename, ".ts")
-
-	// Build the table lines
-	var sb strings.Builder
-	headers := []string{"Project Path", "Status", "Output (Truncated)"}
-	sb.WriteString("| " + strings.Join(headers, " | ") + " |\n")
-	sb.WriteString("| " + strings.Repeat("--- | ", len(headers)) + "\n")
-
-	for _, r := range results {
-		shortOutput := truncateOutput(r.stdoutText, 100) // 100 chars for markdown table
-		row := []string{
-			r.projectPath,
-			r.status,
-			strings.ReplaceAll(shortOutput, "\n", "\\n"),
-		}
-		sb.WriteString("| " + strings.Join(row, " | ") + " |\n")
-	}
-
-	// Write to file: e.g. results/foo.md
-	tableFilePath := filepath.Join(resultsFolder, resultsFilenameForScript+".md")
-	if err := os.WriteFile(tableFilePath, []byte(sb.String()), 0644); err != nil {
-		return err
-	}
-	fmt.Printf("Results written to %s\n", tableFilePath)
-	return nil
-}
 
 // truncateOutput is a small helper to avoid huge output in tables.
 func truncateOutput(output string, maxLen int) string {
