@@ -1,6 +1,6 @@
 | Project Path | Status | Output (Truncated) |
 | --- | --- | --- | 
-| ./projects/next.js | Success | 48 |
+| ./projects/next.js | Success | 45 |
 | ./projects/ai | Success | 3 |
 | ./projects/storage | Success | 1 |
 | ./projects/swr | Success | 0 |
