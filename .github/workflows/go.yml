@@ -41,7 +41,7 @@ jobs:
 
       # Run E2E tests
       - name: Run E2E Tests
-        run: go test ./test/...
+        run: go test ./tests/...
         
       - name: Determine Next Version
         id: determine_version
