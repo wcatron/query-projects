@@ -58,7 +58,18 @@ query-projects run --topics a,b,+c,-d
 ```
 This command runs scripts on projects that have topic `a` or `b`, must have `c`, and must not have `d`.
 
-### Counting Unique Responses
+### Output Formats
+
+The `run` command now supports specifying output formats using the `--output` flag. You can choose from `md`, `csv`, or `json`. By default, the tool will determine the best output format based on the script results:
+- If the majority of outputs are valid JSON, it will export as JSON.
+- If outputs are single-line, it will export as both Markdown and CSV.
+- Users can override the default by specifying the desired format(s).
+
+Example usage:
+```
+query-projects run --output md,csv
+```
+This command will execute the specified script and output the results in Markdown and CSV formats.
 
 The `run` command includes a `--count` flag that allows you to count the number of unique responses from the scripts executed across all projects. This can be useful for analyzing the diversity of outputs from your scripts.
 
