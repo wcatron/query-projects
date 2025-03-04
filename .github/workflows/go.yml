@@ -94,7 +94,7 @@ jobs:
 
       # Build the application
       - name: Install
-        run: go install github.com/wcatron/query-projects@${{ github.event.release.tag_name }}
+        run: go install github.com/wcatron/query-projects@${{ needs.build.outputs.version_tag }}
 
       - name: Run
         run: |
