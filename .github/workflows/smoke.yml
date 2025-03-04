@@ -37,7 +37,6 @@ jobs:
         run: go install github.com/wcatron/query-projects@latest
 
       - name: Run
-        working-directory: ./../examples
         run: |
             export PATH="${PATH}:$(go env GOPATH)/bin"
             query-projects info
