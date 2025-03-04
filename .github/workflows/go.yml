@@ -102,4 +102,5 @@ jobs:
       - name: Run
         run: |
             export PATH="${PATH}:$(go env GOPATH)/bin"
+            cd example
             query-projects info
