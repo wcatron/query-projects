@@ -26,6 +26,38 @@ var RunCmd = &cobra.Command{
 		}
 		return runScript(cmd, scriptName)
 	}),
+	cmd.PersistentFlags().StringSliceP("output", "o", nil, "Specify output formats (md, csv, json)")
+}
+
+func determineBestOutputFormat(results []result) []string {
+	jsonCount := 0
+	singleLineCount := 0
+
+	for _, r := range results {
+		if isValidJSON(r.stdoutText) {
+			jsonCount++
+		}
+		if isSingleLine(r.stdoutText) {
+			singleLineCount++
+		}
+	}
+
+	if jsonCount > len(results)/2 {
+		return []string{"json"}
+	} else if singleLineCount == len(results) {
+		return []string{"md", "csv"}
+	}
+
+	return []string{"md"} // Default to markdown if no clear format is determined
+}
+
+func isValidJSON(s string) bool {
+	var js map[string]interface{}
+	return json.Unmarshal([]byte(s), &js) == nil
+}
+
+func isSingleLine(s string) bool {
+	return len(strings.Split(s, "\n")) == 1
 }
 
 func RunCmdInit(cmd *cobra.Command) {
@@ -115,7 +147,7 @@ type result struct {
 }
 
 // runScriptsForAllProjects executes the specified .ts script against all projects.
-func runScriptsForAllProjects(scriptPath string, projects []Project, count bool) error {
+func runScriptsForAllProjects(scriptPath string, projects []Project, count bool, outputFormats []string) error {
 	var results []result
 
 	// Get cwd
@@ -129,16 +161,22 @@ func runScriptsForAllProjects(scriptPath string, projects []Project, count bool)
 		results = append(results, r)
 	}
 
-	// Check if the count flag is set
-	if count {
-		countUniqueResponses(results)
-	} else {
-		// Print to stdout in an ASCII-like table
-		printResultTable(results)
+	// Determine the best output format if not specified
+	if len(outputFormats) == 0 {
+		outputFormats = determineBestOutputFormat(results)
+	}
 
-		// Write a Markdown table with the output
-		if err := writeMarkdownTable(scriptPath, results); err != nil {
-			return err
+	// Generate outputs based on the specified or determined formats
+	for _, format := range outputFormats {
+		switch format {
+		case "md":
+			writeMarkdownTable(scriptPath, results)
+		case "csv":
+			writeCSVTable(scriptPath, results)
+		case "json":
+			writeJSONOutput(scriptPath, results)
+		default:
+			fmt.Printf("Unsupported output format: %s\n", format)
 		}
 	}
 
