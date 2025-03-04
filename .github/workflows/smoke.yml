@@ -2,7 +2,7 @@ name: Go Smoke Test
 
 on:
   release:
-    types: [created]
+    types: [published]
 
 jobs:
   smoke:
