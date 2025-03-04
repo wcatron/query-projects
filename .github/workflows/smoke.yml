@@ -1,8 +1,8 @@
-name: Go CI
+name: Go Smoke Test
 
 on:
-    push:
-        tags: [ "v*" ]
+  push:
+    tags: [ "v*" ]
 
 jobs:
   smoke:
