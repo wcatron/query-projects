@@ -74,6 +74,7 @@ func runScript(cmd *cobra.Command, scriptName string) error {
 	// Get the topics from the command line flags
 	topics, err := cmd.Flags().GetStringSlice("topics")
 	count, err := cmd.Flags().GetBool("count")
+	outputFormats, err := cmd.Flags().GetStringSlice("output")
 
 	projects, err := loadProjects()
 	if err != nil {
@@ -130,7 +131,7 @@ func runScript(cmd *cobra.Command, scriptName string) error {
 
 	// Actually run the script(s)
 	for _, sp := range scriptPaths {
-		if err := runScriptsForAllProjects(sp, filteredProjects, count); err != nil {
+		if err := runScriptsForAllProjects(sp, filteredProjects, count, outputFormats); err != nil {
 			fmt.Printf("Error while running script %s: %v\n", sp, err)
 		}
 	}
