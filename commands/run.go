@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
-	"json"
+	"encoding/json"
 
 	"github.com/spf13/cobra"
 )
