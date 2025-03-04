@@ -32,7 +32,7 @@ jobs:
 
       # Build the application
       - name: Install
-        run: go install github.com/wcatron/query-projects@latest
+        run: go install github.com/wcatron/query-projects@${{ github.event.release.tag_name }}
 
       - name: Run
         run: |
