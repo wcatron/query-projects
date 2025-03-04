@@ -55,7 +55,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const tagName = "${{ steps.determine_version.outputs.new_version }}";
+            const tagName = "${{ steps.determine_version.outputs.version_tag }}";
             const releaseName = `Release ${tagName}`;
             const response = await github.rest.repos.createRelease({
               owner: context.repo.owner,
