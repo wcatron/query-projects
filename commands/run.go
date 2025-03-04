@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"json"
 
 	"github.com/spf13/cobra"
 )
@@ -26,7 +27,6 @@ var RunCmd = &cobra.Command{
 		}
 		return runScript(cmd, scriptName)
 	}),
-	cmd.PersistentFlags().StringSliceP("output", "o", nil, "Specify output formats (md, csv, json)")
 }
 
 func determineBestOutputFormat(results []result) []string {
@@ -62,8 +62,8 @@ func isSingleLine(s string) bool {
 
 func RunCmdInit(cmd *cobra.Command) {
 	cmd.PersistentFlags().StringSliceP("topics", "t", nil, "Filter projects by topics")
-	// Add count flag
 	cmd.PersistentFlags().Bool("count", false, "Count the unique responses from the script")
+	cmd.PersistentFlags().StringSliceP("output", "o", nil, "Specify output formats (md, csv, json)")
 }
 
 // runScript decides which scripts to run:
