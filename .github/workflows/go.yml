@@ -13,6 +13,9 @@ jobs:
     permissions:
       contents: write
 
+    outputs:
+      version_tag: ${{ steps.determine_version.outputs.version_tag }}
+
     steps:
       # Check out the code from your repository
       - name: Check out code
@@ -65,8 +68,6 @@ jobs:
               draft: false,
               prerelease: false,
             });
-            core.setOutput('release_url', response.data.html_url);
-            core.setOutput('version_tag', tagName);
             
   smoke:
     runs-on: ubuntu-latest
