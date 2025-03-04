@@ -9,7 +9,7 @@ import (
     "github.com/stretchr/testify/assert"
 )
 
-func TestQueryProjectsCLI(t *testing.T) {
+func TestInfo(t *testing.T) {
     // Define the command and arguments
     cmd := exec.Command("../query-projects", "info")
 
@@ -21,7 +21,7 @@ func TestQueryProjectsCLI(t *testing.T) {
     assert.NoError(t, err, "Expected no error running the CLI command")
 
     // Load the expected snapshot
-    expectedOutput, err := ioutil.ReadFile(filepath.Join("..", "example", "results", "expected_info_output.txt"))
+    expectedOutput, err := ioutil.ReadFile(filepath.Join("info.txt"))
     assert.NoError(t, err, "Expected no error reading the expected output file")
 
     // Compare the output with the expected snapshot
