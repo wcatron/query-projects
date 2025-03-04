@@ -1,8 +1,8 @@
 name: Go Smoke Test
 
 on:
-  push:
-    tags: [ "v*" ]
+  release:
+    types: [created]
 
 jobs:
   smoke:
