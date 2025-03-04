@@ -39,7 +39,10 @@ jobs:
       - name: Build
         run: go build ./...
 
-      # Determine the next version based on conventional commits
+      # Run E2E tests
+      - name: Run E2E Tests
+        run: go test ./e2e_tests/...
+        
       - name: Determine Next Version
         id: determine_version
         uses: paulhatch/semantic-version@v5.4.0
