@@ -211,7 +211,7 @@ func modifyScriptBasedOnInput(scriptName, userInput string) error {
 	}
 
 	// Prepare the prompt with the current script and user input
-	prompt := fmt.Sprintf("Here is a current script, add the new requirement to a requirements list at the top of the file. Return the entire file in triple slashes\n ```\n new file contents... \n``` \n\n%s\n\nPlease modify it according to the following instructions:\n%s", string(currentScript), userInput)
+	prompt := fmt.Sprintf("Attatched is a current version of a script. Add the new requirement to a requirements list at the top of the file. Return the entire file in triple slashes for example: \n ```\n new file contents... \n``` end example. Here is the current file\n```%s```\n Modify it according to the following instructions:\n%s", string(currentScript), userInput)
 
 	body := map[string]interface{}{
 		"model":       "gpt-3.5-turbo",
