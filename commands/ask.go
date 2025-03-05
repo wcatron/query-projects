@@ -96,11 +96,10 @@ func queryQuestion(question string) error {
 	return nil
 }
 
-// generateScriptForQuestion calls OpenAI, extracts TS code blocks, and writes them to a .ts file.
-func generateScriptForQuestion(question, scriptName string) error {
+func callOpenAI(prompt string) (string, error) {
 	openAIKey := os.Getenv("OPENAI_API_KEY")
 	if openAIKey == "" {
-		return errors.New("please set the OPENAI_API_KEY environment variable")
+		return "", errors.New("please set the OPENAI_API_KEY environment variable")
 	}
 
 	openAIBase := os.Getenv("OPENAI_API_BASE")
@@ -108,8 +107,56 @@ func generateScriptForQuestion(question, scriptName string) error {
 		openAIBase = "https://api.openai.com/v1"
 	}
 
-	// If you have a template file (QUERY_PROMPT.md), read it; otherwise, just use the question as the prompt
-	// Resolve the path to QUERY_PROMPT.md relative to the executable
+	body := map[string]interface{}{
+		"model":       "gpt-3.5-turbo",
+		"max_tokens":  1500,
+		"temperature": 0.7,
+		"messages": []map[string]string{
+			{"role": "system", "content": "You are a helpful assistant who writes scripts for Deno projects."},
+			{"role": "user", "content": prompt},
+		},
+	}
+
+	bodyBytes, _ := json.Marshal(body)
+	req, err := http.NewRequest(http.MethodPost, openAIBase+"/chat/completions", bytes.NewBuffer(bodyBytes))
+	if err != nil {
+		return "", err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+openAIKey)
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", fmt.Errorf("failed to call OpenAI: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		responseBytes, _ := io.ReadAll(resp.Body)
+		return "", fmt.Errorf("non-200 status from OpenAI: %d\n%s", resp.StatusCode, string(responseBytes))
+	}
+
+	var responseData struct {
+		Choices []struct {
+			Message struct {
+				Content string `json:"content"`
+			} `json:"message"`
+		} `json:"choices"`
+	}
+	err = json.NewDecoder(resp.Body).Decode(&responseData)
+	if err != nil {
+		return "", fmt.Errorf("failed to parse OpenAI response: %w", err)
+	}
+
+	if len(responseData.Choices) == 0 {
+		return "", errors.New("no choices returned from OpenAI")
+	}
+
+	return responseData.Choices[0].Message.Content, nil
+}
+
+func generateScriptForQuestion(question, scriptName string) error {
 	execPath, err := os.Executable()
 	if err != nil {
 		return fmt.Errorf("failed to get executable path: %w", err)
@@ -127,59 +174,16 @@ func generateScriptForQuestion(question, scriptName string) error {
 
 	fmt.Println("Generating script from OpenAI...")
 
-	body := map[string]interface{}{
-		"model":       "gpt-3.5-turbo",
-		"max_tokens":  1500,
-		"temperature": 0.7,
-		"messages": []map[string]string{
-			{"role": "system", "content": "You are a helpful assistant who writes scripts for Deno projects."},
-			{"role": "user", "content": prompt},
-		},
-	}
-
-	bodyBytes, _ := json.Marshal(body)
-	req, err := http.NewRequest(http.MethodPost, openAIBase+"/chat/completions", bytes.NewBuffer(bodyBytes))
+	responseContent, err := callOpenAI(prompt)
 	if err != nil {
 		return err
 	}
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", "Bearer "+openAIKey)
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return fmt.Errorf("failed to call OpenAI: %w", err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		responseBytes, _ := io.ReadAll(resp.Body)
-		return fmt.Errorf("non-200 status from OpenAI: %d\n%s", resp.StatusCode, string(responseBytes))
-	}
-
-	// Parse the JSON response
-	var responseData struct {
-		Choices []struct {
-			Message struct {
-				Content string `json:"content"`
-			} `json:"message"`
-		} `json:"choices"`
-	}
-	err = json.NewDecoder(resp.Body).Decode(&responseData)
-	if err != nil {
-		return fmt.Errorf("failed to parse OpenAI response: %w", err)
-	}
-
-	if len(responseData.Choices) == 0 {
-		return errors.New("no choices returned from OpenAI")
-	}
-
-	generatedScript := extractTypeScriptCode(responseData.Choices[0].Message.Content)
+	generatedScript := extractTypeScriptCode(responseContent)
 	if generatedScript == "" {
 		return errors.New("failed to extract TypeScript code from the response")
 	}
 
-	// Ensure scripts directory
 	if err := os.MkdirAll(scriptsFolder, 0755); err != nil {
 		return err
 	}
@@ -193,74 +197,20 @@ func generateScriptForQuestion(question, scriptName string) error {
 	return nil
 }
 func modifyScriptBasedOnInput(scriptName, userInput string) error {
-	openAIKey := os.Getenv("OPENAI_API_KEY")
-	if openAIKey == "" {
-		return errors.New("please set the OPENAI_API_KEY environment variable")
-	}
-
-	openAIBase := os.Getenv("OPENAI_API_BASE")
-	if openAIBase == "" {
-		openAIBase = "https://api.openai.com/v1"
-	}
-
-	// Read the current script content
 	scriptPath := filepath.Join(scriptsFolder, scriptName)
 	currentScript, err := os.ReadFile(scriptPath)
 	if err != nil {
 		return fmt.Errorf("failed to read current script: %w", err)
 	}
 
-	// Prepare the prompt with the current script and user input
 	prompt := fmt.Sprintf("Attatched is a current version of a script. Add the new requirement to a requirements list at the top of the file. Return the entire file in triple slashes for example: \n ```\n new file contents... \n``` end example. Here is the current file\n```%s```\n Modify it according to the following instructions:\n%s", string(currentScript), userInput)
 
-	body := map[string]interface{}{
-		"model":       "gpt-3.5-turbo",
-		"max_tokens":  1500,
-		"temperature": 0.7,
-		"messages": []map[string]string{
-			{"role": "system", "content": "You are a helpful assistant who modifies scripts for Deno projects."},
-			{"role": "user", "content": prompt},
-		},
-	}
-
-	bodyBytes, _ := json.Marshal(body)
-	req, err := http.NewRequest(http.MethodPost, openAIBase+"/chat/completions", bytes.NewBuffer(bodyBytes))
+	responseContent, err := callOpenAI(prompt)
 	if err != nil {
 		return err
 	}
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", "Bearer "+openAIKey)
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return fmt.Errorf("failed to call OpenAI: %w", err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		responseBytes, _ := io.ReadAll(resp.Body)
-		return fmt.Errorf("non-200 status from OpenAI: %d\n%s", resp.StatusCode, string(responseBytes))
-	}
-
-	// Parse the JSON response
-	var responseData struct {
-		Choices []struct {
-			Message struct {
-				Content string `json:"content"`
-			} `json:"message"`
-		} `json:"choices"`
-	}
-	err = json.NewDecoder(resp.Body).Decode(&responseData)
-	if err != nil {
-		return fmt.Errorf("failed to parse OpenAI response: %w", err)
-	}
-
-	if len(responseData.Choices) == 0 {
-		return errors.New("no choices returned from OpenAI")
-	}
-
-	modifiedScript := extractTypeScriptCode(responseData.Choices[0].Message.Content)
+	modifiedScript := extractTypeScriptCode(responseContent)
 	if modifiedScript == "" {
 		return errors.New("failed to extract TypeScript code from the response")
 	}
