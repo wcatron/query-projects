@@ -162,7 +162,19 @@ func generateScriptForQuestion(question, scriptName string) error {
 		return fmt.Errorf("non-200 status from OpenAI: %d\n%s", resp.StatusCode, string(responseBytes))
 	}
 
-	// Parse the JSON response
+	// Log the request and response
+	logFile, err := os.OpenFile("openai_requests.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Printf("Failed to open log file: %v\n", err)
+	} else {
+		defer logFile.Close()
+		logEntry := fmt.Sprintf("Request: %s\nResponse Status: %d\n", bodyBytes, resp.StatusCode)
+		if resp.StatusCode != http.StatusOK {
+			responseBytes, _ := io.ReadAll(resp.Body)
+			logEntry += fmt.Sprintf("Response Body: %s\n", responseBytes)
+		}
+		logFile.WriteString(logEntry + "\n")
+	}
 	var responseData struct {
 		Choices []struct {
 			Message struct {
