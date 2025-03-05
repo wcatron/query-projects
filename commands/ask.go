@@ -286,7 +286,7 @@ func modifyScriptBasedOnInput(scriptName, userInput string) error {
 	fmt.Printf("Modified script saved to: %s\n", scriptPath)
 	return nil
 }
-func logOpenAIRequest(requestBody []byte, response *http.Response) {
+func logOpenAIRequest(requestBody []byte, responseBody []byte) {
 	logFile, err := os.OpenFile("openai_requests.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		fmt.Printf("Failed to open log file: %v\n", err)
@@ -294,7 +294,6 @@ func logOpenAIRequest(requestBody []byte, response *http.Response) {
 	}
 	defer logFile.Close()
 
-	responseBytes, _ := io.ReadAll(response.Body)
-	logEntry := fmt.Sprintf("Request: %s\nResponse Status: %d\nResponse Body: %s\n", requestBody, response.StatusCode, responseBytes)
+	logEntry := fmt.Sprintf("Request: %s\nResponse Body: %s\n", requestBody, responseBody)
 	logFile.WriteString(logEntry + "\n")
 }
