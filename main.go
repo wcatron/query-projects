@@ -10,10 +10,8 @@ import (
 )
 
 func main() {
-	// Load environment variables from .env file
-	if err := godotenv.Load(); err != nil {
-		fmt.Println("No .env file found or error loading .env file")
-	}
+	// Attempt to load an .env file
+	if err := godotenv.Load(); err != nil {}
 	rootCmd := &cobra.Command{
 		Use:   "query-projects",
 		Short: "A CLI that manages repositories and runs scripts across them.",
