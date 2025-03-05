@@ -9,14 +9,14 @@ import (
 	"strings"
 )
 
-// writeMarkdownTable creates a .md table summarizing the results with their output (truncated).
+// writeMarkdownTable creates a .md table summarizing the results with their output).
 func writeMarkdownTable(scriptPath string, results []result) error {
 	filename := filepath.Base(scriptPath)
 	resultsFilenameForScript := strings.TrimSuffix(filename, ".ts")
 
 	// Build the table lines
 	var sb strings.Builder
-	headers := []string{"Project Path", "Status", "Output (Truncated)"}
+	headers := []string{"Project Path", "Status", "Output"}
 	sb.WriteString("| " + strings.Join(headers, " | ") + " |\n")
 	sb.WriteString("| " + strings.Repeat("--- | ", len(headers)) + "\n")
 
@@ -24,7 +24,7 @@ func writeMarkdownTable(scriptPath string, results []result) error {
 		row := []string{
 			r.projectPath,
 			r.status,
-			strings.ReplaceAll(r.stdoutText, "\n", "\\n"),
+			r.stdoutText,
 		}
 		sb.WriteString("| " + strings.Join(row, " | ") + " |\n")
 	}
@@ -55,7 +55,7 @@ func writeCSVTable(scriptPath string, results []result) error {
 	defer writer.Flush()
 
 	// Write headers
-	headers := []string{"Project Path", "Status", "Output (Truncated)"}
+	headers := []string{"Project Path", "Status", "Output"}
 	if err := writer.Write(headers); err != nil {
 		return err
 	}

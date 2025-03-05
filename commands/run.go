@@ -41,7 +41,7 @@ func printMarkdownToConsole(results []result) {
 		row := []string{
 			r.projectPath,
 			r.status,
-			strings.TrimSpace(r.stdoutText),
+			r.stdoutText,
 		}
 		sb.WriteString("| " + strings.Join(row, " | ") + " |\n")
 	}
@@ -296,7 +296,7 @@ func runScriptForProject(script, projectPath string) (result, error) {
 	return result{
 		projectPath: projectPath,
 		status:      status,
-		stdoutText:  stdoutText,
-		stderrText:  stderrText,
+		stdoutText:  strings.TrimSpace(stdoutText),
+		stderrText:  strings.TrimSpace(stderrText),
 	}, nil
 }

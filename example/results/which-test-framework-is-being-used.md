@@ -1,4 +1,4 @@
-| Project Path | Status | Output (Truncated) |
+| Project Path | Status | Output |
 | --- | --- | --- | 
 | ./projects/next.js | Success | Jest |
 | ./projects/ai | Success | N/A |
