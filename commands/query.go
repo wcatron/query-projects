@@ -72,7 +72,7 @@ func generateScriptForQuestion(question, scriptName string) error {
 	}
 
 	bodyBytes, _ := json.Marshal(body)
-	req, err := http.NewRequest(http.MethodPost, "https://api.openai.com/v1/chat/completions", bytes.NewBuffer(bodyBytes))
+	req, err := http.NewRequest(http.MethodPost, openAIBase+"/chat/completions", bytes.NewBuffer(bodyBytes))
 	if err != nil {
 		return err
 	}
