@@ -157,19 +157,7 @@ func generateScriptForQuestion(question, scriptName string) error {
 		return fmt.Errorf("non-200 status from OpenAI: %d\n%s", resp.StatusCode, string(responseBytes))
 	}
 
-	// Log the request and response
-	logFile, err := os.OpenFile("openai_requests.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		fmt.Printf("Failed to open log file: %v\n", err)
-	} else {
-		defer logFile.Close()
-		logEntry := fmt.Sprintf("Request: %s\nResponse Status: %d\n", bodyBytes, resp.StatusCode)
-		if resp.StatusCode != http.StatusOK {
-			responseBytes, _ := io.ReadAll(resp.Body)
-			logEntry += fmt.Sprintf("Response Body: %s\n", responseBytes)
-		}
-		logFile.WriteString(logEntry + "\n")
-	}
+	logOpenAIRequest(bodyBytes, resp)
 	var responseData struct {
 		Choices []struct {
 			Message struct {
@@ -255,6 +243,9 @@ func modifyScriptBasedOnInput(scriptName, userInput string) error {
 		return fmt.Errorf("non-200 status from OpenAI: %d\n%s", resp.StatusCode, string(responseBytes))
 	}
 
+	// Log the request and response
+	logOpenAIRequest(bodyBytes, resp)
+
 	// Parse the JSON response
 	var responseData struct {
 		Choices []struct {
@@ -284,4 +275,19 @@ func modifyScriptBasedOnInput(scriptName, userInput string) error {
 
 	fmt.Printf("Modified script saved to: %s\n", scriptPath)
 	return nil
+}
+func logOpenAIRequest(requestBody []byte, response *http.Response) {
+	logFile, err := os.OpenFile("openai_requests.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Printf("Failed to open log file: %v\n", err)
+		return
+	}
+	defer logFile.Close()
+
+	logEntry := fmt.Sprintf("Request: %s\nResponse Status: %d\n", requestBody, response.StatusCode)
+	if response.StatusCode != http.StatusOK {
+		responseBytes, _ := io.ReadAll(response.Body)
+		logEntry += fmt.Sprintf("Response Body: %s\n", responseBytes)
+	}
+	logFile.WriteString(logEntry + "\n")
 }
