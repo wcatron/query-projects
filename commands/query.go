@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 )
