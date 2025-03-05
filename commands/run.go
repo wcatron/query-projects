@@ -13,6 +13,7 @@ import (
 	"encoding/json"
 
 	"github.com/spf13/cobra"
+	"github.com/charmbracelet/glamour"
 )
 
 var RunCmd = &cobra.Command{
@@ -28,6 +29,31 @@ var RunCmd = &cobra.Command{
 		return runScript(cmd, scriptName)
 	}),
 }
+
+// printMarkdownToConsole renders the results in markdown format to the console using Glamour.
+func printMarkdownToConsole(results []result) {
+	var sb strings.Builder
+	headers := []string{"Project Path", "Status", "Output (Truncated)"}
+	sb.WriteString("| " + strings.Join(headers, " | ") + " |\n")
+	sb.WriteString("| " + strings.Repeat("--- | ", len(headers)) + "\n")
+
+	for _, r := range results {
+		shortOutput := truncateOutput(r.stdoutText, 100) // 100 chars for markdown table
+		row := []string{
+			r.projectPath,
+			r.status,
+			strings.ReplaceAll(shortOutput, "\n", "\\n"),
+		}
+		sb.WriteString("| " + strings.Join(row, " | ") + " |\n")
+	}
+
+	// Render the markdown table using Glamour
+	out, err := glamour.Render(sb.String(), "dark")
+	if err != nil {
+		fmt.Println("Error rendering markdown:", err)
+		return
+	}
+	fmt.Print(out)
 
 func determineBestOutputFormat(results []result) []string {
 	jsonCount := 0
@@ -166,6 +192,9 @@ func runScriptsForAllProjects(scriptPath string, projects []Project, count bool,
 	if len(outputFormats) == 0 {
 		outputFormats = determineBestOutputFormat(results)
 	}
+
+	// Always print results in markdown to the console
+	printMarkdownToConsole(results)
 
 	// Generate outputs based on the specified or determined formats
 	for _, format := range outputFormats {
