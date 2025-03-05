@@ -1,0 +1,195 @@
+Request: {"max_tokens":1500,"messages":[{"content":"You are a helpful assistant who writes scripts for Deno projects.","role":"system"},{"content":"The user is asking a question about the provide software development project in the current working directory.\nPlease generate a TypeScript script that can be run using Deno to answer this question. \nAssume the script will run in a Deno environment with access to the local filesystem. \nThe script should focus on answering the question by performing relevant file operations.\nEnsure the script is well-commented and follows best practices for file access in Deno.\nThe script should console log only the answer to the question or \"Error\".\nIf the script requires subjective analysis it should pull relevant files and prompt ChatGPT for the answer.\nThe script should assume an API Key is available in the environment variable OPENAI_API_KEY.\nUse local git commit history instead of the GitHub api for any git history information\n\nExample:\n\n```ts\n\n// # Question: \"what version of typescript is being used?\"\n\n// # Constants\n// Define the path to the package.json file\nconst packageJsonPath = './package.json';\n\ntry {\n    // # Load releavant data\n    // Use Deno's readTextFile function to read the contents of the package.json file asynchronously\n    const decoder = new TextDecoder(\"utf-8\");\n    const packageJsonContent = await Deno.readFile(packageJsonPath);\n\n    // Parse the JSON content of the package.json file\n    const packageJson = JSON.parse(decoder.decode(packageJsonContent));\n\n    // Check for TypeScript in dependencies or devDependencies\n    const typescriptVersion =\n        (packageJson.dependencies \u0026\u0026 packageJson.dependencies.typescript) ||\n        (packageJson.devDependencies \u0026\u0026 packageJson.devDependencies.typescript);\n\n    // # Log results\n    // If TypeScript is found, print the version, otherwise print an appropriate message\n    if (typescriptVersion) {\n        console.log(typescriptVersion);\n    } else {\n        console.log('N/A');\n    }\n} catch (error) {\n  // # Log error to stdout and error information to stderr\n  console.log('Error');\n  console.error('Error reading package.json file:', error);\n}\n```\n\nHere is the question they would like to answer:\n\nwhat package manager is being used","role":"user"}],"model":"gpt-3.5-turbo","temperature":0.7}
+Response Status: 200
+Response Body: {
+  "id": "chatcmpl-B7a0wfv8AWZ9tj1cJDm5vvYwLu4em",
+  "object": "chat.completion",
+  "created": 1741146434,
+  "model": "gpt-3.5-turbo-0125",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "```typescript\n// # Question: \"What package manager is being used?\"\n\n// # Constants\n// Define the path to the package-lock.json file\nconst packageLockJsonPath = './package-lock.json';\nconst yarnLockPath = './yarn.lock';\n\ntry {\n    // # Load relevant data\n    let packageManager = '';\n\n    // Check if package-lock.json exists to determine npm usage\n    const packageLockExists = await Deno.stat(packageLockJsonPath).then(() => true).catch(() => false);\n    if (packageLockExists) {\n        packageManager = 'npm';\n    } else {\n        // Check if yarn.lock exists to determine yarn usage\n        const yarnLockExists = await Deno.stat(yarnLockPath).then(() => true).catch(() => false);\n        if (yarnLockExists) {\n            packageManager = 'Yarn';\n        }\n    }\n\n    // # Log results\n    // Print the package manager being used if found, otherwise print an appropriate message\n    if (packageManager) {\n        console.log(packageManager);\n    } else {\n        console.log('Package manager not found');\n    }\n} catch (error) {\n    // # Log error to stdout and error information to stderr\n    console.log('Error');\n    console.error('Error determining package manager:', error);\n}\n```",
+        "refusal": null
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 456,
+    "completion_tokens": 271,
+    "total_tokens": 727,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "service_tier": "default",
+  "system_fingerprint": null
+}
+
+
+Request: {"max_tokens":1500,"messages":[{"content":"You are a helpful assistant who writes scripts for Deno projects.","role":"system"},{"content":"The user is asking a question about the provide software development project in the current working directory.\nPlease generate a TypeScript script that can be run using Deno to answer this question. \nAssume the script will run in a Deno environment with access to the local filesystem. \nThe script should focus on answering the question by performing relevant file operations.\nEnsure the script is well-commented and follows best practices for file access in Deno.\nThe script should console log only the answer to the question or \"Error\".\nIf the script requires subjective analysis it should pull relevant files and prompt ChatGPT for the answer.\nThe script should assume an API Key is available in the environment variable OPENAI_API_KEY.\nUse local git commit history instead of the GitHub api for any git history information\n\nExample:\n\n```ts\n\n// # Question: \"what version of typescript is being used?\"\n\n// # Constants\n// Define the path to the package.json file\nconst packageJsonPath = './package.json';\n\ntry {\n    // # Load releavant data\n    // Use Deno's readTextFile function to read the contents of the package.json file asynchronously\n    const decoder = new TextDecoder(\"utf-8\");\n    const packageJsonContent = await Deno.readFile(packageJsonPath);\n\n    // Parse the JSON content of the package.json file\n    const packageJson = JSON.parse(decoder.decode(packageJsonContent));\n\n    // Check for TypeScript in dependencies or devDependencies\n    const typescriptVersion =\n        (packageJson.dependencies \u0026\u0026 packageJson.dependencies.typescript) ||\n        (packageJson.devDependencies \u0026\u0026 packageJson.devDependencies.typescript);\n\n    // # Log results\n    // If TypeScript is found, print the version, otherwise print an appropriate message\n    if (typescriptVersion) {\n        console.log(typescriptVersion);\n    } else {\n        console.log('N/A');\n    }\n} catch (error) {\n  // # Log error to stdout and error information to stderr\n  console.log('Error');\n  console.error('Error reading package.json file:', error);\n}\n```\n\nHere is the question they would like to answer:\n\nwhat package manager is being used","role":"user"}],"model":"gpt-3.5-turbo","temperature":0.7}
+Response Status: 200
+Response Body: {
+  "id": "chatcmpl-B7a43y01lLoGXsZrDU6kQpijr9aHl",
+  "object": "chat.completion",
+  "created": 1741146627,
+  "model": "gpt-3.5-turbo-0125",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "```ts\n// # Question: \"what package manager is being used?\"\n\n// # Constants\n// Define the path to the package.json file\nconst packageJsonPath = './package.json';\n\ntry {\n    // # Load relevant data\n    // Use Deno's readTextFile function to read the contents of the package.json file asynchronously\n    const decoder = new TextDecoder(\"utf-8\");\n    const packageJsonContent = await Deno.readFile(packageJsonPath);\n\n    // Parse the JSON content of the package.json file\n    const packageJson = JSON.parse(decoder.decode(packageJsonContent));\n\n    // Check for the presence of a lockfile field in package.json to determine the package manager\n    const packageManager =\n        packageJson.lockfile ||\n        (packageJson.dependencies && packageJson.dependencies.lockfile) ||\n        (packageJson.devDependencies && packageJson.devDependencies.lockfile);\n\n    // # Log results\n    // If a lockfile is found, determine the package manager based on its presence\n    if (packageManager) {\n        console.log('npm');\n    } else {\n        console.log('yarn');\n    }\n} catch (error) {\n    // # Log error to stdout and error information to stderr\n    console.log('Error');\n    console.error('Error reading package.json file:', error);\n}\n```",
+        "refusal": null
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 456,
+    "completion_tokens": 268,
+    "total_tokens": 724,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "service_tier": "default",
+  "system_fingerprint": null
+}
+
+
+Request: {"max_tokens":1500,"messages":[{"content":"You are a helpful assistant who writes scripts for Deno projects.","role":"system"},{"content":"The user is asking a question about the provide software development project in the current working directory.\nPlease generate a TypeScript script that can be run using Deno to answer this question. \nAssume the script will run in a Deno environment with access to the local filesystem. \nThe script should focus on answering the question by performing relevant file operations.\nEnsure the script is well-commented and follows best practices for file access in Deno.\nThe script should console log only the answer to the question or \"Error\".\nIf the script requires subjective analysis it should pull relevant files and prompt ChatGPT for the answer.\nThe script should assume an API Key is available in the environment variable OPENAI_API_KEY.\nUse local git commit history instead of the GitHub api for any git history information\n\nExample:\n\n```ts\n\n// # Question: \"what version of typescript is being used?\"\n\n// # Constants\n// Define the path to the package.json file\nconst packageJsonPath = './package.json';\n\ntry {\n    // # Load releavant data\n    // Use Deno's readTextFile function to read the contents of the package.json file asynchronously\n    const decoder = new TextDecoder(\"utf-8\");\n    const packageJsonContent = await Deno.readFile(packageJsonPath);\n\n    // Parse the JSON content of the package.json file\n    const packageJson = JSON.parse(decoder.decode(packageJsonContent));\n\n    // Check for TypeScript in dependencies or devDependencies\n    const typescriptVersion =\n        (packageJson.dependencies \u0026\u0026 packageJson.dependencies.typescript) ||\n        (packageJson.devDependencies \u0026\u0026 packageJson.devDependencies.typescript);\n\n    // # Log results\n    // If TypeScript is found, print the version, otherwise print an appropriate message\n    if (typescriptVersion) {\n        console.log(typescriptVersion);\n    } else {\n        console.log('N/A');\n    }\n} catch (error) {\n  // # Log error to stdout and error information to stderr\n  console.log('Error');\n  console.error('Error reading package.json file:', error);\n}\n```\n\nHere is the question they would like to answer:\n\nwhat package manager is being used","role":"user"}],"model":"gpt-3.5-turbo","temperature":0.7}
+Response Status: 200
+Response Body: {
+  "id": "chatcmpl-B7a4aoBGrTRBYOFQBhcwiFWLJScUd",
+  "object": "chat.completion",
+  "created": 1741146660,
+  "model": "gpt-3.5-turbo-0125",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "```typescript\n// # Question: \"what package manager is being used?\"\n\n// # Constants\n// Define the path to the lock file (e.g., yarn.lock or package-lock.json)\nconst lockFilePaths = ['./yarn.lock', './package-lock.json'];\n\ntry {\n    let packageManager = 'N/A';\n\n    // Loop through the lock file paths to check if any of them exist\n    for (const lockFilePath of lockFilePaths) {\n        try {\n            // Check if the lock file exists\n            await Deno.stat(lockFilePath);\n            // Extract package manager from the lock file path\n            if (lockFilePath.includes('yarn')) {\n                packageManager = 'Yarn';\n            } else if (lockFilePath.includes('npm')) {\n                packageManager = 'npm';\n            }\n            break; // Exit the loop if a lock file is found\n        } catch (error) {\n            // Continue to the next lock file path if the current one doesn't exist\n            continue;\n        }\n    }\n\n    // # Log results\n    console.log(packageManager);\n} catch (error) {\n    // # Log error to stdout and error information to stderr\n    console.log('Error');\n    console.error('Error checking lock file:', error);\n}\n```",
+        "refusal": null
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 456,
+    "completion_tokens": 259,
+    "total_tokens": 715,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "service_tier": "default",
+  "system_fingerprint": null
+}
+
+
+Request: {"max_tokens":1500,"messages":[{"content":"You are a helpful assistant who writes scripts for Deno projects.","role":"system"},{"content":"The user is asking a question about the provide software development project in the current working directory.\nPlease generate a TypeScript script that can be run using Deno to answer this question. \nAssume the script will run in a Deno environment with access to the local filesystem. \nThe script should focus on answering the question by performing relevant file operations.\nEnsure the script is well-commented and follows best practices for file access in Deno.\nThe script should console log only the answer to the question or \"Error\".\nIf the script requires subjective analysis it should pull relevant files and prompt ChatGPT for the answer.\nThe script should assume an API Key is available in the environment variable OPENAI_API_KEY.\nUse local git commit history instead of the GitHub api for any git history information\n\nExample:\n\n```ts\n\n// # Question: \"what version of typescript is being used?\"\n\n// # Constants\n// Define the path to the package.json file\nconst packageJsonPath = './package.json';\n\ntry {\n    // # Load releavant data\n    // Use Deno's readTextFile function to read the contents of the package.json file asynchronously\n    const decoder = new TextDecoder(\"utf-8\");\n    const packageJsonContent = await Deno.readFile(packageJsonPath);\n\n    // Parse the JSON content of the package.json file\n    const packageJson = JSON.parse(decoder.decode(packageJsonContent));\n\n    // Check for TypeScript in dependencies or devDependencies\n    const typescriptVersion =\n        (packageJson.dependencies \u0026\u0026 packageJson.dependencies.typescript) ||\n        (packageJson.devDependencies \u0026\u0026 packageJson.devDependencies.typescript);\n\n    // # Log results\n    // If TypeScript is found, print the version, otherwise print an appropriate message\n    if (typescriptVersion) {\n        console.log(typescriptVersion);\n    } else {\n        console.log('N/A');\n    }\n} catch (error) {\n  // # Log error to stdout and error information to stderr\n  console.log('Error');\n  console.error('Error reading package.json file:', error);\n}\n```\n\nHere is the question they would like to answer:\n\nwhat package manager is being used","role":"user"}],"model":"gpt-3.5-turbo","temperature":0.7}
+Response Status: 200
+Response Body: {
+  "id": "chatcmpl-B7a5e6u386l9QPmc6EkNI2tqjD6bl",
+  "object": "chat.completion",
+  "created": 1741146726,
+  "model": "gpt-3.5-turbo-0125",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "```ts\n// # Question: \"what package manager is being used?\"\n\n// # Constants\n// Define the path to the lock file (e.g., package-lock.json, yarn.lock)\nconst lockFilePaths = ['./package-lock.json', './yarn.lock'];\n\ntry {\n    let packageManager = 'N/A';\n\n    for (const lockFilePath of lockFilePaths) {\n        try {\n            // Use Deno's readTextFile function to read the contents of the lock file asynchronously\n            const lockFileContent = await Deno.readTextFile(lockFilePath);\n\n            // Determine the package manager based on the existence of specific keywords in the lock file content\n            if (lockFileContent.includes('npm')) {\n                packageManager = 'npm';\n                break;\n            } else if (lockFileContent.includes('yarn')) {\n                packageManager = 'Yarn';\n                break;\n            }\n        } catch (error) {\n            // Continue to the next lock file if the current one is not found\n            continue;\n        }\n    }\n\n    // # Log results\n    // Print the detected package manager or 'N/A' if not found\n    console.log(packageManager);\n} catch (error) {\n    // # Log error to stdout and error information to stderr\n    console.log('Error');\n    console.error('Error reading lock files:', error);\n}\n```",
+        "refusal": null
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 456,
+    "completion_tokens": 278,
+    "total_tokens": 734,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "service_tier": "default",
+  "system_fingerprint": null
+}
+
+
+Request: {"max_tokens":1500,"messages":[{"content":"You are a helpful assistant who writes scripts for Deno projects.","role":"system"},{"content":"The user is asking a question about the provide software development project in the current working directory.\nPlease generate a TypeScript script that can be run using Deno to answer this question. \nAssume the script will run in a Deno environment with access to the local filesystem. \nThe script should focus on answering the question by performing relevant file operations.\nEnsure the script is well-commented and follows best practices for file access in Deno.\nThe script should console log only the answer to the question or \"Error\".\nIf the script requires subjective analysis it should pull relevant files and prompt ChatGPT for the answer.\nThe script should assume an API Key is available in the environment variable OPENAI_API_KEY.\nUse local git commit history instead of the GitHub api for any git history information\n\nExample:\n\n```ts\n\n// # Question: \"what version of typescript is being used?\"\n\n// # Constants\n// Define the path to the package.json file\nconst packageJsonPath = './package.json';\n\ntry {\n    // # Load releavant data\n    // Use Deno's readTextFile function to read the contents of the package.json file asynchronously\n    const decoder = new TextDecoder(\"utf-8\");\n    const packageJsonContent = await Deno.readFile(packageJsonPath);\n\n    // Parse the JSON content of the package.json file\n    const packageJson = JSON.parse(decoder.decode(packageJsonContent));\n\n    // Check for TypeScript in dependencies or devDependencies\n    const typescriptVersion =\n        (packageJson.dependencies \u0026\u0026 packageJson.dependencies.typescript) ||\n        (packageJson.devDependencies \u0026\u0026 packageJson.devDependencies.typescript);\n\n    // # Log results\n    // If TypeScript is found, print the version, otherwise print an appropriate message\n    if (typescriptVersion) {\n        console.log(typescriptVersion);\n    } else {\n        console.log('N/A');\n    }\n} catch (error) {\n  // # Log error to stdout and error information to stderr\n  console.log('Error');\n  console.error('Error reading package.json file:', error);\n}\n```\n\nHere is the question they would like to answer:\n\nwhat package manager is being used","role":"user"}],"model":"gpt-3.5-turbo","temperature":0.7}
+Response Status: 200
+Response Body: {
+  "id": "chatcmpl-B7a76qOxv59sFp5yYJxMr6G29BpbQ",
+  "object": "chat.completion",
+  "created": 1741146816,
+  "model": "gpt-3.5-turbo-0125",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "```typescript\n// # Question: \"what package manager is being used?\"\n\n// # Constants\n// Define the path to the lock file (e.g., package-lock.json, yarn.lock)\nconst lockFilePaths = ['./package-lock.json', './yarn.lock'];\n\ntry {\n    let packageManager = 'N/A';\n\n    // Iterate through each lock file path to check if it exists\n    for (const lockFilePath of lockFilePaths) {\n        try {\n            // Check if the lock file exists\n            await Deno.stat(lockFilePath);\n\n            // Set the package manager based on the lock file found\n            packageManager = lockFilePath.includes('package-lock.json') ? 'npm' : 'yarn';\n\n            // Break the loop once a lock file is found\n            break;\n        } catch (error) {\n            // Continue to the next lock file path if the current one doesn't exist\n            continue;\n        }\n    }\n\n    // # Log result\n    console.log(packageManager);\n} catch (error) {\n    // # Log error to stdout and error information to stderr\n    console.log('Error');\n    console.error('Error checking package manager:', error);\n}\n```",
+        "refusal": null
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 456,
+    "completion_tokens": 241,
+    "total_tokens": 697,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "service_tier": "default",
+  "system_fingerprint": null
+}
+
+

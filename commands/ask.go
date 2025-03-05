@@ -26,13 +26,13 @@ var AskCmd = &cobra.Command{
 			return errors.New("please provide a question after 'query'")
 		}
 		question := strings.Join(args, " ")
-		return queryQuestion(question)
+		return askQuestion(question)
 	},
 }
 
-// queryQuestion calls the OpenAI API with the question, extracts the TypeScript code,
+// askQuestion calls the OpenAI API with the question, extracts the TypeScript code,
 // and saves it to ./scripts/<question>.ts.
-func queryQuestion(question string) error {
+func askQuestion(question string) error {
 	scriptName := strings.ReplaceAll(strings.ToLower(question), " ", "-") + ".ts"
 	err := generateScriptForQuestion(question, scriptName)
 	if err != nil {
@@ -179,7 +179,7 @@ func generateScriptForQuestion(question, scriptName string) error {
 		return err
 	}
 
-	generatedScript := extractTypeScriptCode(responseContent)
+	generatedScript := ExtractTypeScriptCode(responseContent)
 	if generatedScript == "" {
 		return errors.New("failed to extract TypeScript code from the response")
 	}
@@ -210,7 +210,7 @@ func modifyScriptBasedOnInput(scriptName, userInput string) error {
 		return err
 	}
 
-	modifiedScript := extractTypeScriptCode(responseContent)
+	modifiedScript := ExtractTypeScriptCode(responseContent)
 	if modifiedScript == "" {
 		return errors.New("failed to extract TypeScript code from the response")
 	}

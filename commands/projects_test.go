@@ -22,6 +22,15 @@ func TestExtractTypeScriptCode_ValidTSBlock(t *testing.T) {
 	}
 }
 
+func TestExtractTypeScriptCode_ValidCodeBlock(t *testing.T) {
+	response := "```\nlet z = 30;\n```"
+	expected := "let z = 30;"
+	result := ExtractTypeScriptCode(response)
+	if result != expected {
+		t.Errorf("Expected '%s', but got '%s'", expected, result)
+	}
+}
+
 func TestExtractTypeScriptCode_NoTypeScriptBlock(t *testing.T) {
 	response := "Here is some text without code blocks."
 	expected := ""
