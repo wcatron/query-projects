@@ -10,6 +10,9 @@ import (
 	"os"
 	"strings"
 	"path/filepath"
+	"time"
+	"bufio"
+	"math/rand"
 
 	"github.com/spf13/cobra"
 )
@@ -48,8 +51,9 @@ func queryQuestion(question string) error {
 	randomIndex := rand.Intn(len(projects.Projects))
 	randomProject := projects.Projects[randomIndex]
 
+	cwd, _ := os.Getwd()
 	fmt.Printf("Running script for project: %s\n", randomProject.Name)
-	result, err := runScriptForProject(filepath.Join(scriptsFolder, scriptName), randomProject.Path)
+	result, err := runScriptForProject(filepath.Join(cwd, scriptsFolder, scriptName), randomProject.Path)
 	if err != nil {
 		return fmt.Errorf("error running script: %w", err)
 	}
@@ -68,7 +72,7 @@ func queryQuestion(question string) error {
 			randomIndex = rand.Intn(len(projects.Projects))
 			randomProject = projects.Projects[randomIndex]
 			fmt.Printf("Running script for project: %s\n", randomProject.Name)
-			result, err = runScriptForProject(filepath.Join(scriptsFolder, scriptName), randomProject.Path)
+			result, err = runScriptForProject(filepath.Join(cwd, scriptsFolder, scriptName), randomProject.Path)
 			if err != nil {
 				fmt.Printf("Error running script: %v\n", err)
 				continue
@@ -84,7 +88,7 @@ func queryQuestion(question string) error {
 				fmt.Printf("Error modifying script: %v\n", err)
 			} else {
 				fmt.Println("Script modified. Running again...")
-				result, err = runScriptForProject(filepath.Join(scriptsFolder, scriptName), randomProject.Path)
+				result, err = runScriptForProject(filepath.Join(cwd, scriptsFolder, scriptName), randomProject.Path)
 				if err != nil {
 					fmt.Printf("Error running script: %v\n", err)
 				} else {
