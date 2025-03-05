@@ -14,8 +14,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var QueryCmd = &cobra.Command{
-	Use:   "query <question>",
+var AskCmd = &cobra.Command{
+	Use:   "ask <question>",
 	Short: "Generate a TypeScript script from an OpenAI query.",
 	Args:  cobra.ArbitraryArgs, // Allows spaces in the question
 	RunE: func(cmd *cobra.Command, args []string) error {

@@ -86,7 +86,7 @@ This command will execute the specified script and print a table showing each un
 
 ### Next Steps:
 
-- **Query GPT**: Use the `query` command to generate new scripts via OpenAI (assuming you have `OPENAI_API_KEY` set in your environment).
+- **Ask GPT**: Use the `ask` command to generate new scripts via OpenAI (assuming you have `OPENAI_API_KEY` set in your environment).
 - **Run Scripts**: Use the `run` command to execute TypeScript scripts across all tracked projects.
 - **Pull Updates**: Use the `pull` command to update all tracked repositories with the latest changes.
 

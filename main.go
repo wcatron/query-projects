@@ -21,7 +21,7 @@ func main() {
 
 	// Add subcommands
 	rootCmd.AddCommand(commands.AddCmd)
-	rootCmd.AddCommand(commands.QueryCmd)
+	rootCmd.AddCommand(commands.AskCmd)
 	rootCmd.AddCommand(commands.RunCmd)
 	rootCmd.AddCommand(commands.PRCmd)
 	rootCmd.AddCommand(commands.PullCmd)
