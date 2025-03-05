@@ -18,7 +18,7 @@ import (
 
 var RunCmd = &cobra.Command{
 	Use:   "run [scriptName]",
-	Short: "Run a script (or all .ts scripts) across all projects",
+	Short: "Run scripts across all projects in your configuration.",
 	Args:  cobra.MaximumNArgs(1),
 	RunE: WrapWithMetrics(func(cmd *cobra.Command, args []string) error {
 		// Optional argument: the user can provide a script name or path
