@@ -5,11 +5,15 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"github.com/joho/godotenv"
 	"github.com/wcatron/query-projects/commands"
 )
 
 func main() {
-	// Define the root command
+	// Load environment variables from .env file
+	if err := godotenv.Load(); err != nil {
+		fmt.Println("No .env file found or error loading .env file")
+	}
 	rootCmd := &cobra.Command{
 		Use:   "query-projects",
 		Short: "A CLI that manages repositories and runs scripts across them.",
