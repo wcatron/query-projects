@@ -51,7 +51,15 @@ func generateScriptForQuestion(question, scriptName string) error {
 	}
 
 	// If you have a template file (QUERY_PROMPT.md), read it; otherwise, just use the question as the prompt
-	promptTemplate, err := os.ReadFile(queryPrompt)
+	// Resolve the path to QUERY_PROMPT.md relative to the executable
+	execPath, err := os.Executable()
+	if err != nil {
+		return fmt.Errorf("failed to get executable path: %w", err)
+	}
+	execDir := filepath.Dir(execPath)
+	queryPromptPath := filepath.Join(execDir, queryPrompt)
+
+	promptTemplate, err := os.ReadFile(queryPromptPath)
 	if err != nil {
 		fmt.Printf("Warning: Could not read %s, using question directly.\n", queryPrompt)
 		promptTemplate = []byte("{{QUESTION}}")
