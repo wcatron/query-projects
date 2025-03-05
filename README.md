@@ -77,7 +77,7 @@ Example usage:
 ```
 query-projects run --count
 ```
-This command will execute the specified script and print a table showing each unique response and the count of occurrences.
+This command will execute the specified script and print a table showing each unique response and the count of occurrences. Note that the `count` feature requires simple strings with no line breaks, and all whitespace will be removed from the responses.
 
 ### Next Steps:
 
