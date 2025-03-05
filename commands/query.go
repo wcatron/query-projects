@@ -36,6 +36,64 @@ func queryQuestion(question string) error {
 		return err
 	}
 	fmt.Printf("Generated script: ./%s/%s\n", scriptsFolder, scriptName)
+
+	// Load projects
+	projects, err := loadProjects()
+	if err != nil {
+		return fmt.Errorf("failed to load projects: %w", err)
+	}
+
+	// Run the script for a random project
+	rand.Seed(time.Now().UnixNano())
+	randomIndex := rand.Intn(len(projects.Projects))
+	randomProject := projects.Projects[randomIndex]
+
+	fmt.Printf("Running script for project: %s\n", randomProject.Name)
+	result, err := runScriptForProject(filepath.Join(scriptsFolder, scriptName), randomProject.Path)
+	if err != nil {
+		return fmt.Errorf("error running script: %w", err)
+	}
+
+	fmt.Printf("Result:\n%s\n", result.stdoutText)
+
+	// Prompt user for feedback
+	reader := bufio.NewReader(os.Stdin)
+	for {
+		fmt.Print("Did that result look correct? (Enter to continue, 'done' to exit, or type changes): ")
+		input, _ := reader.ReadString('\n')
+		input = strings.TrimSpace(input)
+
+		if input == "" {
+			// Run for another random project
+			randomIndex = rand.Intn(len(projects.Projects))
+			randomProject = projects.Projects[randomIndex]
+			fmt.Printf("Running script for project: %s\n", randomProject.Name)
+			result, err = runScriptForProject(filepath.Join(scriptsFolder, scriptName), randomProject.Path)
+			if err != nil {
+				fmt.Printf("Error running script: %v\n", err)
+				continue
+			}
+			fmt.Printf("Result:\n%s\n", result.stdoutText)
+		} else if strings.ToLower(input) == "done" {
+			break
+		} else {
+			// Modify the script based on user input
+			fmt.Println("Modifying script based on input...")
+			err = modifyScriptBasedOnInput(scriptName, input)
+			if err != nil {
+				fmt.Printf("Error modifying script: %v\n", err)
+			} else {
+				fmt.Println("Script modified. Running again...")
+				result, err = runScriptForProject(filepath.Join(scriptsFolder, scriptName), randomProject.Path)
+				if err != nil {
+					fmt.Printf("Error running script: %v\n", err)
+				} else {
+					fmt.Printf("Result:\n%s\n", result.stdoutText)
+				}
+			}
+		}
+	}
+
 	return nil
 }
 
@@ -133,5 +191,86 @@ func generateScriptForQuestion(question, scriptName string) error {
 	}
 
 	fmt.Printf("Generated script saved to: %s\n", scriptPath)
+	return nil
+}
+func modifyScriptBasedOnInput(scriptName, userInput string) error {
+	openAIKey := os.Getenv("OPENAI_API_KEY")
+	if openAIKey == "" {
+		return errors.New("please set the OPENAI_API_KEY environment variable")
+	}
+
+	openAIBase := os.Getenv("OPENAI_API_BASE")
+	if openAIBase == "" {
+		openAIBase = "https://api.openai.com/v1"
+	}
+
+	// Read the current script content
+	scriptPath := filepath.Join(scriptsFolder, scriptName)
+	currentScript, err := os.ReadFile(scriptPath)
+	if err != nil {
+		return fmt.Errorf("failed to read current script: %w", err)
+	}
+
+	// Prepare the prompt with the current script and user input
+	prompt := fmt.Sprintf("Here is the current script:\n\n%s\n\nPlease modify it according to the following instructions:\n%s", string(currentScript), userInput)
+
+	body := map[string]interface{}{
+		"model":       "gpt-3.5-turbo",
+		"max_tokens":  1500,
+		"temperature": 0.7,
+		"messages": []map[string]string{
+			{"role": "system", "content": "You are a helpful assistant who modifies scripts for Deno projects."},
+			{"role": "user", "content": prompt},
+		},
+	}
+
+	bodyBytes, _ := json.Marshal(body)
+	req, err := http.NewRequest(http.MethodPost, openAIBase+"/chat/completions", bytes.NewBuffer(bodyBytes))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+openAIKey)
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return fmt.Errorf("failed to call OpenAI: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		responseBytes, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("non-200 status from OpenAI: %d\n%s", resp.StatusCode, string(responseBytes))
+	}
+
+	// Parse the JSON response
+	var responseData struct {
+		Choices []struct {
+			Message struct {
+				Content string `json:"content"`
+			} `json:"message"`
+		} `json:"choices"`
+	}
+	err = json.NewDecoder(resp.Body).Decode(&responseData)
+	if err != nil {
+		return fmt.Errorf("failed to parse OpenAI response: %w", err)
+	}
+
+	if len(responseData.Choices) == 0 {
+		return errors.New("no choices returned from OpenAI")
+	}
+
+	modifiedScript := extractTypeScriptCode(responseData.Choices[0].Message.Content)
+	if modifiedScript == "" {
+		return errors.New("failed to extract TypeScript code from the response")
+	}
+
+	// Write the modified script back to the file
+	if err := os.WriteFile(scriptPath, []byte(modifiedScript), 0644); err != nil {
+		return err
+	}
+
+	fmt.Printf("Modified script saved to: %s\n", scriptPath)
 	return nil
 }
