@@ -230,7 +230,7 @@ func printUniqueResponsesToConsole(results []result) {
 	sb.WriteString("| " + strings.Repeat("--- | ", len(headers)) + "\n")
 
 	for response, count := range responseCounts {
-		row := []string{response, fmt.Sprintf("%d", count)}
+		row := []string{strings.ReplaceAll(response, "\n", "\\n"), fmt.Sprintf("%d", count)}
 		sb.WriteString("| " + strings.Join(row, " | ") + " |\n")
 	}
 
