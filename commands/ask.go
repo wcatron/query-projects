@@ -157,17 +157,7 @@ func generateScriptForQuestion(question, scriptName string) error {
 		return fmt.Errorf("non-200 status from OpenAI: %d\n%s", resp.StatusCode, string(responseBytes))
 	}
 
-	responseBytes, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return fmt.Errorf("failed to read OpenAI response body: %w", err)
-	}
-
-	if len(responseBytes) == 0 {
-		return errors.New("OpenAI response body is empty")
-	}
-
-	logOpenAIRequest(bodyBytes, responseBytes)
-
+	// Parse the JSON response
 	var responseData struct {
 		Choices []struct {
 			Message struct {
@@ -175,7 +165,7 @@ func generateScriptForQuestion(question, scriptName string) error {
 			} `json:"message"`
 		} `json:"choices"`
 	}
-	err = json.Unmarshal(responseBytes, &responseData)
+	err = json.NewDecoder(resp.Body).Decode(&responseData)
 	if err != nil {
 		return fmt.Errorf("failed to parse OpenAI response: %w", err)
 	}
@@ -252,9 +242,6 @@ func modifyScriptBasedOnInput(scriptName, userInput string) error {
 		responseBytes, _ := io.ReadAll(resp.Body)
 		return fmt.Errorf("non-200 status from OpenAI: %d\n%s", resp.StatusCode, string(responseBytes))
 	}
-
-	// Log the request and response
-	logOpenAIRequest(bodyBytes, resp)
 
 	// Parse the JSON response
 	var responseData struct {
