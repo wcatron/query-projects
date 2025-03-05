@@ -33,7 +33,7 @@ var RunCmd = &cobra.Command{
 // printMarkdownToConsole renders the results in markdown format to the console using Glamour.
 func printMarkdownToConsole(results []result) {
 	var sb strings.Builder
-	headers := []string{"Project Path", "Status", "Output (Truncated)"}
+	headers := []string{"Project Path", "Status", "Output"}
 	sb.WriteString("| " + strings.Join(headers, " | ") + " |\n")
 	sb.WriteString("| " + strings.Repeat("--- | ", len(headers)) + "\n")
 
@@ -299,26 +299,4 @@ func runScriptForProject(script, projectPath string) (result, error) {
 		stdoutText:  stdoutText,
 		stderrText:  stderrText,
 	}, nil
-}
-
-// printResultTable prints a simple ASCII-like table of results with the script's stdout (truncated).
-func printResultTable(results []result) {
-	fmt.Println("--------------------------------------------------------------------------------")
-	fmt.Printf("| %-30s | %-10s | %-30s |\n", "Project Path", "Status", "Output (Truncated)")
-	fmt.Println("--------------------------------------------------------------------------------")
-
-	for _, r := range results {
-		fmt.Printf("| %-30s | %-10s | %-30s |\n", r.projectPath, r.status, r.stdoutText)
-	}
-	fmt.Println("--------------------------------------------------------------------------------")
-}
-
-
-// truncateOutput is a small helper to avoid huge output in tables.
-func truncateOutput(output string, maxLen int) string {
-	output = strings.TrimSpace(output)
-	if len(output) > maxLen {
-		return output[:maxLen] + "..."
-	}
-	return output
 }
