@@ -157,7 +157,6 @@ func generateScriptForQuestion(question, scriptName string) error {
 		return fmt.Errorf("non-200 status from OpenAI: %d\n%s", resp.StatusCode, string(responseBytes))
 	}
 
-	logOpenAIRequest(bodyBytes, resp)
 	responseBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("failed to read OpenAI response body: %w", err)
@@ -166,6 +165,8 @@ func generateScriptForQuestion(question, scriptName string) error {
 	if len(responseBytes) == 0 {
 		return errors.New("OpenAI response body is empty")
 	}
+
+	logOpenAIRequest(bodyBytes, responseBytes)
 
 	var responseData struct {
 		Choices []struct {
