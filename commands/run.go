@@ -38,11 +38,10 @@ func printMarkdownToConsole(results []result) {
 	sb.WriteString("| " + strings.Repeat("--- | ", len(headers)) + "\n")
 
 	for _, r := range results {
-		shortOutput := truncateOutput(r.stdoutText, 100) // 100 chars for markdown table
 		row := []string{
 			r.projectPath,
 			r.status,
-			strings.ReplaceAll(shortOutput, "\n", "\\n"),
+			strings.ReplaceAll(r.stdoutText, "\n", "\\n"),
 		}
 		sb.WriteString("| " + strings.Join(row, " | ") + " |\n")
 	}
@@ -297,8 +296,7 @@ func printResultTable(results []result) {
 	fmt.Println("--------------------------------------------------------------------------------")
 
 	for _, r := range results {
-		truncated := truncateOutput(r.stdoutText, 50) // adjust length as desired
-		fmt.Printf("| %-30s | %-10s | %-30s |\n", r.projectPath, r.status, truncated)
+		fmt.Printf("| %-30s | %-10s | %-30s |\n", r.projectPath, r.status, r.stdoutText)
 	}
 	fmt.Println("--------------------------------------------------------------------------------")
 }

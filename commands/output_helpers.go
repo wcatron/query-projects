@@ -21,11 +21,10 @@ func writeMarkdownTable(scriptPath string, results []result) error {
 	sb.WriteString("| " + strings.Repeat("--- | ", len(headers)) + "\n")
 
 	for _, r := range results {
-		shortOutput := truncateOutput(r.stdoutText, 100) // 100 chars for markdown table
 		row := []string{
 			r.projectPath,
 			r.status,
-			strings.ReplaceAll(shortOutput, "\n", "\\n"),
+			strings.ReplaceAll(r.stdoutText, "\n", "\\n"),
 		}
 		sb.WriteString("| " + strings.Join(row, " | ") + " |\n")
 	}
@@ -63,8 +62,7 @@ func writeCSVTable(scriptPath string, results []result) error {
 
 	// Write data
 	for _, r := range results {
-		shortOutput := truncateOutput(r.stdoutText, 100) // 100 chars for CSV
-		row := []string{r.projectPath, r.status, shortOutput}
+		row := []string{r.projectPath, r.status, r.stdoutText}
 		if err := writer.Write(row); err != nil {
 			return err
 		}
