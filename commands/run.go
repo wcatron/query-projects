@@ -193,8 +193,13 @@ func runScriptsForAllProjects(scriptPath string, projects []Project, count bool,
 		outputFormats = determineBestOutputFormat(results)
 	}
 
-	// Always print results in markdown to the console
-	printMarkdownToConsole(results)
+	// If count flag is enabled, count unique responses and print the table
+	if count {
+		printUniqueResponsesToConsole(results)
+	} else {
+		// Always print results in markdown to the console
+		printMarkdownToConsole(results)
+	}
 
 	// Generate outputs based on the specified or determined formats
 	for _, format := range outputFormats {
@@ -213,22 +218,29 @@ func runScriptsForAllProjects(scriptPath string, projects []Project, count bool,
 	return nil
 }
 
-func countUniqueResponses(results []result) {
+func printUniqueResponsesToConsole(results []result) {
 	responseCounts := make(map[string]int)
 	for _, r := range results {
 		responseCounts[r.stdoutText]++
 	}
 
-	fmt.Println("--------------------------------------------------")
-	fmt.Printf("| %-30s | %-10s |\n", "Unique Response", "Count")
-	fmt.Println("--------------------------------------------------")
+	var sb strings.Builder
+	headers := []string{"Unique Response", "Count"}
+	sb.WriteString("| " + strings.Join(headers, " | ") + " |\n")
+	sb.WriteString("| " + strings.Repeat("--- | ", len(headers)) + "\n")
 
 	for response, count := range responseCounts {
-		truncatedResponse := truncateOutput(response, 30) // Adjust length as desired
-		fmt.Printf("| %-30s | %-10d |\n", truncatedResponse, count)
+		row := []string{response, fmt.Sprintf("%d", count)}
+		sb.WriteString("| " + strings.Join(row, " | ") + " |\n")
 	}
 
-	fmt.Println("--------------------------------------------------")
+	// Render the markdown table using Glamour
+	out, err := glamour.Render(sb.String(), "dark")
+	if err != nil {
+		fmt.Println("Error rendering markdown:", err)
+		return
+	}
+	fmt.Print(out)
 }
 
 // runScriptForProject runs a TypeScript script (with Deno) in the specified project directory.
