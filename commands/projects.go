@@ -136,7 +136,7 @@ func cloneRepository(repoURL, projectPath string) error {
 
 // extractTypeScriptCode finds the first ```ts or ```typescript code block in a string
 // and returns its contents.
-func extractTypeScriptCode(response string) string {
+func ExtractTypeScriptCode(response string) string {
 	codeBlockRegex := regexp.MustCompile("(?s)```(?:typescript|ts)\\s+(.+?)\\s*```")
 	matches := codeBlockRegex.FindStringSubmatch(response)
 	if len(matches) >= 2 {
