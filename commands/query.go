@@ -68,16 +68,7 @@ func queryQuestion(question string) error {
 		input = strings.TrimSpace(input)
 
 		if input == "" {
-			// Run for another random project
-			randomIndex = rand.Intn(len(projects.Projects))
-			randomProject = projects.Projects[randomIndex]
-			fmt.Printf("Running script for project: %s\n", randomProject.Name)
-			result, err = runScriptForProject(filepath.Join(cwd, scriptsFolder, scriptName), randomProject.Path)
-			if err != nil {
-				fmt.Printf("Error running script: %v\n", err)
-				continue
-			}
-			fmt.Printf("Result:\n%s\n", result.stdoutText)
+			// Run again with the same script
 		} else if strings.ToLower(input) == "done" {
 			break
 		} else {
@@ -87,14 +78,18 @@ func queryQuestion(question string) error {
 			if err != nil {
 				fmt.Printf("Error modifying script: %v\n", err)
 			} else {
-				fmt.Println("Script modified. Running again...")
-				result, err = runScriptForProject(filepath.Join(cwd, scriptsFolder, scriptName), randomProject.Path)
-				if err != nil {
-					fmt.Printf("Error running script: %v\n", err)
-				} else {
-					fmt.Printf("Result:\n%s\n", result.stdoutText)
-				}
+				fmt.Println("Script modified.")
 			}
+		}
+		// Run for another random project
+		randomIndex = rand.Intn(len(projects.Projects))
+		randomProject = projects.Projects[randomIndex]
+		fmt.Printf("Running next script for project: %s\n", randomProject.Name)
+		result, err = runScriptForProject(filepath.Join(cwd, scriptsFolder, scriptName), randomProject.Path)
+		if err != nil {
+			fmt.Printf("Error running script: %v\n", err)
+		} else {
+			fmt.Printf("Result:\n%s\n", result.stdoutText)
 		}
 	}
 
@@ -228,7 +223,7 @@ func modifyScriptBasedOnInput(scriptName, userInput string) error {
 	}
 
 	// Prepare the prompt with the current script and user input
-	prompt := fmt.Sprintf("Here is the current script:\n\n%s\n\nPlease modify it according to the following instructions:\n%s", string(currentScript), userInput)
+	prompt := fmt.Sprintf("Here is a current script, add the new requirement to a requirements list at the top of the file. Return the entire file in triple slashes\n ```\n new file contents... \n``` \n\n%s\n\nPlease modify it according to the following instructions:\n%s", string(currentScript), userInput)
 
 	body := map[string]interface{}{
 		"model":       "gpt-3.5-turbo",
