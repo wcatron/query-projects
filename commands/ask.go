@@ -163,6 +163,10 @@ func generateScriptForQuestion(question, scriptName string) error {
 		return fmt.Errorf("failed to read OpenAI response body: %w", err)
 	}
 
+	if len(responseBytes) == 0 {
+		return errors.New("OpenAI response body is empty")
+	}
+
 	var responseData struct {
 		Choices []struct {
 			Message struct {
