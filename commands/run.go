@@ -54,6 +54,7 @@ func printMarkdownToConsole(results []result) {
 		return
 	}
 	fmt.Print(out)
+}
 
 func determineBestOutputFormat(results []result) []string {
 	jsonCount := 0
