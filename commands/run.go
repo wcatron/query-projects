@@ -41,7 +41,7 @@ func printMarkdownToConsole(results []result) {
 		row := []string{
 			r.projectPath,
 			r.status,
-			strings.ReplaceAll(r.stdoutText, "\n", "\\n"),
+			r.stdoutText,
 		}
 		sb.WriteString("| " + strings.Join(row, " | ") + " |\n")
 	}
