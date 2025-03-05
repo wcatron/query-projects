@@ -284,10 +284,7 @@ func logOpenAIRequest(requestBody []byte, response *http.Response) {
 	}
 	defer logFile.Close()
 
-	logEntry := fmt.Sprintf("Request: %s\nResponse Status: %d\n", requestBody, response.StatusCode)
-	if response.StatusCode != http.StatusOK {
-		responseBytes, _ := io.ReadAll(response.Body)
-		logEntry += fmt.Sprintf("Response Body: %s\n", responseBytes)
-	}
+	responseBytes, _ := io.ReadAll(response.Body)
+	logEntry := fmt.Sprintf("Request: %s\nResponse Status: %d\nResponse Body: %s\n", requestBody, response.StatusCode, responseBytes)
 	logFile.WriteString(logEntry + "\n")
 }
