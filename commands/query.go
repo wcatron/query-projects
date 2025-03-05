@@ -45,6 +45,11 @@ func generateScriptForQuestion(question, scriptName string) error {
 		return errors.New("please set the OPENAI_API_KEY environment variable")
 	}
 
+	openAIBase := os.Getenv("OPENAI_API_BASE")
+	if openAIBase == "" {
+		openAIBase = "https://api.openai.com/v1"
+	}
+
 	// If you have a template file (QUERY_PROMPT.md), read it; otherwise, just use the question as the prompt
 	promptTemplate, err := os.ReadFile(queryPrompt)
 	if err != nil {

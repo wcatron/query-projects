@@ -79,6 +79,11 @@ query-projects run --count
 ```
 This command will execute the specified script and print a table showing each unique response and the count of occurrences. Note that the `count` feature requires simple strings with no line breaks, and all whitespace will be removed from the responses.
 
+### Environment Variables
+
+- `OPENAI_API_KEY`: Your OpenAI API key. This is required for querying GPT.
+- `OPENAI_API_BASE`: The base URL for the OpenAI API. Defaults to `https://api.openai.com/v1` if not set.
+
 ### Next Steps:
 
 - **Query GPT**: Use the `query` command to generate new scripts via OpenAI (assuming you have `OPENAI_API_KEY` set in your environment).
