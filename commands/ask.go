@@ -158,6 +158,11 @@ func generateScriptForQuestion(question, scriptName string) error {
 	}
 
 	logOpenAIRequest(bodyBytes, resp)
+	responseBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("failed to read OpenAI response body: %w", err)
+	}
+
 	var responseData struct {
 		Choices []struct {
 			Message struct {
@@ -165,7 +170,7 @@ func generateScriptForQuestion(question, scriptName string) error {
 			} `json:"message"`
 		} `json:"choices"`
 	}
-	err = json.NewDecoder(resp.Body).Decode(&responseData)
+	err = json.Unmarshal(responseBytes, &responseData)
 	if err != nil {
 		return fmt.Errorf("failed to parse OpenAI response: %w", err)
 	}
