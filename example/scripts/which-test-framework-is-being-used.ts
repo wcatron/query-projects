@@ -8,7 +8,7 @@ const packageJsonPath = './package.json';
 if (Deno.args.length > 0 && Deno.args[0] === '--info') {
     console.log(JSON.stringify({
         version: '1.0',
-        output: 'text'
+        output: 'csv'
     }));
     Deno.exit();
 }
@@ -22,20 +22,29 @@ try {
     // Parse the JSON content of the package.json file
     const packageJson = JSON.parse(decoder.decode(packageJsonContent));
 
-    // Check for test framework in scripts or devDependencies
-    const testFramework = packageJson.devDependencies && packageJson.devDependencies.jest
-            ? 'Jest'
-            : packageJson.devDependencies && packageJson.devDependencies.mocha
-            ? 'Mocha'
-            : packageJson.devDependencies && packageJson.devDependencies['@testing-library']
-            ? 'Testing Library' : null;
+    // Check for test framework and its version in devDependencies
+    let testFramework = null;
+    let version = null;
+
+    if (packageJson.devDependencies) {
+        if (packageJson.devDependencies.jest) {
+            testFramework = 'Jest';
+            version = packageJson.devDependencies.jest;
+        } else if (packageJson.devDependencies.mocha) {
+            testFramework = 'Mocha';
+            version = packageJson.devDependencies.mocha;
+        } else if (packageJson.devDependencies['@testing-library']) {
+            testFramework = 'Testing Library';
+            version = packageJson.devDependencies['@testing-library'];
+        }
+    }
 
     // # Log results
-    // If test framework is found, print the name, otherwise print "N/A"
-    if (testFramework) {
-        console.log(testFramework);
+    // If test framework is found, print the name and version, otherwise print "N/A"
+    if (testFramework && version) {
+        console.log(`${testFramework},${version}`);
     } else {
-        console.log('N/A');
+        console.log('N/A,N/A');
     }
 } catch (error) {
     // # Log error to stdout and error information to stderr
