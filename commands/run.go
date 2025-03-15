@@ -30,6 +30,14 @@ var RunCmd = &cobra.Command{
 	}),
 }
 
+// formatCSVOutput formats CSV output based on column headers.
+func formatCSVOutput(csvText, columns string) string {
+	var sb strings.Builder
+	headers := strings.Split(columns, ",")
+	sb.WriteString(strings.Join(headers, ",") + "\n")
+	sb.WriteString(csvText)
+	return sb.String()
+
 // getScriptInfo executes a script with the --info flag and returns the parsed JSON output.
 func getScriptInfo(scriptPath string) (map[string]string, error) {
 	cmd := exec.Command("deno", "run", "--allow-all", scriptPath, "--info")
@@ -204,7 +212,7 @@ func runScript(cmd *cobra.Command, scriptName string) error {
 
 	// Actually run the script(s)
 	for _, sp := range scriptPaths {
-		if err := runScriptsForAllProjects(sp, filteredProjects, count, outputFormats); err != nil {
+		if err := runScriptsForAllProjects(sp, filteredProjects, count, outputFormats, info); err != nil {
 			fmt.Printf("Error while running script %s: %v\n", sp, err)
 		}
 	}
@@ -228,7 +236,14 @@ func runScriptsForAllProjects(scriptPath string, projects []Project, count bool,
 	cwd, _ := os.Getwd()
 
 	for _, p := range projects {
-		r, err := runScriptForProject(filepath.Join(cwd, scriptPath), p.Path)
+		// Determine script info
+		info, err := getScriptInfo(scriptPath)
+		if err != nil {
+			fmt.Printf("Error getting info for script %s: %v\n", scriptPath, err)
+			continue
+		}
+
+		r, err := runScriptForProject(filepath.Join(cwd, scriptPath), p.Path, info)
 		if err != nil {
 			fmt.Printf("Error in project %s: %v\n", p.Name, err)
 		}
@@ -291,7 +306,7 @@ func printUniqueResponsesToConsole(results []result) {
 }
 
 // runScriptForProject runs a TypeScript script (with Deno) in the specified project directory.
-func runScriptForProject(script, projectPath string) (result, error) {
+func runScriptForProject(script, projectPath string, info map[string]string) (result, error) {
 	fmt.Printf("Running %s for %s...\n", script, projectPath)
 
 	cmd := exec.Command("deno", "run", "--allow-all", script)
@@ -319,7 +334,11 @@ func runScriptForProject(script, projectPath string) (result, error) {
 	stdoutText := string(stdoutBytes)
 	stderrText := string(stderrBytes)
 
-	if len(stdoutText) > 0 {
+	// Format CSV output if applicable
+	if info["output"] == "csv" && len(stdoutText) > 0 {
+		fmt.Printf("[%s] CSV Output:\n", projectPath)
+		fmt.Println(formatCSVOutput(stdoutText, info["columns"]))
+	} else if len(stdoutText) > 0 {
 		fmt.Printf("[%s] stdout:\n%s\n", projectPath, stdoutText)
 	}
 	if len(stderrText) > 0 {
