@@ -231,19 +231,13 @@ type result struct {
 }
 
 // runScriptsForAllProjects executes the specified .ts script against all projects.
-func runScriptsForAllProjects(scriptPath string, projects []Project, count bool, outputFormats []string) error {
+func runScriptsForAllProjects(scriptPath string, projects []Project, count bool, outputFormats []string, info map[string]string) error {
 	var results []result
 
 	// Get cwd
 	cwd, _ := os.Getwd()
 
 	for _, p := range projects {
-		// Determine script info
-		info, err := getScriptInfo(scriptPath)
-		if err != nil {
-			fmt.Printf("Error getting info for script %s: %v\n", scriptPath, err)
-			continue
-		}
 
 		r, err := runScriptForProject(filepath.Join(cwd, scriptPath), p.Path, info)
 		if err != nil {
