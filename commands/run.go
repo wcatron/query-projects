@@ -22,6 +22,8 @@ type ScriptInfo struct {
 	Output  string
 	Columns string
 }
+
+var RunCmd = &cobra.Command{
 	Use:   "run [scriptName]",
 	Short: "Run scripts across all projects in your configuration.",
 	Args:  cobra.MaximumNArgs(1),
@@ -75,8 +77,6 @@ func getScriptInfo(scriptPath string) (ScriptInfo, error) {
 		return nil, fmt.Errorf("failed to parse script info: %w", err)
 	}
 
-	return info, nil
-}
 
 // printMarkdownToConsole renders the results in markdown format to the console using Glamour.
 func printMarkdownToConsole(results []result) {
