@@ -4,6 +4,15 @@
 // Define the path to the package.json file
 const packageJsonPath = './package.json';
 
+// Take an info argument and return information about the script
+if (Deno.args.length > 0 && Deno.args[0] === '--info') {
+    console.log(JSON.stringify({
+        version: '1.0',
+        output: 'text'
+    }));
+    Deno.exit();
+}
+
 try {
     // # Load relevant data
     // Use Deno's readTextFile function to read the contents of the package.json file asynchronously

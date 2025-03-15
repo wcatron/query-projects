@@ -6,10 +6,6 @@ Thank you for considering contributing to our project! Here are some guidelines 
 
 Query Projects is a simple CLI tool designed to run scripts across multiple repositories. It helps manage repositories and execute TypeScript scripts efficiently, making it easier to automate tasks and analyze projects.
 
-## Code of Conduct
-
-Please note that this project is released with a [Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project, you agree to abide by its terms.
-
 ## How to Contribute
 
 1. Fork the repository.
@@ -17,6 +13,14 @@ Please note that this project is released with a [Code of Conduct](CODE_OF_CONDU
 3. Write your code and tests.
 4. Ensure all tests pass.
 5. Submit a pull request.
+
+## Running Locally
+
+1. Build the application: `go build`
+2. Change cwd to the example directory: `cd example`
+3. Run the compiled application: `../query-project info`
+
+TODO: Document a typical watch based appoach to local development.
 
 ## Style Guide
 
@@ -26,7 +30,7 @@ Please note that this project is released with a [Code of Conduct](CODE_OF_CONDU
 
 ## Testing
 
-- Run `go test ./...` to execute all tests.
+- Run `go test ./tests/... ./commands/...` to execute all tests.
 - Add new tests for your code.
 
 ## Communication

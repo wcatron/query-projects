@@ -41,6 +41,7 @@ jobs:
       # Check code formatting
       - name: Check Go formatting
         run: gofmt -l .
+        
       - name: Build
         run: go build
 

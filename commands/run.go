@@ -2,6 +2,7 @@ package commands
 
 import (
 	"bufio"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -10,10 +11,9 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
-	"encoding/json"
 
-	"github.com/spf13/cobra"
 	"github.com/charmbracelet/glamour"
+	"github.com/spf13/cobra"
 )
 
 var RunCmd = &cobra.Command{
@@ -93,9 +93,9 @@ func RunCmdInit(cmd *cobra.Command) {
 }
 
 // runScript decides which scripts to run:
-//  1) If the user gave a path (e.g., `scripts/foo.ts` or `/abs/path.ts`), just run that.
-//  2) If the user gave a simple filename (e.g. `foo.ts`), we prepend the scripts folder.
-//  3) If no name was given, prompt the user to pick a .ts file from the scripts folder.
+//  1. If the user gave a path (e.g., `scripts/foo.ts` or `/abs/path.ts`), just run that.
+//  2. If the user gave a simple filename (e.g. `foo.ts`), we prepend the scripts folder.
+//  3. If no name was given, prompt the user to pick a .ts file from the scripts folder.
 func runScript(cmd *cobra.Command, scriptName string) error {
 	// Get the topics from the command line flags
 	topics, err := cmd.Flags().GetStringSlice("topics")
@@ -161,7 +161,7 @@ func runScript(cmd *cobra.Command, scriptName string) error {
 			fmt.Printf("Error while running script %s: %v\n", sp, err)
 		}
 	}
-	
+
 	return nil
 }
 
@@ -247,7 +247,7 @@ func printUniqueResponsesToConsole(results []result) {
 func runScriptForProject(script, projectPath string) (result, error) {
 	fmt.Printf("Running %s for %s...\n", script, projectPath)
 
-	cmd := exec.Command("deno", "run", "--allow-read", "--allow-run", script)
+	cmd := exec.Command("deno", "run", "--allow-all", script)
 	cmd.Dir = projectPath
 
 	stdoutPipe, err := cmd.StdoutPipe()

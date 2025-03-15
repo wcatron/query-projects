@@ -4,6 +4,15 @@
 // Define the path to the current working directory
 const currentWorkingDirectory = Deno.cwd();
 
+// Take an info argument and return information about the script
+if (Deno.args.length > 0 && Deno.args[0] === '--info') {
+    console.log(JSON.stringify({
+        version: '1.0',
+        output: 'text'
+    }));
+    Deno.exit();
+}
+
 try {
     // # Load relevant data
     // Run the git log command to get the commit history in the past week

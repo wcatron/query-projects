@@ -1,3 +1,12 @@
+// Take an info argument and return information about the script
+if (Deno.args.length > 0 && Deno.args[0] === '--info') {
+    console.log(JSON.stringify({
+        version: '1.0',
+        output: 'text'
+    }));
+    Deno.exit();
+}
+
 // Define the path to the package.json file
 const packageJsonPath = './package.json';
 
