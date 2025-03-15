@@ -45,7 +45,6 @@ func getScriptInfo(scriptPath string) (map[string]string, error) {
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return nil, fmt.Errorf("failed to run script with --info: %w", err)
-	}
 	return nil
 }
 
