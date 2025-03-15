@@ -37,7 +37,6 @@ func getScriptInfo(scriptPath string) (map[string]string, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to run script with --info: %w", err)
 	}
-	return nil
 
 	var info map[string]string
 	if err := json.Unmarshal(output, &info); err != nil {
