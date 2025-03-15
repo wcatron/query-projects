@@ -274,11 +274,11 @@ func runScriptsForAllProjects(scriptInfo ScriptInfo, projects []Project, count b
 	for _, format := range outputFormats {
 		switch format {
 		case "md":
-			writeMarkdownTable(scriptPath, results)
+			writeMarkdownTable(scriptInfo.Path, results)
 		case "csv":
-			writeCSVTable(scriptPath, results)
+			writeCSVTable(scriptInfo.Path, results)
 		case "json":
-			writeJSONOutput(scriptPath, results)
+			writeJSONOutput(scriptInfo.Path, results)
 		default:
 			fmt.Printf("Unsupported output format: %s\n", format)
 		}
