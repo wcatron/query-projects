@@ -26,4 +26,10 @@ const currentWorkingDirectory = Deno.cwd();
 
 console.log(['datum_1', 'datum_2'].join(","))
 
-```
+```## Info Spec v1.0
+
+| Key     | Description                                                                 |
+|---------|-----------------------------------------------------------------------------|
+| version | The version of the script. Should be '1.0' for compatibility.               |
+| output  | The type of output the script generates. Can be 'text', 'csv', or 'json'.   |
+| columns | Required if `output` is 'csv'. An array specifying the column headers.      |
