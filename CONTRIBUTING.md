@@ -4,7 +4,7 @@ Thank you for considering contributing to our project! Here are some guidelines 
 
 ## Introduction
 
-This project aims to [briefly describe the purpose and goals of the project].
+Query Projects is a simple CLI tool designed to run scripts across multiple repositories. It helps manage repositories and execute TypeScript scripts efficiently, making it easier to automate tasks and analyze projects.
 
 ## Code of Conduct
 
