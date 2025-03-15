@@ -2,15 +2,21 @@
 
 Simple self contained scripts that can be executed against each project in your meta project.
 
+## Info Spec v1.0
+
+
+
 ## Deno
 
 ```ts
 // query-project-api-version: 1.0
 
-// Should return column headers if output type is csv and "--columns" argument is passed
-
-if (Deno.args.length > 0 && Deno.args[0] === '--columns') {
-    console.log([]'column_1', 'column_2'].join(","));
+// Take an info argument and return information about the script
+if (Deno.args.length > 0 && Deno.args[0] === '--info') {
+    console.log(JSON.stringify({
+        version: '1.0',
+        output: 'text'
+    }));
     Deno.exit();
 }
 
