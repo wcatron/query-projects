@@ -16,7 +16,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var RunCmd = &cobra.Command{
+type ScriptInfo struct {
+	Path    string
+	Version string
+	Output  string
+	Columns string
+}
 	Use:   "run [scriptName]",
 	Short: "Run scripts across all projects in your configuration.",
 	Args:  cobra.MaximumNArgs(1),
@@ -40,7 +45,24 @@ func formatCSVOutput(csvText, columns string) string {
 }
 
 // getScriptInfo executes a script with the --info flag and returns the parsed JSON output.
-func getScriptInfo(scriptPath string) (map[string]string, error) {
+func getScriptInfo(scriptPath string) (ScriptInfo, error) {
+	cmd := exec.Command("deno", "run", "--allow-all", scriptPath, "--info")
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return ScriptInfo{}, fmt.Errorf("failed to run script with --info: %w", err)
+	}
+
+	var info map[string]string
+	if err := json.Unmarshal(output, &info); err != nil {
+		return ScriptInfo{}, fmt.Errorf("failed to parse script info: %w", err)
+	}
+
+	return ScriptInfo{
+		Path:    scriptPath,
+		Version: info["version"],
+		Output:  info["output"],
+		Columns: info["columns"],
+	}, nil
 	cmd := exec.Command("deno", "run", "--allow-all", scriptPath, "--info")
 	output, err := cmd.CombinedOutput()
 	if err != nil {
@@ -164,14 +186,13 @@ func runScript(cmd *cobra.Command, scriptName string) error {
 		}
 
 		// Gather script information
-		var scriptInfos []map[string]string
+		var scriptInfos []ScriptInfo
 		for _, sp := range scriptPaths {
 			info, err := getScriptInfo(sp)
 			if err != nil {
 				fmt.Printf("Error getting info for script %s: %v\n", sp, err)
 				continue
 			}
-			info["name"] = filepath.Base(sp)
 			scriptInfos = append(scriptInfos, info)
 		}
 
@@ -181,12 +202,12 @@ func runScript(cmd *cobra.Command, scriptName string) error {
 		sb.WriteString("| " + strings.Join(headers, " | ") + " |\n")
 		sb.WriteString("| " + strings.Repeat("--- | ", len(headers)) + "\n")
 
-		for i, info := range scriptInfos {
+		for i, si := range scriptInfos {
 			row := []string{
 				fmt.Sprintf("%d", i+1),
-				info["name"],
-				info["version"],
-				info["output"],
+				filepath.Base(si.Path),
+				si.Version,
+				si.Output,
 			}
 			sb.WriteString("| " + strings.Join(row, " | ") + " |\n")
 		}
@@ -209,13 +230,13 @@ func runScript(cmd *cobra.Command, scriptName string) error {
 			return errors.New("invalid selection")
 		}
 		// User picks exactly one script
-		scriptPaths = []string{scriptPaths[choice-1]}
+		scriptInfos = []ScriptInfo{scriptInfos[choice-1]}
 	}
 
 	// Actually run the script(s)
-	for _, sp := range scriptPaths {
-		if err := runScriptsForAllProjects(sp, filteredProjects, count, outputFormats, info); err != nil {
-			fmt.Printf("Error while running script %s: %v\n", sp, err)
+	for _, si := range scriptInfos {
+		if err := runScriptsForAllProjects(si, filteredProjects, count, outputFormats); err != nil {
+			fmt.Printf("Error while running script %s: %v\n", si.Path, err)
 		}
 	}
 
@@ -231,7 +252,7 @@ type result struct {
 }
 
 // runScriptsForAllProjects executes the specified .ts script against all projects.
-func runScriptsForAllProjects(scriptPath string, projects []Project, count bool, outputFormats []string, info map[string]string) error {
+func runScriptsForAllProjects(scriptInfo ScriptInfo, projects []Project, count bool, outputFormats []string) error {
 	var results []result
 
 	// Get cwd
@@ -239,7 +260,7 @@ func runScriptsForAllProjects(scriptPath string, projects []Project, count bool,
 
 	for _, p := range projects {
 
-		r, err := runScriptForProject(filepath.Join(cwd, scriptPath), p.Path, info)
+		r, err := runScriptForProject(scriptInfo, p.Path)
 		if err != nil {
 			fmt.Printf("Error in project %s: %v\n", p.Name, err)
 		}
@@ -302,10 +323,10 @@ func printUniqueResponsesToConsole(results []result) {
 }
 
 // runScriptForProject runs a TypeScript script (with Deno) in the specified project directory.
-func runScriptForProject(script, projectPath string, info map[string]string) (result, error) {
-	fmt.Printf("Running %s for %s...\n", script, projectPath)
+func runScriptForProject(scriptInfo ScriptInfo, projectPath string) (result, error) {
+	fmt.Printf("Running %s for %s...\n", scriptInfo.Path, projectPath)
 
-	cmd := exec.Command("deno", "run", "--allow-all", script)
+	cmd := exec.Command("deno", "run", "--allow-all", scriptInfo.Path)
 	cmd.Dir = projectPath
 
 	stdoutPipe, err := cmd.StdoutPipe()
@@ -331,9 +352,9 @@ func runScriptForProject(script, projectPath string, info map[string]string) (re
 	stderrText := string(stderrBytes)
 
 	// Format CSV output if applicable
-	if info["output"] == "csv" && len(stdoutText) > 0 {
+	if scriptInfo.Output == "csv" && len(stdoutText) > 0 {
 		fmt.Printf("[%s] CSV Output:\n", projectPath)
-		fmt.Println(formatCSVOutput(stdoutText, info["columns"]))
+		fmt.Println(formatCSVOutput(stdoutText, scriptInfo.Columns))
 	} else if len(stdoutText) > 0 {
 		fmt.Printf("[%s] stdout:\n%s\n", projectPath, stdoutText)
 	}
