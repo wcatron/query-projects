@@ -30,6 +30,21 @@ var RunCmd = &cobra.Command{
 	}),
 }
 
+// getScriptInfo executes a script with the --info flag and returns the parsed JSON output.
+func getScriptInfo(scriptPath string) (map[string]string, error) {
+	cmd := exec.Command("deno", "run", "--allow-all", scriptPath, "--info")
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return nil, fmt.Errorf("failed to run script with --info: %w", err)
+	}
+
+	var info map[string]string
+	if err := json.Unmarshal(output, &info); err != nil {
+		return nil, fmt.Errorf("failed to parse script info: %w", err)
+	}
+
+	return info, nil
+
 // printMarkdownToConsole renders the results in markdown format to the console using Glamour.
 func printMarkdownToConsole(results []result) {
 	var sb strings.Builder
@@ -137,18 +152,49 @@ func runScript(cmd *cobra.Command, scriptName string) error {
 			return nil
 		}
 
-		// Ask user to pick a script
-		fmt.Println("Select a script to run:")
-		for i, sp := range scriptPaths {
-			fmt.Printf("%d) %s\n", i+1, filepath.Base(sp))
+		// Gather script information
+		var scriptInfos []map[string]string
+		for _, sp := range scriptPaths {
+			info, err := getScriptInfo(sp)
+			if err != nil {
+				fmt.Printf("Error getting info for script %s: %v\n", sp, err)
+				continue
+			}
+			info["name"] = filepath.Base(sp)
+			scriptInfos = append(scriptInfos, info)
 		}
-		fmt.Print("Enter a number: ")
 
+		// Display script information in a table
+		var sb strings.Builder
+		headers := []string{"#", "Name", "Version", "Output"}
+		sb.WriteString("| " + strings.Join(headers, " | ") + " |\n")
+		sb.WriteString("| " + strings.Repeat("--- | ", len(headers)) + "\n")
+
+		for i, info := range scriptInfos {
+			row := []string{
+				fmt.Sprintf("%d", i+1),
+				info["name"],
+				info["version"],
+				info["output"],
+			}
+			sb.WriteString("| " + strings.Join(row, " | ") + " |\n")
+		}
+
+		// Render the markdown table using Glamour
+		out, err := glamour.Render(sb.String(), "dark")
+		if err != nil {
+			fmt.Println("Error rendering markdown:", err)
+			return err
+		}
+		fmt.Print(out)
+
+		// Ask user to pick a script
+		fmt.Print("Enter a number: ")
 		reader := bufio.NewReader(os.Stdin)
 		input, _ := reader.ReadString('\n')
 		input = strings.TrimSpace(input)
 		choice, err := strconv.Atoi(input)
-		if err != nil || choice < 1 || choice > len(scriptPaths) {
+		if err != nil || choice < 1 || choice > len(scriptInfos) {
 			return errors.New("invalid selection")
 		}
 		// User picks exactly one script
