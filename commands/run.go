@@ -65,17 +65,7 @@ func getScriptInfo(scriptPath string) (ScriptInfo, error) {
 		Output:  info["output"],
 		Columns: info["columns"],
 	}, nil
-	cmd := exec.Command("deno", "run", "--allow-all", scriptPath, "--info")
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		return nil, fmt.Errorf("failed to run script with --info: %w", err)
-	return nil
 }
-
-	var info map[string]string
-	if err := json.Unmarshal(output, &info); err != nil {
-		return nil, fmt.Errorf("failed to parse script info: %w", err)
-	}
 
 
 // printMarkdownToConsole renders the results in markdown format to the console using Glamour.
@@ -364,7 +354,7 @@ func runScriptForProject(scriptInfo ScriptInfo, projectPath string) (result, err
 
 	var status string
 	if err == nil {
-		fmt.Printf("Successfully ran %s for %s\n", script, projectPath)
+		fmt.Printf("Successfully ran %s for %s\n", scriptInfo.Path, projectPath)
 		status = "Success"
 	} else {
 		if exitErr, ok := err.(*exec.ExitError); ok {
