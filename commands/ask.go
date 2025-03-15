@@ -53,7 +53,11 @@ func askQuestion(question string) error {
 
 	cwd, _ := os.Getwd()
 	fmt.Printf("Running script for project: %s\n", randomProject.Name)
-	result, err := runScriptForProject(filepath.Join(cwd, scriptsFolder, scriptName), randomProject.Path)
+	scriptInfo, err := getScriptInfo(filepath.Join(cwd, scriptsFolder, scriptName))
+	if err != nil {
+		return fmt.Errorf("failed to get script info: %w", err)
+	}
+	result, err := runScriptForProject(scriptInfo, randomProject.Path)
 	if err != nil {
 		return fmt.Errorf("error running script: %w", err)
 	}
@@ -85,7 +89,12 @@ func askQuestion(question string) error {
 		randomIndex = rand.Intn(len(projects.Projects))
 		randomProject = projects.Projects[randomIndex]
 		fmt.Printf("Running next script for project: %s\n", randomProject.Name)
-		result, err = runScriptForProject(filepath.Join(cwd, scriptsFolder, scriptName), randomProject.Path)
+		scriptInfo, err = getScriptInfo(filepath.Join(cwd, scriptsFolder, scriptName))
+		if err != nil {
+			fmt.Printf("Failed to get script info: %v\n", err)
+			continue
+		}
+		result, err = runScriptForProject(scriptInfo, randomProject.Path)
 		if err != nil {
 			fmt.Printf("Error running script: %v\n", err)
 		} else {
