@@ -37,6 +37,7 @@ func formatCSVOutput(csvText, columns string) string {
 	sb.WriteString(strings.Join(headers, ",") + "\n")
 	sb.WriteString(csvText)
 	return sb.String()
+}
 
 // getScriptInfo executes a script with the --info flag and returns the parsed JSON output.
 func getScriptInfo(scriptPath string) (map[string]string, error) {
@@ -45,6 +46,8 @@ func getScriptInfo(scriptPath string) (map[string]string, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to run script with --info: %w", err)
 	}
+	return nil
+}
 
 	var info map[string]string
 	if err := json.Unmarshal(output, &info); err != nil {
