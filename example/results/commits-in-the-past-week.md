@@ -1,6 +1,0 @@
-| Project Path | Status | Output |
-| --- | --- | --- | 
-| ./projects/next.js | Success | 110 |
-| ./projects/ai | Success | 47 |
-| ./projects/storage | Success | 2 |
-| ./projects/swr | Success | 0 |
