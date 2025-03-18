@@ -1,6 +1,5 @@
 Number of projects: 4
 Available scripts:
-- commits-in-the-past-week.ts
 - do-they-have-a-readme.ts
 - does-the-project-have-a-linter.ts
 - how-activily-maintained-is-the-project.ts
