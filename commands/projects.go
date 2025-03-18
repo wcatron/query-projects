@@ -29,6 +29,9 @@ type Project struct {
 func filterProjectsByTopics(projects []Project, topics []string) []Project {
 	var filteredProjects []Project
 	for _, project := range projects {
+		if project.Skip {
+			continue
+		}
 		include := false
 		mustInclude := true
 
