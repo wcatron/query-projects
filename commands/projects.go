@@ -122,7 +122,7 @@ func cloneRepository(repoURL, projectPath string) error {
 	} else if os.IsNotExist(err) {
 		// Path doesn't exist, clone
 		fmt.Printf("Cloning repository from %s to %s...\n", repoURL, projectPath)
-		cmd := exec.Command("git", "clone", repoURL, projectPath)
+		cmd := exec.Command("git", "clone", "--depth", "1", repoURL, projectPath)
 		out, cloneErr := cmd.CombinedOutput()
 		if cloneErr != nil {
 			return fmt.Errorf("error cloning repository: %s\n%s", cloneErr, string(out))
