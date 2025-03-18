@@ -67,7 +67,6 @@ func getScriptInfo(scriptPath string) (ScriptInfo, error) {
 	}, nil
 }
 
-
 // printMarkdownToConsole renders the results in markdown format to the console using Glamour.
 func printMarkdownToConsole(results []result) {
 	var sb strings.Builder
@@ -147,16 +146,14 @@ func runScript(cmd *cobra.Command, scriptName string) error {
 
 	filteredProjects := filterProjectsByTopics(projects.Projects, topics)
 	var scriptPaths []string
+	var scriptInfos []ScriptInfo
 
 	// Case 1 & 2: The user specified some script name/path
 	if scriptName != "" {
 		// If the user provided a path containing a slash or is absolute,
 		// we treat it as the full path. Otherwise, prepend scripts folder.
-		if filepath.IsAbs(scriptName) || strings.Contains(scriptName, string(os.PathSeparator)) {
-			scriptPaths = []string{scriptName}
-		} else {
-			scriptPaths = []string{filepath.Join(scriptsFolder, scriptName)}
-		}
+		info, _ := getScriptInfo(scriptName)
+		scriptInfos = []ScriptInfo{info}
 	} else {
 		// Case 3: No script name -> prompt user to select from scripts folder
 		files, err := os.ReadDir(scriptsFolder)
@@ -176,7 +173,6 @@ func runScript(cmd *cobra.Command, scriptName string) error {
 		}
 
 		// Gather script information
-		var scriptInfos []ScriptInfo
 		for _, sp := range scriptPaths {
 			info, err := getScriptInfo(sp)
 			if err != nil {
@@ -221,6 +217,7 @@ func runScript(cmd *cobra.Command, scriptName string) error {
 		}
 		// User picks exactly one script
 		scriptInfos = []ScriptInfo{scriptInfos[choice-1]}
+
 	}
 
 	// Actually run the script(s)
@@ -244,9 +241,6 @@ type result struct {
 // runScriptsForAllProjects executes the specified .ts script against all projects.
 func runScriptsForAllProjects(scriptInfo ScriptInfo, projects []Project, count bool, outputFormats []string) error {
 	var results []result
-
-	// Get cwd
-	cwd, _ := os.Getwd()
 
 	for _, p := range projects {
 
@@ -316,7 +310,11 @@ func printUniqueResponsesToConsole(results []result) {
 func runScriptForProject(scriptInfo ScriptInfo, projectPath string) (result, error) {
 	fmt.Printf("Running %s for %s...\n", scriptInfo.Path, projectPath)
 
-	cmd := exec.Command("deno", "run", "--allow-all", scriptInfo.Path)
+	// Get cwd
+	cwd, _ := os.Getwd()
+	scriptPath := filepath.Join(cwd, scriptInfo.Path)
+
+	cmd := exec.Command("deno", "run", "--allow-all", scriptPath)
 	cmd.Dir = projectPath
 
 	stdoutPipe, err := cmd.StdoutPipe()
@@ -359,10 +357,10 @@ func runScriptForProject(scriptInfo ScriptInfo, projectPath string) (result, err
 	} else {
 		if exitErr, ok := err.(*exec.ExitError); ok {
 			status = fmt.Sprintf("Failed (exit code %d)", exitErr.ExitCode())
-			fmt.Printf("Script %s failed for %s: %s\n", script, projectPath, exitErr.Error())
+			fmt.Printf("Script %s failed for %s: %s\n", scriptInfo.Path, projectPath, exitErr.Error())
 		} else {
 			status = "Error"
-			fmt.Printf("Error running script %s for %s: %v\n", script, projectPath, err)
+			fmt.Printf("Error running script %s for %s: %v\n", scriptInfo.Path, projectPath, err)
 		}
 	}
 

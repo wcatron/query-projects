@@ -18,7 +18,7 @@ Query Projects is a simple CLI tool designed to run scripts across multiple repo
 
 1. Build the application: `go build`
 2. Change cwd to the example directory: `cd example`
-3. Run the compiled application: `../query-project info`
+3. Run the compiled application: `../query-project info` (`gow build` for watching)
 
 TODO: Document a typical watch based appoach to local development.
 
