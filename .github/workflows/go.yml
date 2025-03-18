@@ -107,3 +107,4 @@ jobs:
             export PATH="${PATH}:$(go env GOPATH)/bin"
             cd example
             query-projects info
+            query-projects run scripts/do-they-have-a-readme.ts

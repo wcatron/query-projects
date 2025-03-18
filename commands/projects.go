@@ -26,48 +26,47 @@ type Project struct {
 }
 
 func filterProjectsByTopics(projects []Project, topics []string) []Project {
-    var filteredProjects []Project
-    for _, project := range projects {
-        include := false
-        mustInclude := true
+	var filteredProjects []Project
+	for _, project := range projects {
+		include := false
+		mustInclude := true
 
-        for _, topic := range topics {
-            if strings.HasPrefix(topic, "+") {
-                // Must include projects with this topic
-                if !contains(project.Topics, topic[1:]) {
-                    mustInclude = false
-                    break
-                }
-            } else if strings.HasPrefix(topic, "-") {
-                // Exclude projects with this topic
-                if contains(project.Topics, topic[1:]) {
-                    mustInclude = false
-                    break
-                }
-            } else {
-                // Include if at least one topic matches
-                if contains(project.Topics, topic) {
-                    include = true
-                }
-            }
-        }
+		for _, topic := range topics {
+			if strings.HasPrefix(topic, "+") {
+				// Must include projects with this topic
+				if !contains(project.Topics, topic[1:]) {
+					mustInclude = false
+					break
+				}
+			} else if strings.HasPrefix(topic, "-") {
+				// Exclude projects with this topic
+				if contains(project.Topics, topic[1:]) {
+					mustInclude = false
+					break
+				}
+			} else {
+				// Include if at least one topic matches
+				if contains(project.Topics, topic) {
+					include = true
+				}
+			}
+		}
 
-        if mustInclude && (include || len(topics) == 0) {
-            filteredProjects = append(filteredProjects, project)
-        }
-    }
-    return filteredProjects
+		if mustInclude && (include || len(topics) == 0) {
+			filteredProjects = append(filteredProjects, project)
+		}
+	}
+	return filteredProjects
 }
 
 func contains(slice []string, item string) bool {
-    for _, s := range slice {
-        if s == item {
-            return true
-        }
-    }
-    return false
+	for _, s := range slice {
+		if s == item {
+			return true
+		}
+	}
+	return false
 }
-
 
 type ProjectsJSON struct {
 	Projects []Project `json:"projects"`
