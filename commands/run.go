@@ -23,11 +23,6 @@ type ScriptInfo struct {
 	Columns string
 }
 
-// projectHasSkipField checks if the project has the skip field explicitly set.
-func projectHasSkipField(p Project) bool {
-	return p.Skip || !reflect.ValueOf(p).FieldByName("Skip").IsZero()
-}
-
 var RunCmd = &cobra.Command{
 	Use:   "run [scriptName]",
 	Short: "Run scripts across all projects in your configuration.",
@@ -227,11 +222,6 @@ func runScript(cmd *cobra.Command, scriptName string) error {
 
 	// Actually run the script(s)
 	for _, si := range scriptInfos {
-		// Skip projects marked with "skip": true or if the skip field is absent
-		if p.Skip || !projectHasSkipField(p) {
-			fmt.Printf("Skipping project: %s\n", p.Name)
-			continue
-		}
 		if err := runScriptsForAllProjects(si, filteredProjects, count, outputFormats); err != nil {
 			fmt.Printf("Error while running script %s: %v\n", si.Path, err)
 		}
@@ -253,7 +243,11 @@ func runScriptsForAllProjects(scriptInfo ScriptInfo, projects []Project, count b
 	var results []result
 
 	for _, p := range projects {
-
+		// Skip projects marked with "skip": true or if the skip field is absent
+		if p.Skip {
+			fmt.Printf("Skipping project: %s\n", p.Name)
+			continue
+		}
 		r, err := runScriptForProject(scriptInfo, p.Path)
 		if err != nil {
 			fmt.Printf("Error in project %s: %v\n", p.Name, err)
