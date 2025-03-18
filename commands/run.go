@@ -243,11 +243,6 @@ func runScriptsForAllProjects(scriptInfo ScriptInfo, projects []Project, count b
 	var results []result
 
 	for _, p := range projects {
-		// Skip projects marked with "skip": true or if the skip field is absent
-		if p.Skip {
-			fmt.Printf("Skipping project: %s\n", p.Name)
-			continue
-		}
 		r, err := runScriptForProject(scriptInfo, p.Path)
 		if err != nil {
 			fmt.Printf("Error in project %s: %v\n", p.Name, err)

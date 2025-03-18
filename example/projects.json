@@ -23,6 +23,13 @@
       "path": "./projects/swr",
       "repoUrl": "https://github.com/vercel/swr.git",
       "topics": ["swr", "react"]
+    },
+    {
+      "name": "skipped",
+      "path": "./projects/skipped",
+      "repoUrl": "https://github.com/wcatron/skip-this.git",
+      "topics": ["should", "skip"],
+      "skip": true
     }
   ]
 }
