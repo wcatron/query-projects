@@ -4,25 +4,29 @@
       "name": "next.js",
       "path": "./projects/next.js",
       "repoUrl": "https://github.com/vercel/next.js.git",
-      "topics": ["next", "react", "framework"]
+      "topics": ["next", "react", "framework"],
+      "skip": false
     },
     {
       "name": "ai",
       "path": "./projects/ai",
       "repoUrl": "https://github.com/vercel/ai.git",
-      "topics": ["ai", "chatgpt", "react"]
+      "topics": ["ai", "chatgpt", "react"],
+      "skip": false
     },
     {
       "name": "storage",
       "path": "./projects/storage",
       "repoUrl": "https://github.com/vercel/storage.git",
-      "topics": ["storage", "react"]
+      "topics": ["storage", "react"],
+      "skip": false
     },
     {
       "name": "swr",
       "path": "./projects/swr",
       "repoUrl": "https://github.com/vercel/swr.git",
-      "topics": ["swr", "react"]
+      "topics": ["swr", "react"],
+      "skip": false
     }
   ]
 }

@@ -23,6 +23,7 @@ type Project struct {
 	Path    string   `json:"path"`
 	RepoURL string   `json:"repoUrl"`
 	Topics  []string `json:"topics"`
+	Skip    bool     `json:"skip"`
 }
 
 func filterProjectsByTopics(projects []Project, topics []string) []Project {

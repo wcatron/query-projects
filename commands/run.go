@@ -222,6 +222,11 @@ func runScript(cmd *cobra.Command, scriptName string) error {
 
 	// Actually run the script(s)
 	for _, si := range scriptInfos {
+		// Skip projects marked with "skip": true
+		if p.Skip {
+			fmt.Printf("Skipping project: %s\n", p.Name)
+			continue
+		}
 		if err := runScriptsForAllProjects(si, filteredProjects, count, outputFormats); err != nil {
 			fmt.Printf("Error while running script %s: %v\n", si.Path, err)
 		}
