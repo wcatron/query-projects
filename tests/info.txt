@@ -1,4 +1,4 @@
-Number of projects: 4
+Number of projects: 5
 Available scripts:
 - do-they-have-a-readme.ts
 - does-the-project-have-a-linter.ts
