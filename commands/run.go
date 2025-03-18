@@ -26,6 +26,7 @@ type ScriptInfo struct {
 // projectHasSkipField checks if the project has the skip field explicitly set.
 func projectHasSkipField(p Project) bool {
 	return p.Skip || !reflect.ValueOf(p).FieldByName("Skip").IsZero()
+}
 
 var RunCmd = &cobra.Command{
 	Use:   "run [scriptName]",
