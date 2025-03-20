@@ -58,6 +58,8 @@ func getScriptInfo(scriptPath string) (ScriptInfo, error) {
 		return ScriptInfo{}, fmt.Errorf("failed to parse script info: %w", err)
 	}
 
+	info.Path = scriptPath
+
 	return info, nil
 }
 
@@ -263,7 +265,7 @@ func runScriptsForAllProjects(scriptInfo ScriptInfo, projects []Project, count b
 		case "md":
 			writeMarkdownTable(scriptInfo.Path, results)
 		case "csv":
-			writeCSVTable(scriptInfo.Path, results)
+			writeCSVTable(scriptInfo, results)
 		case "json":
 			writeJSONOutput(scriptInfo.Path, results)
 		default:

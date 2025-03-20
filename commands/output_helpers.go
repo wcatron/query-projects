@@ -39,8 +39,8 @@ func writeMarkdownTable(scriptPath string, results []result) error {
 }
 
 // writeCSVTable creates a .csv file summarizing the results.
-func writeCSVTable(scriptPath string, results []result) error {
-	filename := filepath.Base(scriptPath)
+func writeCSVTable(info ScriptInfo, results []result) error {
+	filename := filepath.Base(info.Path)
 	resultsFilenameForScript := strings.TrimSuffix(filename, ".ts")
 
 	// Open the CSV file for writing
@@ -55,14 +55,20 @@ func writeCSVTable(scriptPath string, results []result) error {
 	defer writer.Flush()
 
 	// Write headers
-	headers := []string{"Project Path", "Status", "Output"}
+	headers := []string{"Project Path", "Status"}
+	if info.Columns != nil {
+		headers = append(headers, info.Columns...)
+	} else {
+		headers = append(headers, "Output")
+	}
 	if err := writer.Write(headers); err != nil {
 		return err
 	}
 
 	// Write data
 	for _, r := range results {
-		row := []string{r.projectPath, r.status, r.stdoutText}
+		values := strings.Split(r.stdoutText, ",")
+		row := append([]string{r.projectPath, r.status}, values...)
 		if err := writer.Write(row); err != nil {
 			return err
 		}
