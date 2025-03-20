@@ -8,7 +8,8 @@ const packageJsonPath = './package.json';
 if (Deno.args.length > 0 && Deno.args[0] === '--info') {
     console.log(JSON.stringify({
         version: '1.0',
-        output: 'csv'
+        output: 'csv',
+        columns: ["framework", "version"]
     }));
     Deno.exit();
 }

@@ -17,10 +17,10 @@ import (
 )
 
 type ScriptInfo struct {
-	Path    string
-	Version string
-	Output  string
-	Columns string
+	Path    string   `json:"path"`
+	Version string   `json:"version"`
+	Output  string   `json:"output"`
+	Columns []string `json:"columns"`
 }
 
 var RunCmd = &cobra.Command{
@@ -38,10 +38,9 @@ var RunCmd = &cobra.Command{
 }
 
 // formatCSVOutput formats CSV output based on column headers.
-func formatCSVOutput(csvText, columns string) string {
+func formatCSVOutput(csvText string, columns []string) string {
 	var sb strings.Builder
-	headers := strings.Split(columns, ",")
-	sb.WriteString(strings.Join(headers, ",") + "\n")
+	sb.WriteString(strings.Join(columns, ",") + "\n")
 	sb.WriteString(csvText)
 	return sb.String()
 }
@@ -54,7 +53,7 @@ func getScriptInfo(scriptPath string) (ScriptInfo, error) {
 		return ScriptInfo{}, fmt.Errorf("failed to run script with --info: %w", err)
 	}
 
-	var info map[string]string
+	var info ScriptInfo
 	if err := json.Unmarshal(output, &info); err != nil {
 		return ScriptInfo{}, fmt.Errorf("failed to parse script info: %w", err)
 	}
