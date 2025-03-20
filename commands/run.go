@@ -58,12 +58,7 @@ func getScriptInfo(scriptPath string) (ScriptInfo, error) {
 		return ScriptInfo{}, fmt.Errorf("failed to parse script info: %w", err)
 	}
 
-	return ScriptInfo{
-		Path:    scriptPath,
-		Version: info["version"],
-		Output:  info["output"],
-		Columns: info["columns"],
-	}, nil
+	return info, nil
 }
 
 // printMarkdownToConsole renders the results in markdown format to the console using Glamour.
