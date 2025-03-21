@@ -30,7 +30,7 @@ func TestFilterProjectsByTopics(t *testing.T) {
 		},
 		{
 			name:     "Include Go and CLI projects",
-			topics:   []string{"go", "cli"},
+			topics:   []string{"+go", "+cli"},
 			expected: []Project{projects[0]},
 		},
 		{

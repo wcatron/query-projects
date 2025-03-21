@@ -32,7 +32,7 @@ func filterProjectsByTopics(projects []Project, topics []string) []Project {
 		if project.Skip {
 			continue
 		}
-		include := false
+		include := len(topics) == 0
 		mustInclude := true
 
 		for _, topic := range topics {
@@ -41,12 +41,16 @@ func filterProjectsByTopics(projects []Project, topics []string) []Project {
 				if !contains(project.Topics, topic[1:]) {
 					mustInclude = false
 					break
+				} else {
+					include = true
 				}
 			} else if strings.HasPrefix(topic, "-") {
 				// Exclude projects with this topic
 				if contains(project.Topics, topic[1:]) {
 					mustInclude = false
 					break
+				} else {
+					include = true
 				}
 			} else {
 				// Include if at least one topic matches
@@ -56,7 +60,9 @@ func filterProjectsByTopics(projects []Project, topics []string) []Project {
 			}
 		}
 
-		if mustInclude && (include || len(topics) == 0) {
+		fmt.Println("Total: ", project.Topics, topics, mustInclude, include)
+
+		if mustInclude && include {
 			filteredProjects = append(filteredProjects, project)
 		}
 	}
