@@ -19,11 +19,12 @@ const (
 
 // Project and ProjectsJSON store information about cloned repos
 type Project struct {
-	Name    string   `json:"name"`
-	Path    string   `json:"path"`
-	RepoURL string   `json:"repoUrl"`
-	Topics  []string `json:"topics"`
-	Skip    bool     `json:"skip,omitempty"`
+	Name     string                 `json:"name"`
+	Path     string                 `json:"path"`
+	RepoURL  string                 `json:"repoUrl"`
+	Topics   []string               `json:"topics"`
+	Skip     bool                   `json:"skip,omitempty"`
+	Metadata map[string]interface{} `json:"metadata,omitempty"`
 }
 
 func filterProjectsByTopics(projects []Project, topics []string) []Project {

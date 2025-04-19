@@ -24,6 +24,7 @@ func main() {
 	rootCmd.AddCommand(commands.PRCmd)
 	rootCmd.AddCommand(commands.PullCmd)
 	rootCmd.AddCommand(commands.InfoCmd)
+	rootCmd.AddCommand(commands.SyncCmd)
 	
 	// Add a flag for the run
 	commands.RunCmdInit(commands.RunCmd)
