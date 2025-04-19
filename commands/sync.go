@@ -1,10 +1,9 @@
 package commands
 
 import (
-	"encoding/json"
+	"context"
 	"errors"
 	"fmt"
-	"context"
 	"os"
 	"strings"
 
@@ -78,14 +77,14 @@ func fetchGitHubMetadata(ctx context.Context, client *github.Client, repoURL str
 	}
 
 	metadata := map[string]interface{}{
-		"full_name":    repo.GetFullName(),
-		"description":  repo.GetDescription(),
-		"stars":        repo.GetStargazersCount(),
-		"forks":        repo.GetForksCount(),
-		"open_issues":  repo.GetOpenIssuesCount(),
-		"created_at":   repo.GetCreatedAt(),
-		"updated_at":   repo.GetUpdatedAt(),
-		"pushed_at":    repo.GetPushedAt(),
+		"full_name":      repo.GetFullName(),
+		"description":    repo.GetDescription(),
+		"stars":          repo.GetStargazersCount(),
+		"forks":          repo.GetForksCount(),
+		"open_issues":    repo.GetOpenIssuesCount(),
+		"created_at":     repo.GetCreatedAt(),
+		"updated_at":     repo.GetUpdatedAt(),
+		"pushed_at":      repo.GetPushedAt(),
 		"default_branch": repo.GetDefaultBranch(),
 	}
 
