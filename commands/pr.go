@@ -17,12 +17,12 @@ var PRCmd = &cobra.Command{
 			return errors.New("please provide a pull request message after 'pr'")
 		}
 		message := strings.Join(args, " ")
-		return createPullRequest(message)
+		return cmd_createPR(message)
 	}),
 }
 
-// createPullRequest is a placeholder function for opening PRs for each project.
-func createPullRequest(message string) error {
+// cmd_createPR is a placeholder function for opening PRs for each project.
+func cmd_createPR(message string) error {
 	projects, err := loadProjects()
 	if err != nil {
 		return err

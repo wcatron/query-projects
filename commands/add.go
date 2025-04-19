@@ -14,12 +14,12 @@ var AddCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		repoURL := args[0]
-		return addRepository(repoURL)
+		return cmd_addRepository(repoURL)
 	},
 }
 
-// addRepository clones the repo (if not present) and stores it in projects.json.
-func addRepository(repoURL string) error {
+// cmd_addRepository clones the repo (if not present) and stores it in projects.json.
+func cmd_addRepository(repoURL string) error {
 	projects, err := loadProjects()
 	if err != nil {
 		return err

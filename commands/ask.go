@@ -1,18 +1,18 @@
 package commands
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
+	"math/rand"
 	"net/http"
 	"os"
-	"strings"
 	"path/filepath"
+	"strings"
 	"time"
-	"bufio"
-	"math/rand"
 
 	"github.com/spf13/cobra"
 )
@@ -26,13 +26,13 @@ var AskCmd = &cobra.Command{
 			return errors.New("please provide a question after 'query'")
 		}
 		question := strings.Join(args, " ")
-		return askQuestion(question)
+		return cmd_askQuestion(question)
 	},
 }
 
-// askQuestion calls the OpenAI API with the question, extracts the TypeScript code,
+// cmd_askQuestion calls the OpenAI API with the question, extracts the TypeScript code,
 // and saves it to ./scripts/<question>.ts.
-func askQuestion(question string) error {
+func cmd_askQuestion(question string) error {
 	scriptName := strings.ReplaceAll(strings.ToLower(question), " ", "-") + ".ts"
 	err := generateScriptForQuestion(question, scriptName)
 	if err != nil {

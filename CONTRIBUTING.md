@@ -33,6 +33,24 @@ TODO: Document a typical watch based appoach to local development.
 - Run `go test ./tests/... ./commands/...` to execute all tests.
 - Add new tests for your code.
 
+## Visualizing
+
+This project uses AI extensively for code generation. One means of protecting against poor quality is to evalute the code structure regularly. Run `go-callvis` to regenerate the  
+
+```
+go install github.com/ofabry/go-callvis@latest
+go-callvis -nostd -format svg ./...
+```
+
+## Static Code Analysis (Experimental)
+
+Check for high complexity code.
+
+```
+go install github.com/fzipp/gocyclo/cmd/gocyclo@latest
+gocyclo -over 10 **/*.go
+```
+
 ## Communication
 
 - Use GitHub issues for bug reports and feature requests.
