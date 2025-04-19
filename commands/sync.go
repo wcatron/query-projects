@@ -61,7 +61,7 @@ func syncFromGitHub() error {
 			fmt.Printf("Error fetching metadata for %s: %v\n", project.Name, err)
 			continue
 		}
-		fmt.Printf("Metadata for %s\n", project.Name)
+		fmt.Printf("Metadata for %s: %+v\n", project.Name, repo)
 		// Update the project with the fetched metadata
 		projects.Projects[i].Metadata = repo
 	}
