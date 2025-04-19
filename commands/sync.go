@@ -56,20 +56,20 @@ func syncFromGitHub() error {
 			continue
 		}
 		fmt.Printf("Fetching metadata for %s from GitHub...\n", project.Name)
-		metadata, err := fetchGitHubMetadata(ctx, client, project.RepoURL)
+		repo, err := fetchGitHubMetadata(ctx, client, project.RepoURL)
 		if err != nil {
 			fmt.Printf("Error fetching metadata for %s: %v\n", project.Name, err)
 			continue
 		}
 		fmt.Printf("Metadata for %s\n", project.Name)
 		// Update the project with the fetched metadata
-		projects.Projects[i].Metadata = metadata
+		projects.Projects[i].Metadata = repo
 	}
 
 	return saveProjects(projects)
 }
 
-func fetchGitHubMetadata(ctx context.Context, client *github.Client, repoURL string) (map[string]interface{}, error) {
+func fetchGitHubMetadata(ctx context.Context, client *github.Client, repoURL string) (*github.Repository, error) {
 	ownerRepo := strings.TrimPrefix(strings.TrimSuffix(repoURL, ".git"), "https://github.com/")
 	parts := strings.Split(ownerRepo, "/")
 	if len(parts) != 2 {
@@ -81,17 +81,5 @@ func fetchGitHubMetadata(ctx context.Context, client *github.Client, repoURL str
 		return nil, err
 	}
 
-	metadata := map[string]interface{}{
-		"full_name":      repo.GetFullName(),
-		"description":    repo.GetDescription(),
-		"stars":          repo.GetStargazersCount(),
-		"forks":          repo.GetForksCount(),
-		"open_issues":    repo.GetOpenIssuesCount(),
-		"created_at":     repo.GetCreatedAt(),
-		"updated_at":     repo.GetUpdatedAt(),
-		"pushed_at":      repo.GetPushedAt(),
-		"default_branch": repo.GetDefaultBranch(),
-	}
-
-	return metadata, nil
+	return repo, nil
 }
