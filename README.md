@@ -1,6 +1,6 @@
 # Query Projects
 
-[![Go Cyclo Complexity Check](https://github.com/your-username/your-repo/actions/workflows/gocyclo.yml/badge.svg)](https://github.com/your-username/your-repo/actions/workflows/gocyclo.yml)
+[![Go Cyclo Complexity Check](https://github.com/wcatron/query-projects/actions/workflows/gocyclo.yml/badge.svg)](https://github.com/wcatron/query-projects/actions/workflows/gocyclo.yml)
 
 A simple cli for running scripts across many repositories.
 
