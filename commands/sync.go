@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"os"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -64,7 +63,7 @@ func fetchGitHubMetadata(repoURL string) (map[string]interface{}, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("failed to fetch metadata: %s", resp.Status)
+		return nil, fmt.Errorf("failed to fetch metadata: %s %s", resp.Status, apiURL)
 	}
 
 	var metadata map[string]interface{}
