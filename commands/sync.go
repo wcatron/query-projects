@@ -35,8 +35,13 @@ var SyncCmd = &cobra.Command{
 
 func syncFromGitHub() error {
 	ctx := context.Background()
+	githubToken := os.Getenv("GITHUB_TOKEN")
+	if githubToken == "" {
+		return errors.New("GITHUB_TOKEN environment variable is not set")
+	}
+
 	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: os.Getenv("GITHUB_TOKEN")},
+		&oauth2.Token{AccessToken: githubToken},
 	)
 	tc := oauth2.NewClient(ctx, ts)
 	client := github.NewClient(tc)
