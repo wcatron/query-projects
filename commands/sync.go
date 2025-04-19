@@ -55,7 +55,7 @@ func syncFromGitHub() error {
 }
 
 func fetchGitHubMetadata(repoURL string) (map[string]interface{}, error) {
-	apiURL := strings.Replace(repoURL, "https://github.com/", "https://api.github.com/repos/", 1)
+	apiURL := strings.Replace(strings.TrimSuffix(repoURL, ".git"), "https://github.com/", "https://api.github.com/repos/", 1)
 	resp, err := http.Get(apiURL)
 	if err != nil {
 		return nil, err
