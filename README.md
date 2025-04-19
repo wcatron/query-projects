@@ -79,7 +79,15 @@ query-projects run --count
 ```
 This command will execute the specified script and print a table showing each unique response and the count of occurrences. Note that the `count` feature requires simple strings with no line breaks, and all whitespace will be removed from the responses.
 
-### Environment Variables
+### Syncing Project Metadata
+
+The `sync` command allows you to synchronize project metadata from a specified code repository. Currently, it supports syncing from GitHub. The command requires a single argument specifying the repository type (e.g., "github"). It uses the `GITHUB_TOKEN` environment variable for authentication.
+
+Example usage:
+```
+query-projects sync github
+```
+This command will fetch metadata for all projects listed in the `projects.json` file from GitHub and update the project metadata with topics and archive status.
 
 - `OPENAI_API_KEY`: Your OpenAI API key. This is required for querying GPT.
 - `OPENAI_API_BASE`: The base URL for the OpenAI API. Defaults to `https://api.openai.com/v1` if not set.
