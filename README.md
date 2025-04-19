@@ -1,5 +1,7 @@
 # Query Projects
 
+[![Go Cyclo Complexity Check](https://github.com/your-username/your-repo/actions/workflows/gocyclo.yml/badge.svg)](https://github.com/your-username/your-repo/actions/workflows/gocyclo.yml)
+
 A simple cli for running scripts across many repositories.
 
 ## Getting Started (User Guide)
