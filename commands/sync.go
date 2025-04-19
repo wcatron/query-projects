@@ -46,7 +46,7 @@ func syncFromGitHub() error {
 			fmt.Printf("Error fetching metadata for %s: %v\n", project.Name, err)
 			continue
 		}
-		fmt.Printf("Metadata for %s: %v\n", project.Name, metadata)
+		fmt.Printf("Metadata for %s\n", project.Name)
 		// Update the project with the fetched metadata
 		projects.Projects[i].Metadata = metadata
 	}
@@ -63,7 +63,7 @@ func fetchGitHubMetadata(repoURL string) (map[string]interface{}, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("failed to fetch metadata: %s %s", resp.Status, apiURL)
+		return nil, fmt.Errorf("failed to fetch metadata: %s", resp.Status)
 	}
 
 	var metadata map[string]interface{}
