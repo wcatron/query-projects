@@ -62,7 +62,9 @@ func syncFromGitHub() error {
 			continue
 		}
 		fmt.Printf("Metadata for %s: %+v\n", project.Name, repo)
-		// Update the project with the fetched metadata
+		// Pull abstracted fields into the top level
+		projects.Projects[i].Topics = repo.Topics
+		projects.Projects[i].Skip = projects.Projects[i].Skip || repo.GetArchived()
 		projects.Projects[i].Metadata = repo
 	}
 
