@@ -65,13 +65,13 @@ func syncFromGitHub() error {
 		if project.Skip {
 			continue
 		}
-		fmt.Printf("Fetching metadata for %s from GitHub...\n", project.Name)
+		fmt.Printf("Fetching metadata for project '%s' from GitHub...\n", project.Name)
 		repo, err := fetchGitHubMetadata(ctx, client, project.RepoURL)
 		if err != nil {
-			fmt.Printf("Error fetching metadata for %s: %v\n", project.Name, err)
+			fmt.Printf("Error fetching metadata for project '%s': %v\n", project.Name, err)
 			continue
 		}
-		fmt.Printf("Metadata for %s: %+v\n", project.Name, repo)
+		fmt.Printf("Successfully fetched metadata for project '%s'.\n", project.Name)
 		// Pull abstracted fields into the top level
 		projects.Projects[i].Topics = repo.Topics
 		projects.Projects[i].Skip = projects.Projects[i].Skip || repo.GetArchived()
