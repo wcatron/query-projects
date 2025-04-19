@@ -60,9 +60,6 @@ func filterProjectsByTopics(projects []Project, topics []string) []Project {
 				}
 			}
 		}
-
-		fmt.Println("Total: ", project.Topics, topics, mustInclude, include)
-
 		if mustInclude && include {
 			filteredProjects = append(filteredProjects, project)
 		}
