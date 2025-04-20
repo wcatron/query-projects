@@ -22,6 +22,7 @@ type ScriptInfo struct {
 	Version string   `json:"version"`
 	Output  string   `json:"output"`
 	Columns []string `json:"columns"`
+	index       int
 }
 
 var RunCmd = &cobra.Command{
@@ -240,11 +241,12 @@ func runScriptsForAllProjects(scriptInfo ScriptInfo, projects []Project, count b
 	var wg sync.WaitGroup
 	resultsChan := make(chan result, len(projects))
 
-	for _, p := range projects {
+	for i, p := range projects {
 		wg.Add(1)
 		go func(project Project) {
 			defer wg.Done()
 			r, err := runScriptForProject(scriptInfo, project.Path)
+			r.index = i
 			if err != nil {
 				fmt.Printf("Error in project %s: %v\n", project.Name, err)
 			}
@@ -260,7 +262,10 @@ func runScriptsForAllProjects(scriptInfo ScriptInfo, projects []Project, count b
 		results = append(results, r)
 	}
 
-	// Determine the best output format if not specified
+	// Sort results by project index
+	sort.Slice(results, func(i, j int) bool {
+		return results[i].index < results[j].index
+	})
 	if len(outputFormats) == 0 {
 		outputFormats = determineBestOutputFormat(results)
 	}
