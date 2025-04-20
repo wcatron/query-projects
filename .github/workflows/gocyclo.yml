@@ -23,4 +23,4 @@ jobs:
         run: go install github.com/fzipp/gocyclo/cmd/gocyclo@latest
 
       - name: Run gocyclo
-        run: gocyclo -over 20 **/*.go
+        run: gocyclo -over 15 **/*.go
