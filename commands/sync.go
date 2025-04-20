@@ -21,32 +21,7 @@ the repository type (e.g., "github"). It uses the GITHUB_TOKEN environment varia
 var SyncCmd = &cobra.Command{
 	Use:   "sync",
 	Short: "Sync project metadata from all configured code repositories.",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		projects, err := loadProjects()
-		if err != nil {
-			return err
-		}
-
-		for _, project := range projects.Projects {
-			if project.Skip {
-				continue
-			}
-
-			if strings.Contains(project.RepoURL, "github.com") {
-				fmt.Printf("Syncing GitHub project '%s'...\n", project.Name)
-				if err := syncFromGitHubProject(project); err != nil {
-					fmt.Printf("Error syncing GitHub project '%s': %v\n", project.Name, err)
-				}
-			} else if strings.Contains(project.RepoURL, "bitbucket.org") {
-				fmt.Printf("Bitbucket sync for project '%s' is not implemented yet.\n", project.Name)
-			} else if strings.Contains(project.RepoURL, "azure.com") {
-				fmt.Printf("Azure sync for project '%s' is not implemented yet.\n", project.Name)
-			} else {
-				fmt.Printf("Unsupported repository type for project '%s'.\n", project.Name)
-			}
-		}
-		return nil
-	},
+	RunE: cmd_syncRepos,
 }
 
 /*
@@ -98,4 +73,30 @@ func fetchGitHubMetadata(ctx context.Context, client *github.Client, repoURL str
 	}
 
 	return repo, nil
+}
+func cmd_syncRepos(cmd *cobra.Command, args []string) error {
+	projects, err := loadProjects()
+	if err != nil {
+		return err
+	}
+
+	for _, project := range projects.Projects {
+		if project.Skip {
+			continue
+		}
+
+		if strings.Contains(project.RepoURL, "github.com") {
+			fmt.Printf("Syncing GitHub project '%s'...\n", project.Name)
+			if err := syncFromGitHubProject(project); err != nil {
+				fmt.Printf("Error syncing GitHub project '%s': %v\n", project.Name, err)
+			}
+		} else if strings.Contains(project.RepoURL, "bitbucket.org") {
+			fmt.Printf("Bitbucket sync for project '%s' is not implemented yet.\n", project.Name)
+		} else if strings.Contains(project.RepoURL, "azure.com") {
+			fmt.Printf("Azure sync for project '%s' is not implemented yet.\n", project.Name)
+		} else {
+			fmt.Printf("Unsupported repository type for project '%s'.\n", project.Name)
+		}
+	}
+	return nil
 }
