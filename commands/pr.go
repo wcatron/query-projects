@@ -30,7 +30,7 @@ func cmd_createPR(message string) error {
 	for _, project := range projects.Projects {
 		openPullRequest(project, message)
 	}
-	return nil
+	return saveProjects(&ProjectsJSON{Projects: updatedProjects})
 }
 
 // openPullRequest is a placeholder for opening a PR on GitHub or similar.

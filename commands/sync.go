@@ -31,7 +31,7 @@ syncFromGitHub fetches metadata for all projects listed in the projects.json fil
 It updates the project metadata with topics and archive status. The function requires the GITHUB_TOKEN
 environment variable to be set for authentication.
 */
-func syncFromGitHubProject(project Project) error {
+func syncFromGitHubProject(project Project) (Project, error) {
 	ctx := context.Background()
 	githubToken := os.Getenv("GITHUB_TOKEN")
 	if githubToken == "" {
@@ -55,7 +55,7 @@ func syncFromGitHubProject(project Project) error {
 	project.Skip = project.Skip || repo.GetArchived()
 	project.Metadata = repo
 
-	return saveProjects(&ProjectsJSON{Projects: []Project{project}})
+	return project, nil
 }
 
 /*
@@ -82,6 +82,7 @@ func cmd_syncRepos() error {
 		return err
 	}
 
+	var updatedProjects []Project
 	for _, project := range projects.Projects {
 		if project.Skip {
 			continue
@@ -89,9 +90,11 @@ func cmd_syncRepos() error {
 
 		if strings.Contains(project.RepoURL, "github.com") {
 			fmt.Printf("Syncing GitHub project '%s'...\n", project.Name)
-			if err := syncFromGitHubProject(project); err != nil {
+			updatedProject, err := syncFromGitHubProject(project)
+			if err != nil {
 				fmt.Printf("Error syncing GitHub project '%s': %v\n", project.Name, err)
 			}
+			updatedProjects = append(updatedProjects, updatedProject)
 		} else if strings.Contains(project.RepoURL, "bitbucket.org") {
 			fmt.Printf("Bitbucket sync for project '%s' is not implemented yet.\n", project.Name)
 		} else if strings.Contains(project.RepoURL, "azure.com") {
