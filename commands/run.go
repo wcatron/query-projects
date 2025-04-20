@@ -7,11 +7,11 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"sync"
 	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
+	"sync"
 
 	"github.com/charmbracelet/glamour"
 	"github.com/spf13/cobra"
@@ -22,7 +22,6 @@ type ScriptInfo struct {
 	Version string   `json:"version"`
 	Output  string   `json:"output"`
 	Columns []string `json:"columns"`
-	index       int
 }
 
 var RunCmd = &cobra.Command{
@@ -35,7 +34,11 @@ var RunCmd = &cobra.Command{
 		if len(args) == 1 {
 			scriptName = args[0]
 		}
-		return cmd_runScript(cmd, scriptName)
+		// Get the topics from the command line flags
+		topics, _ := cmd.Flags().GetStringSlice("topics")
+		count, _ := cmd.Flags().GetBool("count")
+		outputFormats, _ := cmd.Flags().GetStringSlice("output")
+		return cmd_runScript(scriptName, topics, count, outputFormats)
 	}),
 }
 
@@ -127,105 +130,95 @@ func RunCmdInit(cmd *cobra.Command) {
 	cmd.PersistentFlags().StringSliceP("output", "o", nil, "Specify output formats (md, csv, json)")
 }
 
-// cmd_runScript decides which scripts to run:
-//  1. If the user gave a path (e.g., `scripts/foo.ts` or `/abs/path.ts`), just run that.
-//  2. If the user gave a simple filename (e.g. `foo.ts`), we prepend the scripts folder.
-//  3. If no name was given, prompt the user to pick a .ts file from the scripts folder.
-func cmd_runScript(cmd *cobra.Command, scriptName string) error {
-	// Get the topics from the command line flags
-	topics, err := cmd.Flags().GetStringSlice("topics")
-	count, err := cmd.Flags().GetBool("count")
-	outputFormats, err := cmd.Flags().GetStringSlice("output")
-
+func cmd_runScript(scriptName string, topics []string, count bool, outputFormats []string) error {
 	projects, err := loadProjects()
 	if err != nil {
 		return err
 	}
+	targets := filterProjectsByTopics(projects.Projects, topics)
 
-	filteredProjects := filterProjectsByTopics(projects.Projects, topics)
-	var scriptPaths []string
-	var scriptInfos []ScriptInfo
-
-	// Case 1 & 2: The user specified some script name/path
-	if scriptName != "" {
-		// If the user provided a path containing a slash or is absolute,
-		// we treat it as the full path. Otherwise, prepend scripts folder.
-		info, _ := getScriptInfo(scriptName)
-		scriptInfos = []ScriptInfo{info}
-	} else {
-		// Case 3: No script name -> prompt user to select from scripts folder
-		files, err := os.ReadDir(scriptsFolder)
-		if err != nil {
-			return fmt.Errorf("failed to read scripts folder: %w", err)
+	scriptInfo, err := func() (ScriptInfo, error) {
+		if scriptName != "" {
+			return getScriptInfo(scriptName) // path or name provided
 		}
-
-		// Collect all *.ts files
-		for _, f := range files {
-			if f.Type().IsRegular() && strings.HasSuffix(f.Name(), ".ts") {
-				scriptPaths = append(scriptPaths, filepath.Join(scriptsFolder, f.Name()))
-			}
-		}
-		if len(scriptPaths) == 0 {
-			fmt.Println("No .ts scripts found in the scripts folder.")
-			return nil
-		}
-
-		// Gather script information
-		for _, sp := range scriptPaths {
-			info, err := getScriptInfo(sp)
-			if err != nil {
-				fmt.Printf("Error getting info for script %s: %v\n", sp, err)
-				continue
-			}
-			scriptInfos = append(scriptInfos, info)
-		}
-
-		// Display script information in a table
-		var sb strings.Builder
-		headers := []string{"#", "Name", "Version", "Output"}
-		sb.WriteString("| " + strings.Join(headers, " | ") + " |\n")
-		sb.WriteString("| " + strings.Repeat("--- | ", len(headers)) + "\n")
-
-		for i, si := range scriptInfos {
-			row := []string{
-				fmt.Sprintf("%d", i+1),
-				filepath.Base(si.Path),
-				si.Version,
-				si.Output,
-			}
-			sb.WriteString("| " + strings.Join(row, " | ") + " |\n")
-		}
-
-		// Render the markdown table using Glamour
-		out, err := glamour.Render(sb.String(), "dark")
-		if err != nil {
-			fmt.Println("Error rendering markdown:", err)
-			return err
-		}
-		fmt.Print(out)
-
-		// Ask user to pick a script
-		fmt.Print("Enter a number: ")
-		reader := bufio.NewReader(os.Stdin)
-		input, _ := reader.ReadString('\n')
-		input = strings.TrimSpace(input)
-		choice, err := strconv.Atoi(input)
-		if err != nil || choice < 1 || choice > len(scriptInfos) {
-			return errors.New("invalid selection")
-		}
-		// User picks exactly one script
-		scriptInfos = []ScriptInfo{scriptInfos[choice-1]}
-
+		return selectScriptInfo() // prompt user to pick
+	}()
+	if err != nil {
+		return err
 	}
 
-	// Actually run the script(s)
-	for _, si := range scriptInfos {
-		if err := runScriptsForAllProjects(si, filteredProjects, count, outputFormats); err != nil {
-			fmt.Printf("Error while running script %s: %v\n", si.Path, err)
-		}
+	if err := runScriptsForAllProjects(scriptInfo, targets, count, outputFormats); err != nil {
+		return fmt.Errorf("running %s: %w", scriptInfo.Path, err)
 	}
 
 	return nil
+}
+
+func selectScriptInfo() (ScriptInfo, error) {
+	var scriptPaths []string
+	var scriptInfos []ScriptInfo
+
+	files, err := os.ReadDir(scriptsFolder)
+	if err != nil {
+		return ScriptInfo{}, err
+	}
+
+	// Collect all *.ts files
+	for _, f := range files {
+		if f.Type().IsRegular() && strings.HasSuffix(f.Name(), ".ts") {
+			scriptPaths = append(scriptPaths, filepath.Join(scriptsFolder, f.Name()))
+		}
+	}
+	if len(scriptPaths) == 0 {
+		fmt.Println()
+		return ScriptInfo{}, fmt.Errorf("No .ts scripts found in the scripts folder: %q", scriptsFolder)
+	}
+
+	// Gather script information
+	for _, sp := range scriptPaths {
+		info, err := getScriptInfo(sp)
+		if err != nil {
+			fmt.Printf("Error getting info for script %s: %v\n", sp, err)
+			continue
+		}
+		scriptInfos = append(scriptInfos, info)
+	}
+
+	// Display script information in a table
+	var sb strings.Builder
+	headers := []string{"#", "Name", "Version", "Output"}
+	sb.WriteString("| " + strings.Join(headers, " | ") + " |\n")
+	sb.WriteString("| " + strings.Repeat("--- | ", len(headers)) + "\n")
+
+	for i, si := range scriptInfos {
+		row := []string{
+			fmt.Sprintf("%d", i+1),
+			filepath.Base(si.Path),
+			si.Version,
+			si.Output,
+		}
+		sb.WriteString("| " + strings.Join(row, " | ") + " |\n")
+	}
+
+	// Render the markdown table using Glamour
+	out, err := glamour.Render(sb.String(), "dark")
+	if err != nil {
+		fmt.Println("Error rendering markdown:", err)
+		return ScriptInfo{}, err
+	}
+	fmt.Print(out)
+
+	// Ask user to pick a script
+	fmt.Print("Enter a number: ")
+	reader := bufio.NewReader(os.Stdin)
+	input, _ := reader.ReadString('\n')
+	input = strings.TrimSpace(input)
+	choice, err := strconv.Atoi(input)
+	if err != nil || choice < 1 || choice > len(scriptInfos) {
+		return ScriptInfo{}, errors.New("invalid selection")
+	}
+	return scriptInfos[choice-1], nil
+
 }
 
 // We'll capture results for printing
@@ -234,6 +227,17 @@ type result struct {
 	status      string
 	stdoutText  string
 	stderrText  string
+	index       int
+}
+
+func collectResults(resultsChan <-chan result, total int) []result {
+	// Allocate the full slice up front; every slot will be written exactly once.
+	results := make([]result, total)
+
+	for r := range resultsChan {
+		results[r.index] = r // O(1) placement, no mutex needed
+	}
+	return results
 }
 
 // runScriptsForAllProjects executes the specified .ts script against all projects.
@@ -243,7 +247,7 @@ func runScriptsForAllProjects(scriptInfo ScriptInfo, projects []Project, count b
 
 	for i, p := range projects {
 		wg.Add(1)
-		go func(project Project) {
+		go func(project Project, index int) {
 			defer wg.Done()
 			r, err := runScriptForProject(scriptInfo, project.Path)
 			r.index = i
@@ -251,21 +255,14 @@ func runScriptsForAllProjects(scriptInfo ScriptInfo, projects []Project, count b
 				fmt.Printf("Error in project %s: %v\n", project.Name, err)
 			}
 			resultsChan <- r
-		}(p)
+		}(p, i)
 	}
 
 	wg.Wait()
 	close(resultsChan)
 
-	var results []result
-	for r := range resultsChan {
-		results = append(results, r)
-	}
+	var results []result = collectResults(resultsChan, len(projects))
 
-	// Sort results by project index
-	sort.Slice(results, func(i, j int) bool {
-		return results[i].index < results[j].index
-	})
 	if len(outputFormats) == 0 {
 		outputFormats = determineBestOutputFormat(results)
 	}
