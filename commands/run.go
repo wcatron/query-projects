@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"sync"
 	"os/exec"
 	"path/filepath"
 	"strconv"
@@ -236,13 +237,26 @@ type result struct {
 
 // runScriptsForAllProjects executes the specified .ts script against all projects.
 func runScriptsForAllProjects(scriptInfo ScriptInfo, projects []Project, count bool, outputFormats []string) error {
-	var results []result
+	var wg sync.WaitGroup
+	resultsChan := make(chan result, len(projects))
 
 	for _, p := range projects {
-		r, err := runScriptForProject(scriptInfo, p.Path)
-		if err != nil {
-			fmt.Printf("Error in project %s: %v\n", p.Name, err)
-		}
+		wg.Add(1)
+		go func(project Project) {
+			defer wg.Done()
+			r, err := runScriptForProject(scriptInfo, project.Path)
+			if err != nil {
+				fmt.Printf("Error in project %s: %v\n", project.Name, err)
+			}
+			resultsChan <- r
+		}(p)
+	}
+
+	wg.Wait()
+	close(resultsChan)
+
+	var results []result
+	for r := range resultsChan {
 		results = append(results, r)
 	}
 
