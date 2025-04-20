@@ -35,7 +35,7 @@ func syncFromGitHubProject(project Project) (Project, error) {
 	ctx := context.Background()
 	githubToken := os.Getenv("GITHUB_TOKEN")
 	if githubToken == "" {
-		return errors.New("GITHUB_TOKEN environment variable is not set")
+		return project, errors.New("GITHUB_TOKEN environment variable is not set")
 	}
 
 	ts := oauth2.StaticTokenSource(
@@ -47,7 +47,7 @@ func syncFromGitHubProject(project Project) (Project, error) {
 	fmt.Printf("Fetching metadata for project '%s' from GitHub...\n", project.Name)
 	repo, err := fetchGitHubMetadata(ctx, client, project.RepoURL)
 	if err != nil {
-		return fmt.Errorf("error fetching metadata for project '%s': %w", project.Name, err)
+		return project, fmt.Errorf("error fetching metadata for project '%s': %w", project.Name, err)
 	}
 	fmt.Printf("Successfully fetched metadata for project '%s'.\n", project.Name)
 	// Pull abstracted fields into the top level
@@ -82,8 +82,7 @@ func cmd_syncRepos() error {
 		return err
 	}
 
-	var updatedProjects []Project
-	for _, project := range projects.Projects {
+	for index, project := range projects.Projects {
 		if project.Skip {
 			continue
 		}
@@ -94,7 +93,7 @@ func cmd_syncRepos() error {
 			if err != nil {
 				fmt.Printf("Error syncing GitHub project '%s': %v\n", project.Name, err)
 			}
-			updatedProjects = append(updatedProjects, updatedProject)
+			projects.Projects[index] = updatedProject
 		} else if strings.Contains(project.RepoURL, "bitbucket.org") {
 			fmt.Printf("Bitbucket sync for project '%s' is not implemented yet.\n", project.Name)
 		} else if strings.Contains(project.RepoURL, "azure.com") {
@@ -103,5 +102,5 @@ func cmd_syncRepos() error {
 			fmt.Printf("Unsupported repository type for project '%s'.\n", project.Name)
 		}
 	}
-	return nil
+	return saveProjects(projects)
 }
