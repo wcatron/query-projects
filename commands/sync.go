@@ -21,7 +21,9 @@ the repository type (e.g., "github"). It uses the GITHUB_TOKEN environment varia
 var SyncCmd = &cobra.Command{
 	Use:   "sync",
 	Short: "Sync project metadata from all configured code repositories.",
-	RunE: cmd_syncRepos,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return cmd_syncRepos()
+	},
 }
 
 /*
@@ -74,7 +76,7 @@ func fetchGitHubMetadata(ctx context.Context, client *github.Client, repoURL str
 
 	return repo, nil
 }
-func cmd_syncRepos(cmd *cobra.Command, args []string) error {
+func cmd_syncRepos() error {
 	projects, err := loadProjects()
 	if err != nil {
 		return err
