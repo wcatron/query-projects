@@ -19,20 +19,31 @@ Currently, it supports syncing from GitHub. The command requires a single argume
 the repository type (e.g., "github"). It uses the GITHUB_TOKEN environment variable for authentication.
 */
 var SyncCmd = &cobra.Command{
-	Use:   "sync <repository>",
-	Short: "Sync project metadata from a specified code repository.",
-	Args:  cobra.ExactArgs(1),
+	Use:   "sync",
+	Short: "Sync project metadata from all configured code repositories.",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		repoType := strings.ToLower(args[0])
-		switch repoType {
-		case "github":
-			return syncFromGitHub()
-		case "azure":
-			fmt.Println("Azure sync is not implemented yet.")
-		case "bitbucket":
-			fmt.Println("Bitbucket sync is not implemented yet.")
-		default:
-			return errors.New("unsupported repository type")
+		projects, err := loadProjects()
+		if err != nil {
+			return err
+		}
+
+		for _, project := range projects.Projects {
+			if project.Skip {
+				continue
+			}
+
+			if strings.Contains(project.RepoURL, "github.com") {
+				fmt.Printf("Syncing GitHub project '%s'...\n", project.Name)
+				if err := syncFromGitHubProject(project); err != nil {
+					fmt.Printf("Error syncing GitHub project '%s': %v\n", project.Name, err)
+				}
+			} else if strings.Contains(project.RepoURL, "bitbucket.org") {
+				fmt.Printf("Bitbucket sync for project '%s' is not implemented yet.\n", project.Name)
+			} else if strings.Contains(project.RepoURL, "azure.com") {
+				fmt.Printf("Azure sync for project '%s' is not implemented yet.\n", project.Name)
+			} else {
+				fmt.Printf("Unsupported repository type for project '%s'.\n", project.Name)
+			}
 		}
 		return nil
 	},
@@ -43,7 +54,7 @@ syncFromGitHub fetches metadata for all projects listed in the projects.json fil
 It updates the project metadata with topics and archive status. The function requires the GITHUB_TOKEN
 environment variable to be set for authentication.
 */
-func syncFromGitHub() error {
+func syncFromGitHubProject(project Project) error {
 	ctx := context.Background()
 	githubToken := os.Getenv("GITHUB_TOKEN")
 	if githubToken == "" {
@@ -56,29 +67,18 @@ func syncFromGitHub() error {
 	tc := oauth2.NewClient(ctx, ts)
 	client := github.NewClient(tc)
 
-	projects, err := loadProjects()
+	fmt.Printf("Fetching metadata for project '%s' from GitHub...\n", project.Name)
+	repo, err := fetchGitHubMetadata(ctx, client, project.RepoURL)
 	if err != nil {
-		return err
+		return fmt.Errorf("error fetching metadata for project '%s': %w", project.Name, err)
 	}
+	fmt.Printf("Successfully fetched metadata for project '%s'.\n", project.Name)
+	// Pull abstracted fields into the top level
+	project.Topics = repo.Topics
+	project.Skip = project.Skip || repo.GetArchived()
+	project.Metadata = repo
 
-	for i, project := range projects.Projects {
-		if project.Skip {
-			continue
-		}
-		fmt.Printf("Fetching metadata for project '%s' from GitHub...\n", project.Name)
-		repo, err := fetchGitHubMetadata(ctx, client, project.RepoURL)
-		if err != nil {
-			fmt.Printf("Error fetching metadata for project '%s': %v\n", project.Name, err)
-			continue
-		}
-		fmt.Printf("Successfully fetched metadata for project '%s'.\n", project.Name)
-		// Pull abstracted fields into the top level
-		projects.Projects[i].Topics = repo.Topics
-		projects.Projects[i].Skip = projects.Projects[i].Skip || repo.GetArchived()
-		projects.Projects[i].Metadata = repo
-	}
-
-	return saveProjects(projects)
+	return saveProjects(&ProjectsJSON{Projects: []Project{project}})
 }
 
 /*
