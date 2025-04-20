@@ -1,5 +1,6 @@
 # Query Projects
 
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=wcatron/query-projects)](https://dependabot.com)
 [![Go Cyclo Complexity Check](https://github.com/wcatron/query-projects/actions/workflows/gocyclo.yml/badge.svg)](https://github.com/wcatron/query-projects/actions/workflows/gocyclo.yml)
 
 A simple cli for running scripts across many repositories.
