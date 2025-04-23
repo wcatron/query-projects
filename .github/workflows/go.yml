@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write
+      contents: write  # Required for creating releases
 
     outputs:
       version_tag: ${{ steps.determine_version.outputs.version_tag }}
