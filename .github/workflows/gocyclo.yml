@@ -10,6 +10,9 @@ jobs:
   cyclo:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read  # Default read access for checking out code
+
     steps:
       - name: Check out code
         uses: actions/checkout@v3
