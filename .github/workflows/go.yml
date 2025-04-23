@@ -16,6 +16,9 @@ jobs:
     outputs:
       version_tag: ${{ steps.determine_version.outputs.version_tag }}
 
+    permissions:
+      contents: read  # Default read access for checking out code
+
     steps:
       # Check out the code from your repository
       - name: Check out code
