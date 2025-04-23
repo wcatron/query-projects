@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const cliVersion = "1.0.0" // Define the current version of the CLI tool
+var cliVersion string // Define the current version of the CLI tool
 var InfoCmd = &cobra.Command{
 	Use:   "info",
 	Short: "Displays information about projects and available scripts",
