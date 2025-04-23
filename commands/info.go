@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// InfoCmd represents the info command
+const cliVersion = "1.0.0" // Define the current version of the CLI tool
 var InfoCmd = &cobra.Command{
 	Use:   "info",
 	Short: "Displays information about projects and available scripts",
@@ -24,6 +24,7 @@ func cmd_info() error {
 		return fmt.Errorf("failed to load projects: %w", err)
 	}
 
+	fmt.Printf("CLI Version: %s\n", cliVersion) // Print the CLI version
 	fmt.Printf("Number of projects: %d\n", len(projects.Projects))
 
 	files, err := ioutil.ReadDir(scriptsFolder)
