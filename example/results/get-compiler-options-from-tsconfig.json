@@ -1,0 +1,89 @@
+[
+  {
+    "Output": {
+      "allowJs": true,
+      "esModuleInterop": true,
+      "jsx": "react-jsx",
+      "module": "ESNext",
+      "moduleResolution": "node",
+      "noEmit": true,
+      "paths": {
+        "amp-test-utils": [
+          "./test/lib/amp-test-utils"
+        ],
+        "development-sandbox": [
+          "./test/lib/development-sandbox"
+        ],
+        "e2e-utils": [
+          "./test/lib/e2e-utils"
+        ],
+        "e2e-utils/*": [
+          "./test/lib/e2e-utils/*"
+        ],
+        "next-test-utils": [
+          "./test/lib/next-test-utils"
+        ],
+        "next-webdriver": [
+          "./test/lib/next-webdriver"
+        ],
+        "test-data-service/*": [
+          "./test/lib/test-data-service/*"
+        ],
+        "test-log": [
+          "./test/lib/test-log"
+        ]
+      },
+      "resolveJsonModule": true,
+      "strict": false,
+      "target": "ESNext",
+      "types": [
+        "react",
+        "jest",
+        "node",
+        "trusted-types",
+        "jest-extended"
+      ]
+    },
+    "Project Path": "./projects/next.js",
+    "Status": "Success"
+  },
+  {
+    "Project Path": "./projects/ai",
+    "Status": "Success",
+    "StdErr": "Error reading tsconfig.json file: NotFound: No such file or directory (os error 2): readfile './tsconfig.json'\n    at Object.readFile (ext:deno_fs/30_fs.js:754:24)\n    at file:///Users/westoncatron/github/query-projects/example/scripts/get-compiler-options-from-tsconfig.ts:24:40 {\n  name: \"NotFound\",\n  code: \"ENOENT\"\n}",
+    "StdOut": "Error"
+  },
+  {
+    "Project Path": "./projects/storage",
+    "Status": "Success",
+    "StdErr": "Error reading tsconfig.json file: NotFound: No such file or directory (os error 2): readfile './tsconfig.json'\n    at Object.readFile (ext:deno_fs/30_fs.js:754:24)\n    at file:///Users/westoncatron/github/query-projects/example/scripts/get-compiler-options-from-tsconfig.ts:24:40 {\n  name: \"NotFound\",\n  code: \"ENOENT\"\n}",
+    "StdOut": "Error"
+  },
+  {
+    "Output": {
+      "declaration": true,
+      "downlevelIteration": true,
+      "esModuleInterop": true,
+      "incremental": true,
+      "jsx": "react",
+      "lib": [
+        "esnext",
+        "dom"
+      ],
+      "module": "NodeNext",
+      "moduleResolution": "nodenext",
+      "noEmitOnError": true,
+      "noFallthroughCasesInSwitch": true,
+      "noImplicitReturns": false,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "outDir": "./dist",
+      "rootDir": "./",
+      "strict": true,
+      "strictBindCallApply": true,
+      "target": "ES2018"
+    },
+    "Project Path": "./projects/swr",
+    "Status": "Success"
+  }
+]

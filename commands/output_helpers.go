@@ -89,22 +89,45 @@ func writeCSVTable(info ScriptInfo, results []result) error {
 	return nil
 }
 
-// writeJSONOutput creates a .json file summarizing the results.
 func writeJSONOutput(scriptPath string, results []result) error {
 	filename := filepath.Base(scriptPath)
 	resultsFilenameForScript := strings.TrimSuffix(filename, ".ts")
 
-	// Convert results to JSON
-	data, err := json.MarshalIndent(results, "", "  ")
-	if err != nil {
-		return err
+	// ─── Transform []result → []map[string]any ───────────────────────────────
+	var payload []map[string]any
+
+	for _, r := range results {
+		entry := map[string]any{
+			"Project Path": r.projectPath,
+			"Status":       r.status,
+		}
+
+		// Parse stdoutText as JSON; fall back to raw string on error.
+		var out any
+		if err := json.Unmarshal([]byte(r.stdoutText), &out); err == nil {
+			entry["Output"] = out
+		} else {
+			entry["StdOut"] = r.stdoutText
+		}
+
+		if strings.TrimSpace(r.stderrText) != "" {
+			entry["StdErr"] = r.stderrText
+		}
+
+		payload = append(payload, entry)
 	}
 
-	// Write to file: e.g. results/foo.json
-	tableFilePath := filepath.Join(resultsFolder, resultsFilenameForScript+".json")
-	if err := os.WriteFile(tableFilePath, data, 0644); err != nil {
-		return err
+	// ─── Encode & write to disk ──────────────────────────────────────────────
+	data, err := json.MarshalIndent(payload, "", "  ")
+	if err != nil {
+		return fmt.Errorf("marshal results: %w", err)
 	}
+
+	tableFilePath := filepath.Join(resultsFolder, resultsFilenameForScript+".json")
+	if err := os.WriteFile(tableFilePath, data, 0o644); err != nil {
+		return fmt.Errorf("write results file: %w", err)
+	}
+
 	fmt.Printf("Results written to %s\n", tableFilePath)
 	return nil
 }

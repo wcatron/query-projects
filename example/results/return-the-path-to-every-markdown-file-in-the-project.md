@@ -487,6 +487,8 @@
 | ./projects/ai | Success | packages/ai/README.md |
 | ./projects/ai | Success | packages/hume/CHANGELOG.md |
 | ./projects/ai | Success | packages/hume/README.md |
+| ./projects/ai | Success | packages/assemblyai/CHANGELOG.md |
+| ./projects/ai | Success | packages/assemblyai/README.md |
 | ./projects/ai | Success | packages/replicate/CHANGELOG.md |
 | ./projects/ai | Success | packages/replicate/README.md |
 | ./projects/ai | Success | packages/anthropic/CHANGELOG.md |
