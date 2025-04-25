@@ -116,6 +116,11 @@ jobs:
           export PATH="${PATH}:$(go env GOPATH)/bin"
 
       # ───── Quick smoke test of the installed CLI ────────────────────────────
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
       - name: Run smoke tests
         run: |
           cd example
