@@ -58,6 +58,9 @@ jobs:
         run: gofmt -l .
 
       - name: Build
+        # This is how to inject the cliVersion but it doesn't work when using `go install` as that compiles
+        # the application on the client's machine without any ldflags. Leavin this here for when we build
+        # and publish through homebrew or some other package manager.
         run: go build -ldflags "-X main.cliVersion=${{ steps.adjust_tag.outputs.tag_name }}" ./
 
       - name: Run E2E Tests
@@ -112,19 +115,10 @@ jobs:
           go install github.com/wcatron/query-projects@${{ needs.build.outputs.version_tag }}
           export PATH="${PATH}:$(go env GOPATH)/bin"
 
-      # ───── Verify the injected version matches the tag ─────────────────────
-      - name: Check CLI version matches tag
-        run: |
-          expected="${{ needs.build.outputs.version_tag }}"
-          actual="$(query-projects --version | awk '{print $NF}')"
-          echo "Expected: $expected  •  CLI reported: $actual"
-          [[ "$actual" == "$expected" ]]
-
       # ───── Quick smoke test of the installed CLI ────────────────────────────
       - name: Run smoke tests
         run: |
           cd example
-          query-projects --version
           query-projects info
           query-projects pull
           query-projects run scripts/do-they-have-a-readme.ts
