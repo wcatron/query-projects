@@ -81,37 +81,6 @@ func printMarkdownToConsole(results []result) {
 	fmt.Print(out)
 }
 
-func determineBestOutputFormat(results []result) []string {
-	jsonCount := 0
-	singleLineCount := 0
-
-	for _, r := range results {
-		if isValidJSON(r.stdoutText) {
-			jsonCount++
-		}
-		if isSingleLine(r.stdoutText) {
-			singleLineCount++
-		}
-	}
-
-	if jsonCount > len(results)/2 {
-		return []string{"json"}
-	} else if singleLineCount == len(results) {
-		return []string{"md", "csv"}
-	}
-
-	return []string{"md"} // Default to markdown if no clear format is determined
-}
-
-func isValidJSON(s string) bool {
-	var js map[string]interface{}
-	return json.Unmarshal([]byte(s), &js) == nil
-}
-
-func isSingleLine(s string) bool {
-	return len(strings.Split(s, "\n")) == 1
-}
-
 func RunCmdInit(cmd *cobra.Command) {
 	cmd.PersistentFlags().StringSliceP("topics", "t", nil, "Filter projects by topics")
 	cmd.PersistentFlags().Bool("count", false, "Count the unique responses from the script")
@@ -252,7 +221,11 @@ func runScriptsForAllProjects(scriptInfo ScriptInfo, projects []Project, count b
 	var results []result = collectResults(resultsChan, len(projects))
 
 	if len(outputFormats) == 0 {
-		outputFormats = determineBestOutputFormat(results)
+		if scriptInfo.Output == "text" {
+			outputFormats = []string{"csv", "md"}
+		} else {
+			outputFormats = []string{scriptInfo.Output}
+		}
 	}
 
 	// If count flag is enabled, count unique responses and print the table
