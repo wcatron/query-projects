@@ -4,17 +4,21 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/spf13/cobra"
 	"github.com/joho/godotenv"
+	"github.com/spf13/cobra"
 	"github.com/wcatron/query-projects/commands"
 )
 
+var cliVersion string // Define the current version of the CLI tool
 func main() {
 	// Attempt to load an .env file
-	if err := godotenv.Load(); err != nil {}
+	if err := godotenv.Load(); err != nil {
+	}
+
 	rootCmd := &cobra.Command{
-		Use:   "query-projects",
-		Short: "A CLI that manages repositories and runs scripts across them.",
+		Use:     "query-projects",
+		Short:   "A CLI that manages repositories and runs scripts across them.",
+		Version: cliVersion,
 	}
 
 	// Add subcommands
@@ -25,7 +29,7 @@ func main() {
 	rootCmd.AddCommand(commands.PullCmd)
 	rootCmd.AddCommand(commands.InfoCmd)
 	rootCmd.AddCommand(commands.SyncCmd)
-	
+
 	// Add a flag for the run
 	commands.RunCmdInit(commands.RunCmd)
 

@@ -36,17 +36,7 @@ jobs:
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: ${{ runner.os }}-go-
 
-      # ───── Lint / Build / Test ──────────────────────────────────────────────
-      - name: Check Go formatting
-        run: gofmt -l .
-
-      - name: Build
-        run: go build -ldflags "-X 'commands.cliVersion=${{ steps.determine_version.outputs.version_tag }}'" ./...
-
-      - name: Run E2E Tests
-        run: go test ./tests/... ./commands/...
-
-      # ───── Versioning & Release ────────────────────────────────────────────
+      # ───── Versioning ────────────────────────────────────────────
       - name: Determine Next Version
         id: determine_version
         uses: paulhatch/semantic-version@v5.4.0
@@ -63,6 +53,17 @@ jobs:
           fi
           echo "tag_name=${TAG}" >>"$GITHUB_OUTPUT"
 
+      # ───── Lint / Build / Test ──────────────────────────────────────────────
+      - name: Check Go formatting
+        run: gofmt -l .
+
+      - name: Build
+        run: go build -ldflags "-X main.cliVersion=${{ steps.adjust_tag.outputs.tag_name }}" ./
+
+      - name: Run E2E Tests
+        run: go test ./tests/... ./commands/...
+
+      # ───── Release ────────────────────────────────────────────
       - name: Tag and Release
         id: tag_release
         uses: actions/github-script@v7
@@ -109,12 +110,21 @@ jobs:
       - name: Install CLI from release tag
         run: |
           go install github.com/wcatron/query-projects@${{ needs.build.outputs.version_tag }}
+          export PATH="${PATH}:$(go env GOPATH)/bin"
+
+      # ───── Verify the injected version matches the tag ─────────────────────
+      - name: Check CLI version matches tag
+        run: |
+          expected="${{ needs.build.outputs.version_tag }}"
+          actual="$(query-projects --version | awk '{print $NF}')"
+          echo "Expected: $expected  •  CLI reported: $actual"
+          [[ "$actual" == "$expected" ]]
 
       # ───── Quick smoke test of the installed CLI ────────────────────────────
       - name: Run smoke tests
         run: |
-          export PATH="${PATH}:$(go env GOPATH)/bin"
           cd example
+          query-projects --version
           query-projects info
           query-projects pull
           query-projects run scripts/do-they-have-a-readme.ts
