@@ -63,6 +63,11 @@ jobs:
         # and publish through homebrew or some other package manager.
         run: go build -ldflags "-X main.cliVersion=${{ steps.adjust_tag.outputs.tag_name }}" ./
 
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+          
       - name: Run E2E Tests
         run: go test ./tests/... ./commands/...
 
