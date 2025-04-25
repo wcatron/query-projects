@@ -90,6 +90,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
 
+    permissions:
+      contents: read
+
     steps:
       # ───── Setup ────────────────────────────────────────────────────────────
       - name: Check out code
