@@ -70,19 +70,7 @@ func getScriptInfo(scriptPath string) (ScriptInfo, error) {
 
 // printMarkdownToConsole renders the results in markdown format to the console using Glamour.
 func printMarkdownToConsole(results []result) {
-	var sb strings.Builder
-	headers := []string{"Project Path", "Status", "Output"}
-	sb.WriteString("| " + strings.Join(headers, " | ") + " |\n")
-	sb.WriteString("| " + strings.Repeat("--- | ", len(headers)) + "\n")
-
-	for _, r := range results {
-		row := []string{
-			r.projectPath,
-			r.status,
-			r.stdoutText,
-		}
-		sb.WriteString("| " + strings.Join(row, " | ") + " |\n")
-	}
+	var sb strings.Builder = createMarkdownString(results)
 
 	// Render the markdown table using Glamour
 	out, err := glamour.Render(sb.String(), "dark")

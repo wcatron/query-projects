@@ -3,5 +3,6 @@ Available scripts:
 - do-they-have-a-readme.ts
 - does-the-project-have-a-linter.ts
 - how-activily-maintained-is-the-project.ts
+- return-the-path-to-every-markdown-file-in-the-project.ts
 - what-version-of-typescript-is-being-used.ts
 - which-test-framework-is-being-used.ts

@@ -18,6 +18,15 @@ Example:
 // Define the path to the package.json file
 const packageJsonPath = './package.json';
 
+// Take an info argument and return information about the script
+if (Deno.args.length > 0 && Deno.args[0] === '--info') {
+    console.log(JSON.stringify({
+        version: '1.0',
+        output: 'text'
+    }));
+    Deno.exit();
+}
+
 try {
     // # Load releavant data
     // Use Deno's readTextFile function to read the contents of the package.json file asynchronously
@@ -45,6 +54,11 @@ try {
   console.error('Error reading package.json file:', error);
 }
 ```
+
+The script should take an info argument and return one of the following options:
+1. `{"version":"1.0","output": "text"}`
+2. `{"version":"1.0","output": "csv", "columns:":["a", "b"]}`
+3. `{"version":"1.0","output": "json"}`
 
 Here is the question they would like to answer:
 

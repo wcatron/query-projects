@@ -9,25 +9,34 @@ import (
 	"strings"
 )
 
-// writeMarkdownTable creates a .md table summarizing the results with their output).
-func writeMarkdownTable(scriptPath string, results []result) error {
-	filename := filepath.Base(scriptPath)
-	resultsFilenameForScript := strings.TrimSuffix(filename, ".ts")
-
-	// Build the table lines
+func createMarkdownString(results []result) strings.Builder {
 	var sb strings.Builder
 	headers := []string{"Project Path", "Status", "Output"}
 	sb.WriteString("| " + strings.Join(headers, " | ") + " |\n")
 	sb.WriteString("| " + strings.Repeat("--- | ", len(headers)) + "\n")
 
 	for _, r := range results {
-		row := []string{
-			r.projectPath,
-			r.status,
-			r.stdoutText,
+		lines := strings.Split(r.stdoutText, "\n")
+		for _, line := range lines {
+			row := []string{
+				r.projectPath,
+				r.status,
+				line,
+			}
+			sb.WriteString("| " + strings.Join(row, " | ") + " |\n")
 		}
-		sb.WriteString("| " + strings.Join(row, " | ") + " |\n")
 	}
+
+	return sb
+}
+
+// writeMarkdownTable creates a .md table summarizing the results with their output).
+func writeMarkdownTable(scriptPath string, results []result) error {
+	filename := filepath.Base(scriptPath)
+	resultsFilenameForScript := strings.TrimSuffix(filename, ".ts")
+
+	// Build the table lines
+	var sb strings.Builder = createMarkdownString(results)
 
 	// Write to file: e.g. results/foo.md
 	tableFilePath := filepath.Join(resultsFolder, resultsFilenameForScript+".md")
@@ -65,12 +74,14 @@ func writeCSVTable(info ScriptInfo, results []result) error {
 		return err
 	}
 
-	// Write data
 	for _, r := range results {
-		values := strings.Split(r.stdoutText, ",")
-		row := append([]string{r.projectPath, r.status}, values...)
-		if err := writer.Write(row); err != nil {
-			return err
+		lines := strings.Split(r.stdoutText, "\n")
+		for _, line := range lines {
+			values := strings.Split(line, ",")
+			row := append([]string{r.projectPath, r.status}, values...)
+			if err := writer.Write(row); err != nil {
+				return err
+			}
 		}
 	}
 
