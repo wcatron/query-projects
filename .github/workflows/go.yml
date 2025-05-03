@@ -62,7 +62,10 @@ jobs:
         # This is how to inject the cliVersion but it doesn't work when using `go install` as that compiles
         # the application on the client's machine without any ldflags. Leavin this here for when we build
         # and publish through homebrew or some other package manager.
-        run: go build -ldflags "-X main.cliVersion=${{ steps.adjust_tag.outputs.tag_name }}" ./cmd/query-projects
+        run: |
+          pwd
+          ls -la
+          go build -ldflags "-X main.cliVersion=${{ steps.adjust_tag.outputs.tag_name }}" ./cmd/query-projects
 
       - name: Set up Deno
         uses: denoland/setup-deno@v2
