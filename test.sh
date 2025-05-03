@@ -1,3 +1,14 @@
+#!/bin/bash
+
+# Build the binary
+rm query-projects
+go build -o query-projects ./cmd/query-projects
+# Check if build was successful
+if [ $? -ne 0 ]; then
+    echo "Build failed"
+    exit 1
+fi
+
 cd example
 ../query-projects info
 ../query-projects sync
