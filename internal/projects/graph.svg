@@ -17,16 +17,16 @@
 <g id="clust3" class="cluster">
 <title>cluster_github.com/wcatron/query&#45;projects/internal/commands</title>
 <g id="a_clust3"><a xlink:href="/?f=github.com/wcatron/query-projects/internal/commands" xlink:title="package: github.com/wcatron/query&#45;projects/internal/commands">
-<polygon fill="#ffffe0" stroke="#000000" stroke-width=".8" points="16,-103 16,-609 210.749,-609 210.749,-103 16,-103"/>
-<text text-anchor="middle" x="113.3745" y="-590.6" font-family="Tahoma bold" font-size="16.00" fill="#000000">commands</text>
+<polygon fill="#ffffe0" stroke="#000000" stroke-width=".8" points="16,-16 16,-522 210.749,-522 210.749,-16 16,-16"/>
+<text text-anchor="middle" x="113.3745" y="-503.6" font-family="Tahoma bold" font-size="16.00" fill="#000000">commands</text>
 </a>
 </g>
 </g>
 <g id="clust2" class="cluster">
 <title>cluster_github.com/wcatron/query&#45;projects/callvis</title>
 <g id="a_clust2"><a xlink:href="/?f=github.com/wcatron/query-projects/callvis" xlink:title="package: github.com/wcatron/query&#45;projects/callvis">
-<polygon fill="#ffffe0" stroke="#000000" stroke-width=".8" points="78.3745,-16 78.3745,-95 148.3745,-95 148.3745,-16 78.3745,-16"/>
-<text text-anchor="middle" x="113.3745" y="-76.6" font-family="Tahoma bold" font-size="16.00" fill="#000000">main</text>
+<polygon fill="#ffffe0" stroke="#000000" stroke-width=".8" points="78.3745,-530 78.3745,-609 148.3745,-609 148.3745,-530 78.3745,-530"/>
+<text text-anchor="middle" x="113.3745" y="-590.6" font-family="Tahoma bold" font-size="16.00" fill="#000000">main</text>
 </a>
 </g>
 </g>
@@ -34,62 +34,62 @@
 <g id="node1" class="node">
 <title>github.com/wcatron/query&#45;projects/internal/projects.LoadProjects</title>
 <g id="a_node1"><a xlink:title="github.com/wcatron/query&#45;projects/internal/projects.LoadProjects | defined in projects.go:83">
-<path fill="#add8e6" stroke="#000000" stroke-width="1.5" d="M390.705,-266C390.705,-266 316.974,-266 316.974,-266 310.974,-266 304.974,-260 304.974,-254 304.974,-254 304.974,-242 304.974,-242 304.974,-236 310.974,-230 316.974,-230 316.974,-230 390.705,-230 390.705,-230 396.705,-230 402.705,-236 402.705,-242 402.705,-242 402.705,-254 402.705,-254 402.705,-260 396.705,-266 390.705,-266"/>
-<text text-anchor="middle" x="353.8395" y="-243.8" font-family="Verdana" font-size="14.00" fill="#000000">LoadProjects</text>
-</a>
-</g>
-</g>
-<!-- github.com/wcatron/query&#45;projects/internal/projects.CloneRepository -->
-<g id="node2" class="node">
-<title>github.com/wcatron/query&#45;projects/internal/projects.CloneRepository</title>
-<g id="a_node2"><a xlink:title="github.com/wcatron/query&#45;projects/internal/projects.CloneRepository | defined in projects.go:111">
-<path fill="#add8e6" stroke="#000000" stroke-width="1.5" d="M401.219,-363C401.219,-363 306.46,-363 306.46,-363 300.46,-363 294.46,-357 294.46,-351 294.46,-351 294.46,-339 294.46,-339 294.46,-333 300.46,-327 306.46,-327 306.46,-327 401.219,-327 401.219,-327 407.219,-327 413.219,-333 413.219,-339 413.219,-339 413.219,-351 413.219,-351 413.219,-357 407.219,-363 401.219,-363"/>
-<text text-anchor="middle" x="353.8395" y="-340.8" font-family="Verdana" font-size="14.00" fill="#000000">CloneRepository</text>
-</a>
-</g>
-</g>
-<!-- github.com/wcatron/query&#45;projects/internal/projects.SaveProjects -->
-<g id="node3" class="node">
-<title>github.com/wcatron/query&#45;projects/internal/projects.SaveProjects</title>
-<g id="a_node3"><a xlink:title="github.com/wcatron/query&#45;projects/internal/projects.SaveProjects | defined in projects.go:101">
-<path fill="#add8e6" stroke="#000000" stroke-width="1.5" d="M390.15,-441C390.15,-441 317.529,-441 317.529,-441 311.529,-441 305.529,-435 305.529,-429 305.529,-429 305.529,-417 305.529,-417 305.529,-411 311.529,-405 317.529,-405 317.529,-405 390.15,-405 390.15,-405 396.15,-405 402.15,-411 402.15,-417 402.15,-417 402.15,-429 402.15,-429 402.15,-435 396.15,-441 390.15,-441"/>
-<text text-anchor="middle" x="353.8395" y="-418.8" font-family="Verdana" font-size="14.00" fill="#000000">SaveProjects</text>
-</a>
-</g>
-</g>
-<!-- github.com/wcatron/query&#45;projects/internal/projects.ExtractTypeScriptCode -->
-<g id="node4" class="node">
-<title>github.com/wcatron/query&#45;projects/internal/projects.ExtractTypeScriptCode</title>
-<g id="a_node4"><a xlink:title="github.com/wcatron/query&#45;projects/internal/projects.ExtractTypeScriptCode | defined in projects.go:146">
-<path fill="#add8e6" stroke="#000000" stroke-width="1.5" d="M420.0206,-543C420.0206,-543 287.6584,-543 287.6584,-543 281.6584,-543 275.6584,-537 275.6584,-531 275.6584,-531 275.6584,-519 275.6584,-519 275.6584,-513 281.6584,-507 287.6584,-507 287.6584,-507 420.0206,-507 420.0206,-507 426.0206,-507 432.0206,-513 432.0206,-519 432.0206,-519 432.0206,-531 432.0206,-531 432.0206,-537 426.0206,-543 420.0206,-543"/>
-<text text-anchor="middle" x="353.8395" y="-520.8" font-family="Verdana" font-size="14.00" fill="#000000">ExtractTypeScriptCode</text>
+<path fill="#add8e6" stroke="#000000" stroke-width="1.5" d="M390.705,-249C390.705,-249 316.974,-249 316.974,-249 310.974,-249 304.974,-243 304.974,-237 304.974,-237 304.974,-225 304.974,-225 304.974,-219 310.974,-213 316.974,-213 316.974,-213 390.705,-213 390.705,-213 396.705,-213 402.705,-219 402.705,-225 402.705,-225 402.705,-237 402.705,-237 402.705,-243 396.705,-249 390.705,-249"/>
+<text text-anchor="middle" x="353.8395" y="-226.8" font-family="Verdana" font-size="14.00" fill="#000000">LoadProjects</text>
 </a>
 </g>
 </g>
 <!-- github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics -->
-<g id="node5" class="node">
+<g id="node2" class="node">
 <title>github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics</title>
-<g id="a_node5"><a xlink:title="github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics | defined in projects.go:30&#10;at projects.go:42: calling [github.com/wcatron/query&#45;projects/internal/projects.contains]&#10;at projects.go:50: calling [github.com/wcatron/query&#45;projects/internal/projects.contains]&#10;at projects.go:58: calling [github.com/wcatron/query&#45;projects/internal/projects.contains]">
-<path fill="#add8e6" stroke="#000000" stroke-width="1.5" d="M418.7064,-131C418.7064,-131 288.9726,-131 288.9726,-131 282.9726,-131 276.9726,-125 276.9726,-119 276.9726,-119 276.9726,-107 276.9726,-107 276.9726,-101 282.9726,-95 288.9726,-95 288.9726,-95 418.7064,-95 418.7064,-95 424.7064,-95 430.7064,-101 430.7064,-107 430.7064,-107 430.7064,-119 430.7064,-119 430.7064,-125 424.7064,-131 418.7064,-131"/>
-<text text-anchor="middle" x="353.8395" y="-108.8" font-family="Verdana" font-size="14.00" fill="#000000">FilterProjectsByTopics</text>
+<g id="a_node2"><a xlink:title="github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics | defined in projects.go:30&#10;at projects.go:42: calling [github.com/wcatron/query&#45;projects/internal/projects.contains]&#10;at projects.go:50: calling [github.com/wcatron/query&#45;projects/internal/projects.contains]&#10;at projects.go:58: calling [github.com/wcatron/query&#45;projects/internal/projects.contains]">
+<path fill="#add8e6" stroke="#000000" stroke-width="1.5" d="M418.7064,-365C418.7064,-365 288.9726,-365 288.9726,-365 282.9726,-365 276.9726,-359 276.9726,-353 276.9726,-353 276.9726,-341 276.9726,-341 276.9726,-335 282.9726,-329 288.9726,-329 288.9726,-329 418.7064,-329 418.7064,-329 424.7064,-329 430.7064,-335 430.7064,-341 430.7064,-341 430.7064,-353 430.7064,-353 430.7064,-359 424.7064,-365 418.7064,-365"/>
+<text text-anchor="middle" x="353.8395" y="-342.8" font-family="Verdana" font-size="14.00" fill="#000000">FilterProjectsByTopics</text>
 </a>
 </g>
 </g>
 <!-- github.com/wcatron/query&#45;projects/internal/projects.contains -->
-<g id="node6" class="node">
+<g id="node3" class="node">
 <title>github.com/wcatron/query&#45;projects/internal/projects.contains</title>
-<g id="a_node6"><a xlink:title="github.com/wcatron/query&#45;projects/internal/projects.contains | defined in projects.go:70">
-<path fill="#add8e6" stroke="#000000" stroke-width=".5" d="M563.4133,-131C563.4133,-131 517.1017,-131 517.1017,-131 511.1017,-131 505.1017,-125 505.1017,-119 505.1017,-119 505.1017,-107 505.1017,-107 505.1017,-101 511.1017,-95 517.1017,-95 517.1017,-95 563.4133,-95 563.4133,-95 569.4133,-95 575.4133,-101 575.4133,-107 575.4133,-107 575.4133,-119 575.4133,-119 575.4133,-125 569.4133,-131 563.4133,-131"/>
-<text text-anchor="middle" x="540.2575" y="-108.8" font-family="Verdana" font-size="14.00" fill="#000000">contains</text>
+<g id="a_node3"><a xlink:title="github.com/wcatron/query&#45;projects/internal/projects.contains | defined in projects.go:70">
+<path fill="#add8e6" stroke="#000000" stroke-width=".5" d="M563.4133,-365C563.4133,-365 517.1017,-365 517.1017,-365 511.1017,-365 505.1017,-359 505.1017,-353 505.1017,-353 505.1017,-341 505.1017,-341 505.1017,-335 511.1017,-329 517.1017,-329 517.1017,-329 563.4133,-329 563.4133,-329 569.4133,-329 575.4133,-335 575.4133,-341 575.4133,-341 575.4133,-353 575.4133,-353 575.4133,-359 569.4133,-365 563.4133,-365"/>
+<text text-anchor="middle" x="540.2575" y="-342.8" font-family="Verdana" font-size="14.00" fill="#000000">contains</text>
 </a>
 </g>
 </g>
 <!-- github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.contains -->
-<g id="edge2" class="edge">
+<g id="edge15" class="edge">
 <title>github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.contains</title>
-<g id="a_edge2"><a xlink:title="at projects.go:42: calling [github.com/wcatron/query&#45;projects/internal/projects.contains]&#10;at projects.go:50: calling [github.com/wcatron/query&#45;projects/internal/projects.contains]&#10;at projects.go:58: calling [github.com/wcatron/query&#45;projects/internal/projects.contains]">
-<path fill="none" stroke="#000000" d="M430.7391,-113C452.4028,-113 475.2797,-113 494.4904,-113"/>
-<polygon fill="#000000" stroke="#000000" points="494.7549,-116.5001 504.7549,-113 494.7549,-109.5001 494.7549,-116.5001"/>
+<g id="a_edge15"><a xlink:title="at projects.go:42: calling [github.com/wcatron/query&#45;projects/internal/projects.contains]&#10;at projects.go:50: calling [github.com/wcatron/query&#45;projects/internal/projects.contains]&#10;at projects.go:58: calling [github.com/wcatron/query&#45;projects/internal/projects.contains]">
+<path fill="none" stroke="#000000" d="M430.7391,-347C452.4028,-347 475.2797,-347 494.4904,-347"/>
+<polygon fill="#000000" stroke="#000000" points="494.7549,-350.5001 504.7549,-347 494.7549,-343.5001 494.7549,-350.5001"/>
+</a>
+</g>
+</g>
+<!-- github.com/wcatron/query&#45;projects/internal/projects.CloneRepository -->
+<g id="node4" class="node">
+<title>github.com/wcatron/query&#45;projects/internal/projects.CloneRepository</title>
+<g id="a_node4"><a xlink:title="github.com/wcatron/query&#45;projects/internal/projects.CloneRepository | defined in projects.go:111">
+<path fill="#add8e6" stroke="#000000" stroke-width="1.5" d="M401.219,-156C401.219,-156 306.46,-156 306.46,-156 300.46,-156 294.46,-150 294.46,-144 294.46,-144 294.46,-132 294.46,-132 294.46,-126 300.46,-120 306.46,-120 306.46,-120 401.219,-120 401.219,-120 407.219,-120 413.219,-126 413.219,-132 413.219,-132 413.219,-144 413.219,-144 413.219,-150 407.219,-156 401.219,-156"/>
+<text text-anchor="middle" x="353.8395" y="-133.8" font-family="Verdana" font-size="14.00" fill="#000000">CloneRepository</text>
+</a>
+</g>
+</g>
+<!-- github.com/wcatron/query&#45;projects/internal/projects.SaveProjects -->
+<g id="node5" class="node">
+<title>github.com/wcatron/query&#45;projects/internal/projects.SaveProjects</title>
+<g id="a_node5"><a xlink:title="github.com/wcatron/query&#45;projects/internal/projects.SaveProjects | defined in projects.go:101">
+<path fill="#add8e6" stroke="#000000" stroke-width="1.5" d="M390.15,-72C390.15,-72 317.529,-72 317.529,-72 311.529,-72 305.529,-66 305.529,-60 305.529,-60 305.529,-48 305.529,-48 305.529,-42 311.529,-36 317.529,-36 317.529,-36 390.15,-36 390.15,-36 396.15,-36 402.15,-42 402.15,-48 402.15,-48 402.15,-60 402.15,-60 402.15,-66 396.15,-72 390.15,-72"/>
+<text text-anchor="middle" x="353.8395" y="-49.8" font-family="Verdana" font-size="14.00" fill="#000000">SaveProjects</text>
+</a>
+</g>
+</g>
+<!-- github.com/wcatron/query&#45;projects/internal/projects.ExtractTypeScriptCode -->
+<g id="node6" class="node">
+<title>github.com/wcatron/query&#45;projects/internal/projects.ExtractTypeScriptCode</title>
+<g id="a_node6"><a xlink:title="github.com/wcatron/query&#45;projects/internal/projects.ExtractTypeScriptCode | defined in projects.go:146">
+<path fill="#add8e6" stroke="#000000" stroke-width="1.5" d="M420.0206,-431C420.0206,-431 287.6584,-431 287.6584,-431 281.6584,-431 275.6584,-425 275.6584,-419 275.6584,-419 275.6584,-407 275.6584,-407 275.6584,-401 281.6584,-395 287.6584,-395 287.6584,-395 420.0206,-395 420.0206,-395 426.0206,-395 432.0206,-401 432.0206,-407 432.0206,-407 432.0206,-419 432.0206,-419 432.0206,-425 426.0206,-431 420.0206,-431"/>
+<text text-anchor="middle" x="353.8395" y="-408.8" font-family="Verdana" font-size="14.00" fill="#000000">ExtractTypeScriptCode</text>
 </a>
 </g>
 </g>
@@ -97,35 +97,62 @@
 <g id="node7" class="node">
 <title>github.com/wcatron/query&#45;projects/callvis.main</title>
 <g id="a_node7"><a xlink:title="github.com/wcatron/query&#45;projects/callvis.main | defined in main.go:11&#10;at main.go:54: calling [github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics]&#10;at main.go:53: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]">
-<path fill="#ffe4b5" stroke="#000000" stroke-width=".5" d="M128.3745,-60C128.3745,-60 98.3745,-60 98.3745,-60 92.3745,-60 86.3745,-54 86.3745,-48 86.3745,-48 86.3745,-36 86.3745,-36 86.3745,-30 92.3745,-24 98.3745,-24 98.3745,-24 128.3745,-24 128.3745,-24 134.3745,-24 140.3745,-30 140.3745,-36 140.3745,-36 140.3745,-48 140.3745,-48 140.3745,-54 134.3745,-60 128.3745,-60"/>
-<text text-anchor="middle" x="113.3745" y="-37.8" font-family="Verdana" font-size="14.00" fill="#000000">main</text>
+<path fill="#ffe4b5" stroke="#000000" stroke-width=".5" d="M128.3745,-574C128.3745,-574 98.3745,-574 98.3745,-574 92.3745,-574 86.3745,-568 86.3745,-562 86.3745,-562 86.3745,-550 86.3745,-550 86.3745,-544 92.3745,-538 98.3745,-538 98.3745,-538 128.3745,-538 128.3745,-538 134.3745,-538 140.3745,-544 140.3745,-550 140.3745,-550 140.3745,-562 140.3745,-562 140.3745,-568 134.3745,-574 128.3745,-574"/>
+<text text-anchor="middle" x="113.3745" y="-551.8" font-family="Verdana" font-size="14.00" fill="#000000">main</text>
 </a>
 </g>
 </g>
 <!-- github.com/wcatron/query&#45;projects/callvis.main&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.LoadProjects -->
-<g id="edge16" class="edge">
+<g id="edge11" class="edge">
 <title>github.com/wcatron/query&#45;projects/callvis.main&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.LoadProjects</title>
-<g id="a_edge16"><a xlink:title="at main.go:53: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]">
-<path fill="none" stroke="#8b4513" d="M140.7542,-54.6968C161.0508,-64.7483 188.8704,-79.9067 210.749,-97 259.3421,-134.9648 306.7678,-189.458 332.9673,-221.5438"/>
-<polygon fill="#8b4513" stroke="#8b4513" points="330.458,-224.007 339.4681,-229.5809 335.9005,-219.6048 330.458,-224.007"/>
+<g id="a_edge11"><a xlink:title="at main.go:53: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]">
+<path fill="none" stroke="#8b4513" d="M140.3836,-555.0355C162.1248,-552.8311 192.0423,-546.3576 210.749,-528 245.7672,-493.6353 251.4542,-359.626 275.749,-317 288.8256,-294.0566 308.9561,-272.0837 325.503,-256.0914"/>
+<polygon fill="#8b4513" stroke="#8b4513" points="327.9503,-258.5942 332.8152,-249.1823 323.1428,-253.5062 327.9503,-258.5942"/>
 </a>
 </g>
 </g>
 <!-- github.com/wcatron/query&#45;projects/callvis.main&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics -->
-<g id="edge11" class="edge">
+<g id="edge7" class="edge">
 <title>github.com/wcatron/query&#45;projects/callvis.main&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics</title>
-<g id="a_edge11"><a xlink:title="at main.go:54: calling [github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics]">
-<path fill="none" stroke="#8b4513" d="M140.4915,-50.0066C174.8498,-60.1513 235.348,-78.014 283.1675,-92.1333"/>
-<polygon fill="#8b4513" stroke="#8b4513" points="282.2759,-95.5193 292.8577,-94.9944 284.2581,-88.8059 282.2759,-95.5193"/>
+<g id="a_edge7"><a xlink:title="at main.go:54: calling [github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics]">
+<path fill="none" stroke="#8b4513" d="M140.6789,-554.3111C162.0107,-551.6635 191.2187,-544.9467 210.749,-528 264.0907,-481.7148 226.0748,-433.2009 275.749,-383 280.5463,-378.1518 286.1186,-373.8875 292.0363,-370.153"/>
+<polygon fill="#8b4513" stroke="#8b4513" points="293.9791,-373.0733 300.9037,-365.0545 290.4899,-367.0049 293.9791,-373.0733"/>
+</a>
+</g>
+</g>
+<!-- github.com/wcatron/query&#45;projects/internal/commands.CMD_runScript -->
+<g id="node8" class="node">
+<title>github.com/wcatron/query&#45;projects/internal/commands.CMD_runScript</title>
+<g id="a_node8"><a xlink:title="github.com/wcatron/query&#45;projects/internal/commands.CMD_runScript | defined in run.go:65&#10;at run.go:70: calling [github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics]&#10;at run.go:66: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]">
+<path fill="#ffe4b5" stroke="#000000" stroke-width="1.5" d="M158.8619,-365C158.8619,-365 67.8871,-365 67.8871,-365 61.8871,-365 55.8871,-359 55.8871,-353 55.8871,-353 55.8871,-341 55.8871,-341 55.8871,-335 61.8871,-329 67.8871,-329 67.8871,-329 158.8619,-329 158.8619,-329 164.8619,-329 170.8619,-335 170.8619,-341 170.8619,-341 170.8619,-353 170.8619,-353 170.8619,-359 164.8619,-365 158.8619,-365"/>
+<text text-anchor="middle" x="113.3745" y="-342.8" font-family="Verdana" font-size="14.00" fill="#000000">CMD_runScript</text>
+</a>
+</g>
+</g>
+<!-- github.com/wcatron/query&#45;projects/internal/commands.CMD_runScript&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.LoadProjects -->
+<g id="edge14" class="edge">
+<title>github.com/wcatron/query&#45;projects/internal/commands.CMD_runScript&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.LoadProjects</title>
+<g id="a_edge14"><a xlink:title="at run.go:66: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]">
+<path fill="none" stroke="#8b4513" d="M170.8659,-331.8183C184.1895,-327.6092 198.1505,-322.6264 210.749,-317 249.9619,-299.4879 291.7183,-273.4372 319.9373,-254.5988"/>
+<polygon fill="#8b4513" stroke="#8b4513" points="321.9062,-257.4926 328.2426,-249.0014 317.994,-251.6879 321.9062,-257.4926"/>
+</a>
+</g>
+</g>
+<!-- github.com/wcatron/query&#45;projects/internal/commands.CMD_runScript&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics -->
+<g id="edge8" class="edge">
+<title>github.com/wcatron/query&#45;projects/internal/commands.CMD_runScript&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics</title>
+<g id="a_edge8"><a xlink:title="at run.go:70: calling [github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics]">
+<path fill="none" stroke="#8b4513" d="M170.9719,-347C199.5575,-347 234.6967,-347 266.5071,-347"/>
+<polygon fill="#8b4513" stroke="#8b4513" points="266.7057,-350.5001 276.7057,-347 266.7057,-343.5001 266.7057,-350.5001"/>
 </a>
 </g>
 </g>
 <!-- github.com/wcatron/query&#45;projects/internal/commands.CMD_addRepository -->
-<g id="node8" class="node">
+<g id="node9" class="node">
 <title>github.com/wcatron/query&#45;projects/internal/commands.CMD_addRepository</title>
-<g id="a_node8"><a xlink:title="github.com/wcatron/query&#45;projects/internal/commands.CMD_addRepository | defined in add.go:23&#10;at add.go:36: calling [github.com/wcatron/query&#45;projects/internal/projects.CloneRepository]&#10;at add.go:24: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]&#10;at add.go:46: calling [github.com/wcatron/query&#45;projects/internal/projects.SaveProjects]">
-<path fill="#ffe4b5" stroke="#000000" stroke-width="1.5" d="M173.4152,-452C173.4152,-452 53.3338,-452 53.3338,-452 47.3338,-452 41.3338,-446 41.3338,-440 41.3338,-440 41.3338,-428 41.3338,-428 41.3338,-422 47.3338,-416 53.3338,-416 53.3338,-416 173.4152,-416 173.4152,-416 179.4152,-416 185.4152,-422 185.4152,-428 185.4152,-428 185.4152,-440 185.4152,-440 185.4152,-446 179.4152,-452 173.4152,-452"/>
-<text text-anchor="middle" x="113.3745" y="-429.8" font-family="Verdana" font-size="14.00" fill="#000000">CMD_addRepository</text>
+<g id="a_node9"><a xlink:title="github.com/wcatron/query&#45;projects/internal/commands.CMD_addRepository | defined in add.go:23&#10;at add.go:36: calling [github.com/wcatron/query&#45;projects/internal/projects.CloneRepository]&#10;at add.go:24: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]&#10;at add.go:46: calling [github.com/wcatron/query&#45;projects/internal/projects.SaveProjects]">
+<path fill="#ffe4b5" stroke="#000000" stroke-width="1.5" d="M173.4152,-60C173.4152,-60 53.3338,-60 53.3338,-60 47.3338,-60 41.3338,-54 41.3338,-48 41.3338,-48 41.3338,-36 41.3338,-36 41.3338,-30 47.3338,-24 53.3338,-24 53.3338,-24 173.4152,-24 173.4152,-24 179.4152,-24 185.4152,-30 185.4152,-36 185.4152,-36 185.4152,-48 185.4152,-48 185.4152,-54 179.4152,-60 173.4152,-60"/>
+<text text-anchor="middle" x="113.3745" y="-37.8" font-family="Verdana" font-size="14.00" fill="#000000">CMD_addRepository</text>
 </a>
 </g>
 </g>
@@ -133,143 +160,98 @@
 <g id="edge12" class="edge">
 <title>github.com/wcatron/query&#45;projects/internal/commands.CMD_addRepository&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.LoadProjects</title>
 <g id="a_edge12"><a xlink:title="at add.go:24: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]">
-<path fill="none" stroke="#8b4513" d="M185.5563,-417.593C194.469,-413.9182 203.1155,-409.4431 210.749,-404 250.6304,-375.5626 242.496,-350.9646 275.749,-315 289.8697,-299.7278 307.3001,-284.4877 322.1083,-272.4099"/>
-<polygon fill="#8b4513" stroke="#8b4513" points="324.4256,-275.0379 330.0277,-266.0452 320.0404,-269.5816 324.4256,-275.0379"/>
+<path fill="none" stroke="#8b4513" d="M185.5153,-58.013C194.4839,-61.7528 203.1561,-66.351 210.749,-72 252.3853,-102.9767 240.5628,-130.8546 275.749,-169 288.5039,-182.8276 304.5018,-196.088 318.691,-206.771"/>
+<polygon fill="#8b4513" stroke="#8b4513" points="316.6722,-209.631 326.7981,-212.7479 320.826,-203.9966 316.6722,-209.631"/>
 </a>
 </g>
 </g>
 <!-- github.com/wcatron/query&#45;projects/internal/commands.CMD_addRepository&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.CloneRepository -->
-<g id="edge4" class="edge">
+<g id="edge9" class="edge">
 <title>github.com/wcatron/query&#45;projects/internal/commands.CMD_addRepository&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.CloneRepository</title>
-<g id="a_edge4"><a xlink:title="at add.go:36: calling [github.com/wcatron/query&#45;projects/internal/projects.CloneRepository]">
-<path fill="none" stroke="#8b4513" d="M174.9532,-415.9707C186.8938,-412.2096 199.2624,-408.1276 210.749,-404 241.9657,-392.7825 276.3486,-378.6644 303.5855,-367.0514"/>
-<polygon fill="#8b4513" stroke="#8b4513" points="305.0921,-370.2136 312.9046,-363.0571 302.3344,-363.7797 305.0921,-370.2136"/>
+<g id="a_edge9"><a xlink:title="at add.go:36: calling [github.com/wcatron/query&#45;projects/internal/projects.CloneRepository]">
+<path fill="none" stroke="#8b4513" d="M176.3908,-60.067C187.9134,-63.7509 199.7626,-67.7954 210.749,-72 244.3783,-84.8703 281.2522,-101.953 309.1446,-115.5143"/>
+<polygon fill="#8b4513" stroke="#8b4513" points="307.7212,-118.7143 318.2417,-119.9672 310.7987,-112.4271 307.7212,-118.7143"/>
 </a>
 </g>
 </g>
 <!-- github.com/wcatron/query&#45;projects/internal/commands.CMD_addRepository&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.SaveProjects -->
-<g id="edge13" class="edge">
+<g id="edge16" class="edge">
 <title>github.com/wcatron/query&#45;projects/internal/commands.CMD_addRepository&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.SaveProjects</title>
-<g id="a_edge13"><a xlink:title="at add.go:46: calling [github.com/wcatron/query&#45;projects/internal/projects.SaveProjects]">
-<path fill="none" stroke="#8b4513" d="M185.5219,-430.6996C220.4746,-429.1007 261.9185,-427.2049 294.9357,-425.6945"/>
-<polygon fill="#8b4513" stroke="#8b4513" points="295.511,-429.172 305.3406,-425.2186 295.1911,-422.1793 295.511,-429.172"/>
-</a>
-</g>
-</g>
-<!-- github.com/wcatron/query&#45;projects/internal/commands.modifyScriptBasedOnInput -->
-<g id="node9" class="node">
-<title>github.com/wcatron/query&#45;projects/internal/commands.modifyScriptBasedOnInput</title>
-<g id="a_node9"><a xlink:title="github.com/wcatron/query&#45;projects/internal/commands.modifyScriptBasedOnInput | defined in ask.go:209&#10;at ask.go:223: calling [github.com/wcatron/query&#45;projects/internal/projects.ExtractTypeScriptCode]">
-<path fill="#ffe4b5" stroke="#000000" stroke-width=".5" d="M190.6237,-513C190.6237,-513 36.1253,-513 36.1253,-513 30.1253,-513 24.1253,-507 24.1253,-501 24.1253,-501 24.1253,-489 24.1253,-489 24.1253,-483 30.1253,-477 36.1253,-477 36.1253,-477 190.6237,-477 190.6237,-477 196.6237,-477 202.6237,-483 202.6237,-489 202.6237,-489 202.6237,-501 202.6237,-501 202.6237,-507 196.6237,-513 190.6237,-513"/>
-<text text-anchor="middle" x="113.3745" y="-490.8" font-family="Verdana" font-size="14.00" fill="#000000">modifyScriptBasedOnInput</text>
-</a>
-</g>
-</g>
-<!-- github.com/wcatron/query&#45;projects/internal/commands.modifyScriptBasedOnInput&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.ExtractTypeScriptCode -->
-<g id="edge5" class="edge">
-<title>github.com/wcatron/query&#45;projects/internal/commands.modifyScriptBasedOnInput&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.ExtractTypeScriptCode</title>
-<g id="a_edge5"><a xlink:title="at ask.go:223: calling [github.com/wcatron/query&#45;projects/internal/projects.ExtractTypeScriptCode]">
-<path fill="none" stroke="#8b4513" d="M202.9148,-506.1709C223.4555,-508.7335 245.2771,-511.4559 265.7558,-514.0108"/>
-<polygon fill="#8b4513" stroke="#8b4513" points="265.3331,-517.4851 275.6895,-515.2501 266.1998,-510.539 265.3331,-517.4851"/>
-</a>
-</g>
-</g>
-<!-- github.com/wcatron/query&#45;projects/internal/commands.CMD_runScript -->
-<g id="node10" class="node">
-<title>github.com/wcatron/query&#45;projects/internal/commands.CMD_runScript</title>
-<g id="a_node10"><a xlink:title="github.com/wcatron/query&#45;projects/internal/commands.CMD_runScript | defined in run.go:65&#10;at run.go:66: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]&#10;at run.go:70: calling [github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics]">
-<path fill="#ffe4b5" stroke="#000000" stroke-width="1.5" d="M158.8619,-147C158.8619,-147 67.8871,-147 67.8871,-147 61.8871,-147 55.8871,-141 55.8871,-135 55.8871,-135 55.8871,-123 55.8871,-123 55.8871,-117 61.8871,-111 67.8871,-111 67.8871,-111 158.8619,-111 158.8619,-111 164.8619,-111 170.8619,-117 170.8619,-123 170.8619,-123 170.8619,-135 170.8619,-135 170.8619,-141 164.8619,-147 158.8619,-147"/>
-<text text-anchor="middle" x="113.3745" y="-124.8" font-family="Verdana" font-size="14.00" fill="#000000">CMD_runScript</text>
-</a>
-</g>
-</g>
-<!-- github.com/wcatron/query&#45;projects/internal/commands.CMD_runScript&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.LoadProjects -->
-<g id="edge1" class="edge">
-<title>github.com/wcatron/query&#45;projects/internal/commands.CMD_runScript&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.LoadProjects</title>
-<g id="a_edge1"><a xlink:title="at run.go:66: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]">
-<path fill="none" stroke="#8b4513" d="M170.8932,-144.757C184.2157,-149.1036 198.1693,-154.2339 210.749,-160 250.272,-178.1162 292.2879,-204.9751 320.4904,-224.2509"/>
-<polygon fill="#8b4513" stroke="#8b4513" points="318.5627,-227.1731 328.7813,-229.9715 322.5382,-221.4115 318.5627,-227.1731"/>
-</a>
-</g>
-</g>
-<!-- github.com/wcatron/query&#45;projects/internal/commands.CMD_runScript&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics -->
-<g id="edge6" class="edge">
-<title>github.com/wcatron/query&#45;projects/internal/commands.CMD_runScript&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics</title>
-<g id="a_edge6"><a xlink:title="at run.go:70: calling [github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics]">
-<path fill="none" stroke="#8b4513" d="M170.9719,-125.1676C199.5575,-123.2656 234.6967,-120.9275 266.5071,-118.8109"/>
-<polygon fill="#8b4513" stroke="#8b4513" points="266.9602,-122.2886 276.7057,-118.1323 266.4954,-115.304 266.9602,-122.2886"/>
+<g id="a_edge16"><a xlink:title="at add.go:46: calling [github.com/wcatron/query&#45;projects/internal/projects.SaveProjects]">
+<path fill="none" stroke="#8b4513" d="M185.5219,-45.6004C220.4746,-47.3446 261.9185,-49.4128 294.9357,-51.0605"/>
+<polygon fill="#8b4513" stroke="#8b4513" points="295.1786,-54.5769 305.3406,-51.5797 295.5275,-47.5856 295.1786,-54.5769"/>
 </a>
 </g>
 </g>
 <!-- github.com/wcatron/query&#45;projects/internal/commands.CMD_info -->
-<g id="node11" class="node">
+<g id="node10" class="node">
 <title>github.com/wcatron/query&#45;projects/internal/commands.CMD_info</title>
-<g id="a_node11"><a xlink:title="github.com/wcatron/query&#45;projects/internal/commands.CMD_info | defined in info.go:21&#10;at info.go:22: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]">
-<path fill="#ffe4b5" stroke="#000000" stroke-width="1.5" d="M144.3146,-330C144.3146,-330 82.4344,-330 82.4344,-330 76.4344,-330 70.4344,-324 70.4344,-318 70.4344,-318 70.4344,-306 70.4344,-306 70.4344,-300 76.4344,-294 82.4344,-294 82.4344,-294 144.3146,-294 144.3146,-294 150.3146,-294 156.3146,-300 156.3146,-306 156.3146,-306 156.3146,-318 156.3146,-318 156.3146,-324 150.3146,-330 144.3146,-330"/>
-<text text-anchor="middle" x="113.3745" y="-307.8" font-family="Verdana" font-size="14.00" fill="#000000">CMD_info</text>
+<g id="a_node10"><a xlink:title="github.com/wcatron/query&#45;projects/internal/commands.CMD_info | defined in info.go:21&#10;at info.go:22: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]">
+<path fill="#ffe4b5" stroke="#000000" stroke-width="1.5" d="M144.3146,-304C144.3146,-304 82.4344,-304 82.4344,-304 76.4344,-304 70.4344,-298 70.4344,-292 70.4344,-292 70.4344,-280 70.4344,-280 70.4344,-274 76.4344,-268 82.4344,-268 82.4344,-268 144.3146,-268 144.3146,-268 150.3146,-268 156.3146,-274 156.3146,-280 156.3146,-280 156.3146,-292 156.3146,-292 156.3146,-298 150.3146,-304 144.3146,-304"/>
+<text text-anchor="middle" x="113.3745" y="-281.8" font-family="Verdana" font-size="14.00" fill="#000000">CMD_info</text>
 </a>
 </g>
 </g>
 <!-- github.com/wcatron/query&#45;projects/internal/commands.CMD_info&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.LoadProjects -->
-<g id="edge14" class="edge">
+<g id="edge17" class="edge">
 <title>github.com/wcatron/query&#45;projects/internal/commands.CMD_info&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.LoadProjects</title>
-<g id="a_edge14"><a xlink:title="at info.go:22: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]">
-<path fill="none" stroke="#8b4513" d="M156.3648,-300.5581C194.9658,-290.2844 251.9875,-275.108 294.8463,-263.7011"/>
-<polygon fill="#8b4513" stroke="#8b4513" points="295.8251,-267.0625 304.5885,-261.1082 294.0247,-260.298 295.8251,-267.0625"/>
+<g id="a_edge17"><a xlink:title="at info.go:22: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]">
+<path fill="none" stroke="#8b4513" d="M156.3648,-276.1671C194.8846,-267.3567 251.7475,-254.3508 294.5754,-244.5551"/>
+<polygon fill="#8b4513" stroke="#8b4513" points="295.6206,-247.9065 304.5885,-242.2649 294.0598,-241.0827 295.6206,-247.9065"/>
 </a>
 </g>
 </g>
 <!-- github.com/wcatron/query&#45;projects/internal/commands.CMD_pullRepos -->
-<g id="node12" class="node">
+<g id="node11" class="node">
 <title>github.com/wcatron/query&#45;projects/internal/commands.CMD_pullRepos</title>
-<g id="a_node12"><a xlink:title="github.com/wcatron/query&#45;projects/internal/commands.CMD_pullRepos | defined in pull.go:20&#10;at pull.go:21: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]&#10;at pull.go:28: calling [github.com/wcatron/query&#45;projects/internal/projects.CloneRepository]&#10;at pull.go:25: calling [github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics]">
-<path fill="#ffe4b5" stroke="#000000" stroke-width="1.5" d="M161.0398,-208C161.0398,-208 65.7092,-208 65.7092,-208 59.7092,-208 53.7092,-202 53.7092,-196 53.7092,-196 53.7092,-184 53.7092,-184 53.7092,-178 59.7092,-172 65.7092,-172 65.7092,-172 161.0398,-172 161.0398,-172 167.0398,-172 173.0398,-178 173.0398,-184 173.0398,-184 173.0398,-196 173.0398,-196 173.0398,-202 167.0398,-208 161.0398,-208"/>
-<text text-anchor="middle" x="113.3745" y="-185.8" font-family="Verdana" font-size="14.00" fill="#000000">CMD_pullRepos</text>
+<g id="a_node11"><a xlink:title="github.com/wcatron/query&#45;projects/internal/commands.CMD_pullRepos | defined in pull.go:20&#10;at pull.go:21: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]&#10;at pull.go:25: calling [github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics]&#10;at pull.go:28: calling [github.com/wcatron/query&#45;projects/internal/projects.CloneRepository]">
+<path fill="#ffe4b5" stroke="#000000" stroke-width="1.5" d="M161.0398,-182C161.0398,-182 65.7092,-182 65.7092,-182 59.7092,-182 53.7092,-176 53.7092,-170 53.7092,-170 53.7092,-158 53.7092,-158 53.7092,-152 59.7092,-146 65.7092,-146 65.7092,-146 161.0398,-146 161.0398,-146 167.0398,-146 173.0398,-152 173.0398,-158 173.0398,-158 173.0398,-170 173.0398,-170 173.0398,-176 167.0398,-182 161.0398,-182"/>
+<text text-anchor="middle" x="113.3745" y="-159.8" font-family="Verdana" font-size="14.00" fill="#000000">CMD_pullRepos</text>
 </a>
 </g>
 </g>
 <!-- github.com/wcatron/query&#45;projects/internal/commands.CMD_pullRepos&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.LoadProjects -->
-<g id="edge7" class="edge">
+<g id="edge1" class="edge">
 <title>github.com/wcatron/query&#45;projects/internal/commands.CMD_pullRepos&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.LoadProjects</title>
-<g id="a_edge7"><a xlink:title="at pull.go:21: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]">
-<path fill="none" stroke="#8b4513" d="M173.1243,-204.4116C210.2496,-213.3662 257.7783,-224.8301 294.7747,-233.7536"/>
-<polygon fill="#8b4513" stroke="#8b4513" points="294.371,-237.2565 304.9129,-236.1989 296.0124,-230.4517 294.371,-237.2565"/>
-</a>
-</g>
-</g>
-<!-- github.com/wcatron/query&#45;projects/internal/commands.CMD_pullRepos&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.CloneRepository -->
-<g id="edge8" class="edge">
-<title>github.com/wcatron/query&#45;projects/internal/commands.CMD_pullRepos&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.CloneRepository</title>
-<g id="a_edge8"><a xlink:title="at pull.go:28: calling [github.com/wcatron/query&#45;projects/internal/projects.CloneRepository]">
-<path fill="none" stroke="#8b4513" d="M173.2398,-204.6897C186.0477,-209.0166 199.1911,-214.4072 210.749,-221 244.3801,-240.1836 246.5165,-253.6126 275.749,-279 291.6935,-292.8472 309.6834,-308.078 324.3741,-320.4159"/>
-<polygon fill="#8b4513" stroke="#8b4513" points="322.2505,-323.2028 332.1623,-326.9455 326.7479,-317.8386 322.2505,-323.2028"/>
+<g id="a_edge1"><a xlink:title="at pull.go:21: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]">
+<path fill="none" stroke="#8b4513" d="M173.1243,-180.6479C210.4083,-191.0362 258.1847,-204.348 295.2484,-214.675"/>
+<polygon fill="#8b4513" stroke="#8b4513" points="294.3404,-218.0552 304.9129,-217.3677 296.2193,-211.3121 294.3404,-218.0552"/>
 </a>
 </g>
 </g>
 <!-- github.com/wcatron/query&#45;projects/internal/commands.CMD_pullRepos&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics -->
-<g id="edge15" class="edge">
+<g id="edge2" class="edge">
 <title>github.com/wcatron/query&#45;projects/internal/commands.CMD_pullRepos&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics</title>
-<g id="a_edge15"><a xlink:title="at pull.go:25: calling [github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics]">
-<path fill="none" stroke="#8b4513" d="M172.6471,-171.9304C185.2385,-168.0382 198.4438,-163.9161 210.749,-160 236.705,-151.7396 265.2305,-142.4194 289.9365,-134.2696"/>
-<polygon fill="#8b4513" stroke="#8b4513" points="291.1608,-137.5513 299.5583,-131.0913 288.9651,-130.9046 291.1608,-137.5513"/>
+<g id="a_edge2"><a xlink:title="at pull.go:25: calling [github.com/wcatron/query&#45;projects/internal/projects.FilterProjectsByTopics]">
+<path fill="none" stroke="#8b4513" d="M173.1752,-177.7709C186.1212,-182.1655 199.3387,-187.8161 210.749,-195 217.9492,-199.5332 291.5989,-279.2244 330.3235,-321.3567"/>
+<polygon fill="#8b4513" stroke="#8b4513" points="327.7815,-323.7632 337.124,-328.7601 332.9367,-319.0278 327.7815,-323.7632"/>
+</a>
+</g>
+</g>
+<!-- github.com/wcatron/query&#45;projects/internal/commands.CMD_pullRepos&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.CloneRepository -->
+<g id="edge3" class="edge">
+<title>github.com/wcatron/query&#45;projects/internal/commands.CMD_pullRepos&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.CloneRepository</title>
+<g id="a_edge3"><a xlink:title="at pull.go:28: calling [github.com/wcatron/query&#45;projects/internal/projects.CloneRepository]">
+<path fill="none" stroke="#8b4513" d="M173.1243,-157.5396C206.7994,-153.8985 249.0341,-149.332 284.2039,-145.5293"/>
+<polygon fill="#8b4513" stroke="#8b4513" points="284.8317,-148.9819 294.3975,-144.4271 284.0792,-142.0224 284.8317,-148.9819"/>
 </a>
 </g>
 </g>
 <!-- github.com/wcatron/query&#45;projects/internal/commands.CMD_syncRepos -->
-<g id="node13" class="node">
+<g id="node12" class="node">
 <title>github.com/wcatron/query&#45;projects/internal/commands.CMD_syncRepos</title>
-<g id="a_node13"><a xlink:title="github.com/wcatron/query&#45;projects/internal/commands.CMD_syncRepos | defined in sync.go:80&#10;at sync.go:81: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]&#10;at sync.go:106: calling [github.com/wcatron/query&#45;projects/internal/projects.SaveProjects]">
-<path fill="#ffe4b5" stroke="#000000" stroke-width="1.5" d="M162.9181,-391C162.9181,-391 63.8309,-391 63.8309,-391 57.8309,-391 51.8309,-385 51.8309,-379 51.8309,-379 51.8309,-367 51.8309,-367 51.8309,-361 57.8309,-355 63.8309,-355 63.8309,-355 162.9181,-355 162.9181,-355 168.9181,-355 174.9181,-361 174.9181,-367 174.9181,-367 174.9181,-379 174.9181,-379 174.9181,-385 168.9181,-391 162.9181,-391"/>
-<text text-anchor="middle" x="113.3745" y="-368.8" font-family="Verdana" font-size="14.00" fill="#000000">CMD_syncRepos</text>
+<g id="a_node12"><a xlink:title="github.com/wcatron/query&#45;projects/internal/commands.CMD_syncRepos | defined in sync.go:80&#10;at sync.go:81: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]&#10;at sync.go:106: calling [github.com/wcatron/query&#45;projects/internal/projects.SaveProjects]">
+<path fill="#ffe4b5" stroke="#000000" stroke-width="1.5" d="M162.9181,-121C162.9181,-121 63.8309,-121 63.8309,-121 57.8309,-121 51.8309,-115 51.8309,-109 51.8309,-109 51.8309,-97 51.8309,-97 51.8309,-91 57.8309,-85 63.8309,-85 63.8309,-85 162.9181,-85 162.9181,-85 168.9181,-85 174.9181,-91 174.9181,-97 174.9181,-97 174.9181,-109 174.9181,-109 174.9181,-115 168.9181,-121 162.9181,-121"/>
+<text text-anchor="middle" x="113.3745" y="-98.8" font-family="Verdana" font-size="14.00" fill="#000000">CMD_syncRepos</text>
 </a>
 </g>
 </g>
 <!-- github.com/wcatron/query&#45;projects/internal/commands.CMD_syncRepos&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.LoadProjects -->
-<g id="edge9" class="edge">
+<g id="edge4" class="edge">
 <title>github.com/wcatron/query&#45;projects/internal/commands.CMD_syncRepos&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.LoadProjects</title>
-<g id="a_edge9"><a xlink:title="at sync.go:81: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]">
-<path fill="none" stroke="#8b4513" d="M175.1675,-356.8991C187.2079,-352.9475 199.5589,-348.302 210.749,-343 251.7757,-323.5611 294.6141,-293.6424 322.5982,-272.5846"/>
-<polygon fill="#8b4513" stroke="#8b4513" points="324.9474,-275.1952 330.7875,-266.3554 320.7094,-269.6238 324.9474,-275.1952"/>
+<g id="a_edge4"><a xlink:title="at sync.go:81: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]">
+<path fill="none" stroke="#8b4513" d="M174.9706,-118.8886C187.0876,-122.8687 199.5178,-127.5791 210.749,-133 252.5253,-153.164 295.8423,-184.5511 323.7155,-206.3502"/>
+<polygon fill="#8b4513" stroke="#8b4513" points="321.8366,-209.3265 331.8512,-212.7846 326.1789,-203.8361 321.8366,-209.3265"/>
 </a>
 </g>
 </g>
@@ -277,44 +259,62 @@
 <g id="edge10" class="edge">
 <title>github.com/wcatron/query&#45;projects/internal/commands.CMD_syncRepos&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.SaveProjects</title>
 <g id="a_edge10"><a xlink:title="at sync.go:106: calling [github.com/wcatron/query&#45;projects/internal/projects.SaveProjects]">
-<path fill="none" stroke="#8b4513" d="M174.988,-385.8113C212.1288,-393.534 259.1503,-403.3112 295.6577,-410.9022"/>
-<polygon fill="#8b4513" stroke="#8b4513" points="295.1557,-414.3726 305.6588,-412.9818 296.5808,-407.5192 295.1557,-414.3726"/>
+<path fill="none" stroke="#8b4513" d="M174.988,-90.4449C212.1288,-82.8767 259.1503,-73.295 295.6577,-65.8558"/>
+<polygon fill="#8b4513" stroke="#8b4513" points="296.5591,-69.2441 305.6588,-63.8179 295.1613,-62.3851 296.5591,-69.2441"/>
 </a>
 </g>
 </g>
 <!-- github.com/wcatron/query&#45;projects/internal/commands.generateScriptForQuestion -->
-<g id="node14" class="node">
+<g id="node13" class="node">
 <title>github.com/wcatron/query&#45;projects/internal/commands.generateScriptForQuestion</title>
-<g id="a_node14"><a xlink:title="github.com/wcatron/query&#45;projects/internal/commands.generateScriptForQuestion | defined in ask.go:169&#10;at ask.go:192: calling [github.com/wcatron/query&#45;projects/internal/projects.ExtractTypeScriptCode]">
-<path fill="#ffe4b5" stroke="#000000" stroke-width=".5" d="M188.7134,-574C188.7134,-574 38.0356,-574 38.0356,-574 32.0356,-574 26.0356,-568 26.0356,-562 26.0356,-562 26.0356,-550 26.0356,-550 26.0356,-544 32.0356,-538 38.0356,-538 38.0356,-538 188.7134,-538 188.7134,-538 194.7134,-538 200.7134,-544 200.7134,-550 200.7134,-550 200.7134,-562 200.7134,-562 200.7134,-568 194.7134,-574 188.7134,-574"/>
-<text text-anchor="middle" x="113.3745" y="-551.8" font-family="Verdana" font-size="14.00" fill="#000000">generateScriptForQuestion</text>
+<g id="a_node13"><a xlink:title="github.com/wcatron/query&#45;projects/internal/commands.generateScriptForQuestion | defined in ask.go:169&#10;at ask.go:192: calling [github.com/wcatron/query&#45;projects/internal/projects.ExtractTypeScriptCode]">
+<path fill="#ffe4b5" stroke="#000000" stroke-width=".5" d="M188.7134,-426C188.7134,-426 38.0356,-426 38.0356,-426 32.0356,-426 26.0356,-420 26.0356,-414 26.0356,-414 26.0356,-402 26.0356,-402 26.0356,-396 32.0356,-390 38.0356,-390 38.0356,-390 188.7134,-390 188.7134,-390 194.7134,-390 200.7134,-396 200.7134,-402 200.7134,-402 200.7134,-414 200.7134,-414 200.7134,-420 194.7134,-426 188.7134,-426"/>
+<text text-anchor="middle" x="113.3745" y="-403.8" font-family="Verdana" font-size="14.00" fill="#000000">generateScriptForQuestion</text>
 </a>
 </g>
 </g>
 <!-- github.com/wcatron/query&#45;projects/internal/commands.generateScriptForQuestion&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.ExtractTypeScriptCode -->
-<g id="edge3" class="edge">
+<g id="edge13" class="edge">
 <title>github.com/wcatron/query&#45;projects/internal/commands.generateScriptForQuestion&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.ExtractTypeScriptCode</title>
-<g id="a_edge3"><a xlink:title="at ask.go:192: calling [github.com/wcatron/query&#45;projects/internal/projects.ExtractTypeScriptCode]">
-<path fill="none" stroke="#8b4513" d="M200.8681,-544.7206C221.9669,-542.0006 244.5217,-539.0929 265.652,-536.3689"/>
-<polygon fill="#8b4513" stroke="#8b4513" points="266.1023,-539.8399 275.5727,-535.0899 265.2072,-532.8973 266.1023,-539.8399"/>
+<g id="a_edge13"><a xlink:title="at ask.go:192: calling [github.com/wcatron/query&#45;projects/internal/projects.ExtractTypeScriptCode]">
+<path fill="none" stroke="#8b4513" d="M200.8681,-409.8193C221.8714,-410.256 244.3176,-410.7227 265.3651,-411.1603"/>
+<polygon fill="#8b4513" stroke="#8b4513" points="265.502,-414.6639 275.5727,-411.3726 265.6476,-407.6654 265.502,-414.6639"/>
 </a>
 </g>
 </g>
 <!-- github.com/wcatron/query&#45;projects/internal/commands.CMD_ask -->
-<g id="node15" class="node">
+<g id="node14" class="node">
 <title>github.com/wcatron/query&#45;projects/internal/commands.CMD_ask</title>
-<g id="a_node15"><a xlink:title="github.com/wcatron/query&#45;projects/internal/commands.CMD_ask | defined in ask.go:36&#10;at ask.go:45: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]">
-<path fill="#ffe4b5" stroke="#000000" stroke-width="1.5" d="M141.9228,-269C141.9228,-269 84.8262,-269 84.8262,-269 78.8262,-269 72.8262,-263 72.8262,-257 72.8262,-257 72.8262,-245 72.8262,-245 72.8262,-239 78.8262,-233 84.8262,-233 84.8262,-233 141.9228,-233 141.9228,-233 147.9228,-233 153.9228,-239 153.9228,-245 153.9228,-245 153.9228,-257 153.9228,-257 153.9228,-263 147.9228,-269 141.9228,-269"/>
-<text text-anchor="middle" x="113.3745" y="-246.8" font-family="Verdana" font-size="14.00" fill="#000000">CMD_ask</text>
+<g id="a_node14"><a xlink:title="github.com/wcatron/query&#45;projects/internal/commands.CMD_ask | defined in ask.go:36&#10;at ask.go:45: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]">
+<path fill="#ffe4b5" stroke="#000000" stroke-width="1.5" d="M141.9228,-243C141.9228,-243 84.8262,-243 84.8262,-243 78.8262,-243 72.8262,-237 72.8262,-231 72.8262,-231 72.8262,-219 72.8262,-219 72.8262,-213 78.8262,-207 84.8262,-207 84.8262,-207 141.9228,-207 141.9228,-207 147.9228,-207 153.9228,-213 153.9228,-219 153.9228,-219 153.9228,-231 153.9228,-231 153.9228,-237 147.9228,-243 141.9228,-243"/>
+<text text-anchor="middle" x="113.3745" y="-220.8" font-family="Verdana" font-size="14.00" fill="#000000">CMD_ask</text>
 </a>
 </g>
 </g>
 <!-- github.com/wcatron/query&#45;projects/internal/commands.CMD_ask&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.LoadProjects -->
-<g id="edge17" class="edge">
+<g id="edge5" class="edge">
 <title>github.com/wcatron/query&#45;projects/internal/commands.CMD_ask&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.LoadProjects</title>
-<g id="a_edge17"><a xlink:title="at ask.go:45: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]">
-<path fill="none" stroke="#8b4513" d="M154.1661,-250.4911C192.7458,-250.0098 251.0777,-249.282 294.7469,-248.7372"/>
-<polygon fill="#8b4513" stroke="#8b4513" points="294.9936,-252.2345 304.9492,-248.6099 294.9062,-245.2351 294.9936,-252.2345"/>
+<g id="a_edge5"><a xlink:title="at ask.go:45: calling [github.com/wcatron/query&#45;projects/internal/projects.LoadProjects]">
+<path fill="none" stroke="#8b4513" d="M154.1661,-226.0178C192.7458,-226.9804 251.0777,-228.4359 294.7469,-229.5255"/>
+<polygon fill="#8b4513" stroke="#8b4513" points="294.8649,-233.0295 304.9492,-229.7801 295.0396,-226.0317 294.8649,-233.0295"/>
+</a>
+</g>
+</g>
+<!-- github.com/wcatron/query&#45;projects/internal/commands.modifyScriptBasedOnInput -->
+<g id="node15" class="node">
+<title>github.com/wcatron/query&#45;projects/internal/commands.modifyScriptBasedOnInput</title>
+<g id="a_node15"><a xlink:title="github.com/wcatron/query&#45;projects/internal/commands.modifyScriptBasedOnInput | defined in ask.go:209&#10;at ask.go:223: calling [github.com/wcatron/query&#45;projects/internal/projects.ExtractTypeScriptCode]">
+<path fill="#ffe4b5" stroke="#000000" stroke-width=".5" d="M190.6237,-487C190.6237,-487 36.1253,-487 36.1253,-487 30.1253,-487 24.1253,-481 24.1253,-475 24.1253,-475 24.1253,-463 24.1253,-463 24.1253,-457 30.1253,-451 36.1253,-451 36.1253,-451 190.6237,-451 190.6237,-451 196.6237,-451 202.6237,-457 202.6237,-463 202.6237,-463 202.6237,-475 202.6237,-475 202.6237,-481 196.6237,-487 190.6237,-487"/>
+<text text-anchor="middle" x="113.3745" y="-464.8" font-family="Verdana" font-size="14.00" fill="#000000">modifyScriptBasedOnInput</text>
+</a>
+</g>
+</g>
+<!-- github.com/wcatron/query&#45;projects/internal/commands.modifyScriptBasedOnInput&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.ExtractTypeScriptCode -->
+<g id="edge6" class="edge">
+<title>github.com/wcatron/query&#45;projects/internal/commands.modifyScriptBasedOnInput&#45;&gt;github.com/wcatron/query&#45;projects/internal/projects.ExtractTypeScriptCode</title>
+<g id="a_edge6"><a xlink:title="at ask.go:223: calling [github.com/wcatron/query&#45;projects/internal/projects.ExtractTypeScriptCode]">
+<path fill="none" stroke="#8b4513" d="M190.7828,-450.973C214.9029,-445.3559 241.668,-439.1227 266.4232,-433.3577"/>
+<polygon fill="#8b4513" stroke="#8b4513" points="267.2188,-436.7662 276.1643,-431.0892 265.631,-429.9486 267.2188,-436.7662"/>
 </a>
 </g>
 </g>
