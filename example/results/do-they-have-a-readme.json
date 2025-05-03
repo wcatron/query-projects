@@ -1,0 +1,22 @@
+[
+  {
+    "Project Path": "./projects/next.js",
+    "Status": "Success",
+    "StdOut": "Yes"
+  },
+  {
+    "Project Path": "./projects/ai",
+    "Status": "Success",
+    "StdOut": "No"
+  },
+  {
+    "Project Path": "./projects/storage",
+    "Status": "Success",
+    "StdOut": "Yes"
+  },
+  {
+    "Project Path": "./projects/swr",
+    "Status": "Success",
+    "StdOut": "Yes"
+  }
+]

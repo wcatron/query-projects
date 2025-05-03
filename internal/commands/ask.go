@@ -63,7 +63,7 @@ func cmd_askQuestion(question string) error {
 		return fmt.Errorf("error running script: %w", err)
 	}
 
-	fmt.Printf("Result:\n%s\n", result.stdoutText)
+	fmt.Printf("Result:\n%s\n", result.StdoutText)
 
 	// Prompt user for feedback
 	reader := bufio.NewReader(os.Stdin)
@@ -99,7 +99,7 @@ func cmd_askQuestion(question string) error {
 		if err != nil {
 			fmt.Printf("Error running script: %v\n", err)
 		} else {
-			fmt.Printf("Result:\n%s\n", result.stdoutText)
+			fmt.Printf("Result:\n%s\n", result.StdoutText)
 		}
 	}
 

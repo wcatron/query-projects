@@ -15,15 +15,9 @@ import (
 
 	"github.com/charmbracelet/glamour"
 	"github.com/spf13/cobra"
+	"github.com/wcatron/query-projects/internal/outputs"
 	"github.com/wcatron/query-projects/internal/projects"
 )
-
-type ScriptInfo struct {
-	Path    string   `json:"path"`
-	Version string   `json:"version"`
-	Output  string   `json:"output"`
-	Columns []string `json:"columns"`
-}
 
 var RunCmd = &cobra.Command{
 	Use:   "run [scriptName]",
@@ -43,43 +37,22 @@ var RunCmd = &cobra.Command{
 	}),
 }
 
-// formatCSVOutput formats CSV output based on column headers.
-func formatCSVOutput(csvText string, columns []string) string {
-	var sb strings.Builder
-	sb.WriteString(strings.Join(columns, ",") + "\n")
-	sb.WriteString(csvText)
-	return sb.String()
-}
-
 // getScriptInfo executes a script with the --info flag and returns the parsed JSON output.
-func getScriptInfo(scriptPath string) (ScriptInfo, error) {
+func getScriptInfo(scriptPath string) (outputs.ScriptInfo, error) {
 	cmd := exec.Command("deno", "run", "--allow-all", scriptPath, "--info")
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		return ScriptInfo{}, fmt.Errorf("failed to run script with --info: %w", err)
+		return outputs.ScriptInfo{}, fmt.Errorf("failed to run script with --info: %w", err)
 	}
 
-	var info ScriptInfo
+	var info outputs.ScriptInfo
 	if err := json.Unmarshal(output, &info); err != nil {
-		return ScriptInfo{}, fmt.Errorf("failed to parse script info: %w", err)
+		return outputs.ScriptInfo{}, fmt.Errorf("failed to parse script info: %w", err)
 	}
 
 	info.Path = scriptPath
 
 	return info, nil
-}
-
-// printMarkdownToConsole renders the results in markdown format to the console using Glamour.
-func printMarkdownToConsole(results []result) {
-	var sb strings.Builder = createMarkdownString(results)
-
-	// Render the markdown table using Glamour
-	out, err := glamour.Render(sb.String(), "dark")
-	if err != nil {
-		fmt.Println("Error rendering markdown:", err)
-		return
-	}
-	fmt.Print(out)
 }
 
 func RunCmdInit(cmd *cobra.Command) {
@@ -95,7 +68,7 @@ func cmd_runScript(scriptName string, topics []string, count bool, outputFormats
 	}
 	targets := projects.FilterProjectsByTopics(projectsList.Projects, topics)
 
-	scriptInfo, err := func() (ScriptInfo, error) {
+	scriptInfo, err := func() (outputs.ScriptInfo, error) {
 		if scriptName != "" {
 			return getScriptInfo(scriptName) // path or name provided
 		}
@@ -112,13 +85,13 @@ func cmd_runScript(scriptName string, topics []string, count bool, outputFormats
 	return nil
 }
 
-func selectScriptInfo() (ScriptInfo, error) {
+func selectScriptInfo() (outputs.ScriptInfo, error) {
 	var scriptPaths []string
-	var scriptInfos []ScriptInfo
+	var scriptInfos []outputs.ScriptInfo
 
 	files, err := os.ReadDir(projects.ScriptsFolder)
 	if err != nil {
-		return ScriptInfo{}, err
+		return outputs.ScriptInfo{}, err
 	}
 
 	// Collect all *.ts files
@@ -129,7 +102,7 @@ func selectScriptInfo() (ScriptInfo, error) {
 	}
 	if len(scriptPaths) == 0 {
 		fmt.Println()
-		return ScriptInfo{}, fmt.Errorf("No .ts scripts found in the scripts folder: %q", projects.ScriptsFolder)
+		return outputs.ScriptInfo{}, fmt.Errorf("No .ts scripts found in the scripts folder: %q", projects.ScriptsFolder)
 	}
 
 	// Gather script information
@@ -162,7 +135,7 @@ func selectScriptInfo() (ScriptInfo, error) {
 	out, err := glamour.Render(sb.String(), "dark")
 	if err != nil {
 		fmt.Println("Error rendering markdown:", err)
-		return ScriptInfo{}, err
+		return outputs.ScriptInfo{}, err
 	}
 	fmt.Print(out)
 
@@ -173,42 +146,22 @@ func selectScriptInfo() (ScriptInfo, error) {
 	input = strings.TrimSpace(input)
 	choice, err := strconv.Atoi(input)
 	if err != nil || choice < 1 || choice > len(scriptInfos) {
-		return ScriptInfo{}, errors.New("invalid selection")
+		return outputs.ScriptInfo{}, errors.New("invalid selection")
 	}
 	return scriptInfos[choice-1], nil
-
-}
-
-// We'll capture results for printing
-type result struct {
-	projectPath string
-	status      string
-	stdoutText  string
-	stderrText  string
-	index       int
-}
-
-func collectResults(resultsChan <-chan result, total int) []result {
-	// Allocate the full slice up front; every slot will be written exactly once.
-	results := make([]result, total)
-
-	for r := range resultsChan {
-		results[r.index] = r // O(1) placement, no mutex needed
-	}
-	return results
 }
 
 // runScriptsForprojectsList executes the specified .ts script against all projects.
-func runScriptsForprojectsList(scriptInfo ScriptInfo, projectsList []projects.Project, count bool, outputFormats []string) error {
+func runScriptsForprojectsList(scriptInfo outputs.ScriptInfo, projectsList []projects.Project, count bool, outputFormats []string) error {
 	var wg sync.WaitGroup
-	resultsChan := make(chan result, len(projectsList))
+	resultsChan := make(chan outputs.Result, len(projectsList))
 
 	for i, p := range projectsList {
 		wg.Add(1)
 		go func(project projects.Project, index int) {
 			defer wg.Done()
 			r, err := runScriptForProject(scriptInfo, project.Path)
-			r.index = i
+			r.Index = index
 			if err != nil {
 				fmt.Printf("Error in project %s: %v\n", project.Name, err)
 			}
@@ -219,7 +172,7 @@ func runScriptsForprojectsList(scriptInfo ScriptInfo, projectsList []projects.Pr
 	wg.Wait()
 	close(resultsChan)
 
-	var results []result = collectResults(resultsChan, len(projectsList))
+	var results []outputs.Result = collectResults(resultsChan, len(projectsList))
 
 	if len(outputFormats) == 0 {
 		if scriptInfo.Output == "text" {
@@ -234,18 +187,18 @@ func runScriptsForprojectsList(scriptInfo ScriptInfo, projectsList []projects.Pr
 		printUniqueResponsesToConsole(results)
 	} else {
 		// Always print results in markdown to the console
-		printMarkdownToConsole(results)
+		outputs.PrintToConsole(results)
 	}
 
 	// Generate outputs based on the specified or determined formats
 	for _, format := range outputFormats {
 		switch format {
 		case "md":
-			writeMarkdownTable(scriptInfo.Path, results)
+			outputs.WriteTable(scriptInfo.Path, results)
 		case "csv":
-			writeCSVTable(scriptInfo, results)
+			outputs.WriteCSVTable(scriptInfo, results)
 		case "json":
-			writeJSONOutput(scriptInfo.Path, results)
+			outputs.WriteJSONOutput(scriptInfo.Path, results)
 		default:
 			fmt.Printf("Unsupported output format: %s\n", format)
 		}
@@ -254,10 +207,10 @@ func runScriptsForprojectsList(scriptInfo ScriptInfo, projectsList []projects.Pr
 	return nil
 }
 
-func printUniqueResponsesToConsole(results []result) {
+func printUniqueResponsesToConsole(results []outputs.Result) {
 	responseCounts := make(map[string]int)
 	for _, r := range results {
-		responseCounts[r.stdoutText]++
+		responseCounts[r.StdoutText]++
 	}
 
 	var sb strings.Builder
@@ -280,7 +233,7 @@ func printUniqueResponsesToConsole(results []result) {
 }
 
 // runScriptForProject runs a TypeScript script (with Deno) in the specified project directory.
-func runScriptForProject(scriptInfo ScriptInfo, projectPath string) (result, error) {
+func runScriptForProject(scriptInfo outputs.ScriptInfo, projectPath string) (outputs.Result, error) {
 	fmt.Printf("Running %s for %s...\n", scriptInfo.Path, projectPath)
 
 	// Get cwd
@@ -292,15 +245,15 @@ func runScriptForProject(scriptInfo ScriptInfo, projectPath string) (result, err
 
 	stdoutPipe, err := cmd.StdoutPipe()
 	if err != nil {
-		return result{}, err
+		return outputs.Result{}, err
 	}
 	stderrPipe, err := cmd.StderrPipe()
 	if err != nil {
-		return result{}, err
+		return outputs.Result{}, err
 	}
 
 	if err := cmd.Start(); err != nil {
-		return result{}, err
+		return outputs.Result{}, err
 	}
 
 	stdoutBytes, _ := io.ReadAll(stdoutPipe)
@@ -309,18 +262,18 @@ func runScriptForProject(scriptInfo ScriptInfo, projectPath string) (result, err
 	// Wait for command completion
 	err = cmd.Wait()
 
-	stdoutText := string(stdoutBytes)
-	stderrText := string(stderrBytes)
+	StdoutText := string(stdoutBytes)
+	StderrText := string(stderrBytes)
 
 	// Format CSV output if applicable
-	if scriptInfo.Output == "csv" && len(stdoutText) > 0 {
+	if scriptInfo.Output == "csv" && len(StdoutText) > 0 {
 		fmt.Printf("[%s] CSV Output:\n", projectPath)
-		fmt.Println(formatCSVOutput(stdoutText, scriptInfo.Columns))
-	} else if len(stdoutText) > 0 {
-		fmt.Printf("[%s] stdout:\n%s\n", projectPath, stdoutText)
+		fmt.Println(outputs.FormatOutput(StdoutText, scriptInfo.Columns))
+	} else if len(StdoutText) > 0 {
+		fmt.Printf("[%s] stdout:\n%s\n", projectPath, StdoutText)
 	}
-	if len(stderrText) > 0 {
-		fmt.Printf("[%s] stderr:\n%s\n", projectPath, stderrText)
+	if len(StderrText) > 0 {
+		fmt.Printf("[%s] stderr:\n%s\n", projectPath, StderrText)
 	}
 
 	var status string
@@ -337,10 +290,20 @@ func runScriptForProject(scriptInfo ScriptInfo, projectPath string) (result, err
 		}
 	}
 
-	return result{
-		projectPath: projectPath,
-		status:      status,
-		stdoutText:  strings.TrimSpace(stdoutText),
-		stderrText:  strings.TrimSpace(stderrText),
+	return outputs.Result{
+		ProjectPath: projectPath,
+		Status:      status,
+		StdoutText:  strings.TrimSpace(StdoutText),
+		StderrText:  strings.TrimSpace(StderrText),
 	}, nil
+}
+
+func collectResults(resultsChan <-chan outputs.Result, total int) []outputs.Result {
+	// Allocate the full slice up front; every slot will be written exactly once.
+	results := make([]outputs.Result, total)
+
+	for r := range resultsChan {
+		results[r.Index] = r // O(1) placement, no mutex needed
+	}
+	return results
 }
