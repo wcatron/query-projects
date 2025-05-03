@@ -27,13 +27,13 @@ var AskCmd = &cobra.Command{
 			return errors.New("please provide a question after 'query'")
 		}
 		question := strings.Join(args, " ")
-		return cmd_askQuestion(question)
+		return CMD_ask(question)
 	},
 }
 
-// cmd_askQuestion calls the OpenAI API with the question, extracts the TypeScript code,
+// CMD_ask calls the OpenAI API with the question, extracts the TypeScript code,
 // and saves it to ./scripts/<question>.ts.
-func cmd_askQuestion(question string) error {
+func CMD_ask(question string) error {
 	scriptName := strings.ReplaceAll(strings.ToLower(question), " ", "-") + ".ts"
 	err := generateScriptForQuestion(question, scriptName)
 	if err != nil {

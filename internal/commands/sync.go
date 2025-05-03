@@ -23,7 +23,7 @@ var SyncCmd = &cobra.Command{
 	Use:   "sync",
 	Short: "Sync project metadata from all configured code repositories.",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return cmd_syncRepos()
+		return CMD_syncRepos()
 	},
 }
 
@@ -77,7 +77,7 @@ func fetchGitHubMetadata(ctx context.Context, client *github.Client, repoURL str
 
 	return repo, nil
 }
-func cmd_syncRepos() error {
+func CMD_syncRepos() error {
 	projectsList, err := projects.LoadProjects()
 	if err != nil {
 		return err

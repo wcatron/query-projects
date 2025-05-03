@@ -13,7 +13,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/charmbracelet/glamour"
+	"github.com/fatih/color"
+	"github.com/rodaine/table"
 	"github.com/spf13/cobra"
 	"github.com/wcatron/query-projects/internal/outputs"
 	"github.com/wcatron/query-projects/internal/projects"
@@ -23,7 +24,7 @@ var RunCmd = &cobra.Command{
 	Use:   "run [scriptName]",
 	Short: "Run scripts across all projects in your configuration.",
 	Args:  cobra.MaximumNArgs(1),
-	RunE: WrapWithMetrics(func(cmd *cobra.Command, args []string) error {
+	RunE: withMetrics(func(cmd *cobra.Command, args []string) error {
 		// Optional argument: the user can provide a script name or path
 		var scriptName string
 		if len(args) == 1 {
@@ -33,7 +34,7 @@ var RunCmd = &cobra.Command{
 		topics, _ := cmd.Flags().GetStringSlice("topics")
 		count, _ := cmd.Flags().GetBool("count")
 		outputFormats, _ := cmd.Flags().GetStringSlice("output")
-		return cmd_runScript(scriptName, topics, count, outputFormats)
+		return CMD_runScript(scriptName, topics, count, outputFormats)
 	}),
 }
 
@@ -61,7 +62,7 @@ func RunCmdInit(cmd *cobra.Command) {
 	cmd.PersistentFlags().StringSliceP("output", "o", nil, "Specify output formats (md, csv, json)")
 }
 
-func cmd_runScript(scriptName string, topics []string, count bool, outputFormats []string) error {
+func CMD_runScript(scriptName string, topics []string, count bool, outputFormats []string) error {
 	projectsList, err := projects.LoadProjects()
 	if err != nil {
 		return err
@@ -115,29 +116,20 @@ func selectScriptInfo() (outputs.ScriptInfo, error) {
 		scriptInfos = append(scriptInfos, info)
 	}
 
-	// Display script information in a table
-	var sb strings.Builder
-	headers := []string{"#", "Name", "Version", "Output"}
-	sb.WriteString("| " + strings.Join(headers, " | ") + " |\n")
-	sb.WriteString("| " + strings.Repeat("--- | ", len(headers)) + "\n")
-
+	// Create and display the table
+	headerFmt := color.New(color.FgGreen, color.Underline).SprintfFunc()
+	columnFmt := color.New(color.FgYellow).SprintfFunc()
+	tbl := table.New("#", "Name", "Version", "Output")
+	tbl.WithHeaderFormatter(headerFmt).WithFirstColumnFormatter(columnFmt)
 	for i, si := range scriptInfos {
-		row := []string{
+		tbl.AddRow(
 			fmt.Sprintf("%d", i+1),
 			filepath.Base(si.Path),
 			si.Version,
 			si.Output,
-		}
-		sb.WriteString("| " + strings.Join(row, " | ") + " |\n")
+		)
 	}
-
-	// Render the markdown table using Glamour
-	out, err := glamour.Render(sb.String(), "dark")
-	if err != nil {
-		fmt.Println("Error rendering markdown:", err)
-		return outputs.ScriptInfo{}, err
-	}
-	fmt.Print(out)
+	tbl.Print()
 
 	// Ask user to pick a script
 	fmt.Print("Enter a number: ")
@@ -213,23 +205,11 @@ func printUniqueResponsesToConsole(results []outputs.Result) {
 		responseCounts[r.StdoutText]++
 	}
 
-	var sb strings.Builder
-	headers := []string{"Unique Response", "Count"}
-	sb.WriteString("| " + strings.Join(headers, " | ") + " |\n")
-	sb.WriteString("| " + strings.Repeat("--- | ", len(headers)) + "\n")
-
+	tbl := table.New("Unique Response", "Count")
 	for response, count := range responseCounts {
-		row := []string{strings.TrimSpace(response), fmt.Sprintf("%d", count)}
-		sb.WriteString("| " + strings.Join(row, " | ") + " |\n")
+		tbl.AddRow(strings.TrimSpace(response), fmt.Sprintf("%d", count))
 	}
-
-	// Render the markdown table using Glamour
-	out, err := glamour.Render(sb.String(), "dark")
-	if err != nil {
-		fmt.Println("Error rendering markdown:", err)
-		return
-	}
-	fmt.Print(out)
+	tbl.Print()
 }
 
 // runScriptForProject runs a TypeScript script (with Deno) in the specified project directory.

@@ -10,14 +10,14 @@ import (
 var PullCmd = &cobra.Command{
 	Use:   "pull",
 	Short: "Pull the latest changes for all repositories in projects.json",
-	RunE: WrapWithMetrics(func(cmd *cobra.Command, args []string) error {
-		return cmd_pullRepos(cmd)
+	RunE: withMetrics(func(cmd *cobra.Command, args []string) error {
+		topics, _ := cmd.Flags().GetStringSlice("topics")
+		return CMD_pullRepos(topics)
 	}),
 }
 
-// cmd_pullRepos pulls the latest changes for all repositories listed in projects.json.
-func cmd_pullRepos(cmd *cobra.Command) error {
-	topics, err := cmd.Flags().GetStringSlice("topics")
+// CMD_pullRepos pulls the latest changes for all repositories listed in projects.json.
+func CMD_pullRepos(topics []string) error {
 	projectsList, err := projects.LoadProjects()
 	if err != nil {
 		return err

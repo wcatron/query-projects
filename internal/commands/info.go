@@ -13,12 +13,12 @@ var InfoCmd = &cobra.Command{
 	Use:   "info",
 	Short: "Displays information about projects and available scripts",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return cmd_info()
+		return CMD_info()
 	},
 }
 
-// cmd_info lists the number of projects and available scripts
-func cmd_info() error {
+// CMD_info lists the number of projects and available scripts
+func CMD_info() error {
 	projectsList, err := projects.LoadProjects()
 	if err != nil {
 		return fmt.Errorf("failed to load projects: %w", err)
