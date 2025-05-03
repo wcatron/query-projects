@@ -79,7 +79,7 @@ func CMD_runScript(scriptName string, topics []string, count bool, outputFormats
 		return err
 	}
 
-	if err := runScriptsForprojectsList(scriptInfo, targets, count, outputFormats); err != nil {
+	if err := runScriptsForProjectsList(scriptInfo, targets, count, outputFormats); err != nil {
 		return fmt.Errorf("running %s: %w", scriptInfo.Path, err)
 	}
 
@@ -143,8 +143,8 @@ func selectScriptInfo() (outputs.ScriptInfo, error) {
 	return scriptInfos[choice-1], nil
 }
 
-// runScriptsForprojectsList executes the specified .ts script against all projects.
-func runScriptsForprojectsList(scriptInfo outputs.ScriptInfo, projectsList []projects.Project, count bool, outputFormats []string) error {
+// runScriptsForProjectsList executes the specified .ts script against all projects.
+func runScriptsForProjectsList(scriptInfo outputs.ScriptInfo, projectsList []projects.Project, count bool, outputFormats []string) error {
 	var wg sync.WaitGroup
 	resultsChan := make(chan outputs.Result, len(projectsList))
 
