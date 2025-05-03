@@ -73,7 +73,7 @@ jobs:
           deno-version: v2.x
           
       - name: Run E2E Tests
-        run: go test ./tests/... ./commands/...
+        run: go test ./tests/... ./internal/...
 
       # ───── Release ────────────────────────────────────────────
       - name: Tag and Release
