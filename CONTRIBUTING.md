@@ -39,8 +39,27 @@ This project uses AI extensively for code generation. One means of protecting ag
 
 ```
 go install github.com/ofabry/go-callvis@latest
-go-callvis -nostd -format svg ./...
+go-callvis -nostd -format svg ./callvis
 ```
+
+### Commands
+
+The commands package contains the core functionality of the CLI. Here is a visualization of the commands package dependencies:
+
+![Commands Package Graph](./internal/commands/graph.svg)
+
+### Outputs
+
+The outputs package handles formatting and displaying results from script execution. Here is a visualization of the outputs package dependencies:
+
+![Outputs Package Graph](internal/outputs/graph.svg)
+
+### Projects
+
+The projects package manages repository configuration and git operations. Here is a visualization of the projects package dependencies:
+
+![Projects Package Graph](internal/projects/graph.svg)
+
 
 ## Static Code Analysis (Experimental)
 

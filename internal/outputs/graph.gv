@@ -1,0 +1,89 @@
+digraph gocallvis {
+    label="";
+    labeljust="l";
+    fontname="Arial";
+    fontsize="14";
+    rankdir="LR";
+    bgcolor="lightgray";
+    style="solid";
+    penwidth="0.5";
+    pad="0.0";
+    nodesep="0.35";
+
+    node [shape="box" style="filled,rounded" fillcolor="honeydew" fontname="Verdana" penwidth="1.0" margin="0.16,0.0"];
+    edge [minlen="2"]
+
+    subgraph "cluster_focus" {
+        bgcolor="#e6ecfa";
+label="outputs";
+labelloc="t";
+labeljust="c";
+fontsize="18";
+        
+        "github.com/wcatron/query-projects/internal/outputs.PrintToConsole" [ fillcolor="lightblue" label="PrintToConsole" penwidth="1.5" tooltip="github.com/wcatron/query-projects/internal/outputs.PrintToConsole | defined in markdown.go:36\nat markdown.go:37: calling [github.com/wcatron/query-projects/internal/outputs.createMarkdownString]\nat markdown.go:40: calling [github.com/charmbracelet/glamour.Render]" ]
+        "github.com/wcatron/query-projects/internal/outputs.createMarkdownString" [ fillcolor="lightblue" label="createMarkdownString" penwidth="0.5" tooltip="github.com/wcatron/query-projects/internal/outputs.createMarkdownString | defined in markdown.go:14" ]
+        "github.com/wcatron/query-projects/internal/outputs.FormatOutput" [ tooltip="github.com/wcatron/query-projects/internal/outputs.FormatOutput | defined in csv.go:14" fillcolor="lightblue" label="FormatOutput" penwidth="1.5" ]
+        "github.com/wcatron/query-projects/internal/outputs.WriteTable" [ fillcolor="lightblue" label="WriteTable" penwidth="1.5" tooltip="github.com/wcatron/query-projects/internal/outputs.WriteTable | defined in markdown.go:49\nat markdown.go:54: calling [github.com/wcatron/query-projects/internal/outputs.createMarkdownString]" ]
+        "github.com/wcatron/query-projects/internal/outputs.WriteCSVTable" [ fillcolor="lightblue" label="WriteCSVTable" penwidth="1.5" tooltip="github.com/wcatron/query-projects/internal/outputs.WriteCSVTable | defined in csv.go:22" ]
+        "github.com/wcatron/query-projects/internal/outputs.WriteJSONOutput" [ fillcolor="lightblue" label="WriteJSONOutput" penwidth="1.5" tooltip="github.com/wcatron/query-projects/internal/outputs.WriteJSONOutput | defined in json.go:14" ]
+        
+        subgraph "cluster_github.com/charmbracelet/glamour" {
+        rank="sink";
+label="glamour";
+URL="/?f=github.com/charmbracelet/glamour";
+fontsize="16";
+style="filled";
+fillcolor="lightyellow";
+tooltip="package: github.com/charmbracelet/glamour";
+penwidth="0.8";
+fontname="Tahoma bold";
+        
+        "github.com/charmbracelet/glamour.Render" [ tooltip="github.com/charmbracelet/glamour.Render | defined in glamour.go:45" fillcolor="moccasin" label="Render" penwidth="1.5" ]
+        
+    }
+
+        subgraph "cluster_github.com/wcatron/query-projects/callvis" {
+        fontsize="16";
+rank="sink";
+label="main";
+tooltip="package: github.com/wcatron/query-projects/callvis";
+style="filled";
+fillcolor="lightyellow";
+fontname="Tahoma bold";
+URL="/?f=github.com/wcatron/query-projects/callvis";
+penwidth="0.8";
+        
+        "github.com/wcatron/query-projects/callvis.main" [ fillcolor="moccasin" label="main" penwidth="0.5" tooltip="github.com/wcatron/query-projects/callvis.main | defined in main.go:11\nat main.go:48: calling [github.com/wcatron/query-projects/internal/outputs.WriteTable]\nat main.go:50: calling [github.com/wcatron/query-projects/internal/outputs.WriteJSONOutput]\nat main.go:49: calling [github.com/wcatron/query-projects/internal/outputs.WriteCSVTable]" ]
+        
+    }
+
+        subgraph "cluster_github.com/wcatron/query-projects/internal/commands" {
+        label="commands";
+fillcolor="lightyellow";
+fontname="Tahoma bold";
+rank="sink";
+URL="/?f=github.com/wcatron/query-projects/internal/commands";
+tooltip="package: github.com/wcatron/query-projects/internal/commands";
+penwidth="0.8";
+fontsize="16";
+style="filled";
+        
+        "github.com/wcatron/query-projects/internal/commands.runScriptForProject" [ fillcolor="moccasin" label="runScriptForProject" penwidth="0.5" tooltip="github.com/wcatron/query-projects/internal/commands.runScriptForProject | defined in run.go:249\nat run.go:284: calling [github.com/wcatron/query-projects/internal/outputs.FormatOutput]" ]
+        "github.com/wcatron/query-projects/internal/commands.runScriptsForProjectsList" [ tooltip="github.com/wcatron/query-projects/internal/commands.runScriptsForProjectsList | defined in run.go:180\nat run.go:222: calling [github.com/wcatron/query-projects/internal/outputs.WriteTable]\nat run.go:215: calling [github.com/wcatron/query-projects/internal/outputs.PrintToConsole]\nat run.go:224: calling [github.com/wcatron/query-projects/internal/outputs.WriteCSVTable]\nat run.go:226: calling [github.com/wcatron/query-projects/internal/outputs.WriteJSONOutput]" fillcolor="moccasin" label="runScriptsForProjectsList" penwidth="0.5" ]
+        
+    }
+
+    }
+
+    "github.com/wcatron/query-projects/internal/outputs.PrintToConsole" -> "github.com/wcatron/query-projects/internal/outputs.createMarkdownString" [ tooltip="at markdown.go:37: calling [github.com/wcatron/query-projects/internal/outputs.createMarkdownString]" ]
+    "github.com/wcatron/query-projects/internal/outputs.PrintToConsole" -> "github.com/charmbracelet/glamour.Render" [ color="saddlebrown" tooltip="at markdown.go:40: calling [github.com/charmbracelet/glamour.Render]" ]
+    "github.com/wcatron/query-projects/internal/commands.runScriptForProject" -> "github.com/wcatron/query-projects/internal/outputs.FormatOutput" [ color="saddlebrown" tooltip="at run.go:284: calling [github.com/wcatron/query-projects/internal/outputs.FormatOutput]" ]
+    "github.com/wcatron/query-projects/internal/commands.runScriptsForProjectsList" -> "github.com/wcatron/query-projects/internal/outputs.WriteTable" [ color="saddlebrown" tooltip="at run.go:222: calling [github.com/wcatron/query-projects/internal/outputs.WriteTable]" ]
+    "github.com/wcatron/query-projects/callvis.main" -> "github.com/wcatron/query-projects/internal/outputs.WriteTable" [ color="saddlebrown" tooltip="at main.go:48: calling [github.com/wcatron/query-projects/internal/outputs.WriteTable]" ]
+    "github.com/wcatron/query-projects/callvis.main" -> "github.com/wcatron/query-projects/internal/outputs.WriteJSONOutput" [ color="saddlebrown" tooltip="at main.go:50: calling [github.com/wcatron/query-projects/internal/outputs.WriteJSONOutput]" ]
+    "github.com/wcatron/query-projects/internal/outputs.WriteTable" -> "github.com/wcatron/query-projects/internal/outputs.createMarkdownString" [ tooltip="at markdown.go:54: calling [github.com/wcatron/query-projects/internal/outputs.createMarkdownString]" ]
+    "github.com/wcatron/query-projects/internal/commands.runScriptsForProjectsList" -> "github.com/wcatron/query-projects/internal/outputs.PrintToConsole" [ color="saddlebrown" tooltip="at run.go:215: calling [github.com/wcatron/query-projects/internal/outputs.PrintToConsole]" ]
+    "github.com/wcatron/query-projects/internal/commands.runScriptsForProjectsList" -> "github.com/wcatron/query-projects/internal/outputs.WriteCSVTable" [ color="saddlebrown" tooltip="at run.go:224: calling [github.com/wcatron/query-projects/internal/outputs.WriteCSVTable]" ]
+    "github.com/wcatron/query-projects/internal/commands.runScriptsForProjectsList" -> "github.com/wcatron/query-projects/internal/outputs.WriteJSONOutput" [ color="saddlebrown" tooltip="at run.go:226: calling [github.com/wcatron/query-projects/internal/outputs.WriteJSONOutput]" ]
+    "github.com/wcatron/query-projects/callvis.main" -> "github.com/wcatron/query-projects/internal/outputs.WriteCSVTable" [ color="saddlebrown" tooltip="at main.go:49: calling [github.com/wcatron/query-projects/internal/outputs.WriteCSVTable]" ]
+}

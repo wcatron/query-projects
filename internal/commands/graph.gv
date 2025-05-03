@@ -1,0 +1,264 @@
+digraph gocallvis {
+    label="";
+    labeljust="l";
+    fontname="Arial";
+    fontsize="14";
+    rankdir="LR";
+    bgcolor="lightgray";
+    style="solid";
+    penwidth="0.5";
+    pad="0.0";
+    nodesep="0.35";
+
+    node [shape="box" style="filled,rounded" fillcolor="honeydew" fontname="Verdana" penwidth="1.0" margin="0.16,0.0"];
+    edge [minlen="2"]
+
+    subgraph "cluster_focus" {
+        labelloc="t";
+labeljust="c";
+fontsize="18";
+bgcolor="#e6ecfa";
+label="commands";
+        
+        "github.com/wcatron/query-projects/internal/commands.CMD_runScript" [ fillcolor="lightblue" label="CMD_runScript" penwidth="1.5" tooltip="github.com/wcatron/query-projects/internal/commands.CMD_runScript | defined in run.go:65\nat run.go:70: calling [github.com/wcatron/query-projects/internal/projects.FilterProjectsByTopics]\nat run.go:66: calling [github.com/wcatron/query-projects/internal/projects.LoadProjects]\nat run.go:82: calling [github.com/wcatron/query-projects/internal/commands.runScriptsForProjectsList]\nat run.go:77: calling [github.com/wcatron/query-projects/internal/commands.CMD_runScript$1]" ]
+        "github.com/wcatron/query-projects/internal/commands.CMD_runScript$1" [ fillcolor="lightblue" label="CMD_runScript$1" style="dotted,filled" tooltip="github.com/wcatron/query-projects/internal/commands.CMD_runScript$1 | defined in run.go:72\nat run.go:74: calling [github.com/wcatron/query-projects/internal/commands.getScriptInfo]\nat run.go:76: calling [github.com/wcatron/query-projects/internal/commands.selectScriptInfo]" ]
+        "github.com/wcatron/query-projects/internal/commands.getScriptInfo" [ tooltip="github.com/wcatron/query-projects/internal/commands.getScriptInfo | defined in run.go:42" fillcolor="lightblue" label="getScriptInfo" penwidth="0.5" ]
+        "github.com/wcatron/query-projects/internal/commands.selectScriptInfo" [ fillcolor="lightblue" label="selectScriptInfo" penwidth="0.5" tooltip="github.com/wcatron/query-projects/internal/commands.selectScriptInfo | defined in run.go:154\nat run.go:171: calling [github.com/wcatron/query-projects/internal/commands.getUserSelection]\nat run.go:168: calling [github.com/wcatron/query-projects/internal/commands.displayScriptTable]\nat run.go:162: calling [github.com/wcatron/query-projects/internal/commands.gatherScriptInfos]\nat run.go:156: calling [github.com/wcatron/query-projects/internal/commands.findScriptFiles]" ]
+        "github.com/wcatron/query-projects/internal/commands.findScriptFiles" [ label="findScriptFiles" penwidth="0.5" tooltip="github.com/wcatron/query-projects/internal/commands.findScriptFiles | defined in run.go:90" fillcolor="lightblue" ]
+        "github.com/wcatron/query-projects/internal/commands.gatherScriptInfos" [ fillcolor="lightblue" label="gatherScriptInfos" penwidth="0.5" tooltip="github.com/wcatron/query-projects/internal/commands.gatherScriptInfos | defined in run.go:111\nat run.go:114: calling [github.com/wcatron/query-projects/internal/commands.getScriptInfo]" ]
+        "github.com/wcatron/query-projects/internal/commands.displayScriptTable" [ fillcolor="lightblue" label="displayScriptTable" penwidth="0.5" tooltip="github.com/wcatron/query-projects/internal/commands.displayScriptTable | defined in run.go:125\nat run.go:126: calling [(*github.com/fatih/color.Color).SprintfFunc]\nat run.go:127: calling [(*github.com/fatih/color.Color).SprintfFunc]\nat run.go:126: calling [github.com/fatih/color.New]\nat run.go:127: calling [github.com/fatih/color.New]\nat run.go:128: calling [github.com/rodaine/table.New]" ]
+        "github.com/wcatron/query-projects/internal/commands.getUserSelection" [ label="getUserSelection" penwidth="0.5" tooltip="github.com/wcatron/query-projects/internal/commands.getUserSelection | defined in run.go:142" fillcolor="lightblue" ]
+        "github.com/wcatron/query-projects/internal/commands.runScriptForProject" [ tooltip="github.com/wcatron/query-projects/internal/commands.runScriptForProject | defined in run.go:249\nat run.go:284: calling [github.com/wcatron/query-projects/internal/outputs.FormatOutput]" fillcolor="lightblue" label="runScriptForProject" penwidth="0.5" ]
+        "github.com/wcatron/query-projects/internal/commands.runScriptsForProjectsList$1" [ fillcolor="lightblue" label="runScriptsForProjectsList$1" style="dotted,filled" tooltip="github.com/wcatron/query-projects/internal/commands.runScriptsForProjectsList$1 | defined in run.go:186\nat run.go:188: calling [github.com/wcatron/query-projects/internal/commands.runScriptForProject]" ]
+        "github.com/wcatron/query-projects/internal/commands.runScriptsForProjectsList" [ fillcolor="lightblue" label="runScriptsForProjectsList" penwidth="0.5" tooltip="github.com/wcatron/query-projects/internal/commands.runScriptsForProjectsList | defined in run.go:180\nat run.go:215: calling [github.com/wcatron/query-projects/internal/outputs.PrintToConsole]\nat run.go:212: calling [github.com/wcatron/query-projects/internal/commands.printUniqueResponsesToConsole]\nat run.go:224: calling [github.com/wcatron/query-projects/internal/outputs.WriteCSVTable]\nat run.go:186: calling [github.com/wcatron/query-projects/internal/commands.runScriptsForProjectsList$1]\nat run.go:222: calling [github.com/wcatron/query-projects/internal/outputs.WriteTable]\nat run.go:200: calling [github.com/wcatron/query-projects/internal/commands.collectResults]\nat run.go:226: calling [github.com/wcatron/query-projects/internal/outputs.WriteJSONOutput]" ]
+        "github.com/wcatron/query-projects/internal/commands.collectResults" [ label="collectResults" penwidth="0.5" tooltip="github.com/wcatron/query-projects/internal/commands.collectResults | defined in run.go:314" fillcolor="lightblue" ]
+        "github.com/wcatron/query-projects/internal/commands.printUniqueResponsesToConsole" [ penwidth="0.5" tooltip="github.com/wcatron/query-projects/internal/commands.printUniqueResponsesToConsole | defined in run.go:235\nat run.go:241: calling [github.com/rodaine/table.New]" fillcolor="lightblue" label="printUniqueResponsesToConsole" ]
+        "github.com/wcatron/query-projects/internal/commands.CMD_addRepository" [ fillcolor="lightblue" label="CMD_addRepository" penwidth="1.5" tooltip="github.com/wcatron/query-projects/internal/commands.CMD_addRepository | defined in add.go:23\nat add.go:46: calling [github.com/wcatron/query-projects/internal/projects.SaveProjects]\nat add.go:24: calling [github.com/wcatron/query-projects/internal/projects.LoadProjects]\nat add.go:36: calling [github.com/wcatron/query-projects/internal/projects.CloneRepository]" ]
+        "github.com/wcatron/query-projects/internal/commands.CMD_info" [ fillcolor="lightblue" label="CMD_info" penwidth="1.5" tooltip="github.com/wcatron/query-projects/internal/commands.CMD_info | defined in info.go:21\nat info.go:22: calling [github.com/wcatron/query-projects/internal/projects.LoadProjects]" ]
+        "github.com/wcatron/query-projects/internal/commands.CMD_pullRepos" [ penwidth="1.5" tooltip="github.com/wcatron/query-projects/internal/commands.CMD_pullRepos | defined in pull.go:20\nat pull.go:28: calling [github.com/wcatron/query-projects/internal/projects.CloneRepository]\nat pull.go:25: calling [github.com/wcatron/query-projects/internal/projects.FilterProjectsByTopics]\nat pull.go:21: calling [github.com/wcatron/query-projects/internal/projects.LoadProjects]" fillcolor="lightblue" label="CMD_pullRepos" ]
+        "github.com/wcatron/query-projects/internal/commands.CMD_syncRepos" [ fillcolor="lightblue" label="CMD_syncRepos" penwidth="1.5" tooltip="github.com/wcatron/query-projects/internal/commands.CMD_syncRepos | defined in sync.go:80\nat sync.go:81: calling [github.com/wcatron/query-projects/internal/projects.LoadProjects]\nat sync.go:106: calling [github.com/wcatron/query-projects/internal/projects.SaveProjects]\nat sync.go:93: calling [github.com/wcatron/query-projects/internal/commands.syncFromGitHubProject]" ]
+        "github.com/wcatron/query-projects/internal/commands.syncFromGitHubProject" [ tooltip="github.com/wcatron/query-projects/internal/commands.syncFromGitHubProject | defined in sync.go:35\nat sync.go:42: calling [golang.org/x/oauth2.StaticTokenSource]\nat sync.go:49: calling [github.com/wcatron/query-projects/internal/commands.fetchGitHubMetadata]\nat sync.go:56: calling [(*github.com/google/go-github/v71/github.Repository).GetArchived]\nat sync.go:46: calling [github.com/google/go-github/v71/github.NewClient]\nat sync.go:45: calling [golang.org/x/oauth2.NewClient]" fillcolor="lightblue" label="syncFromGitHubProject" penwidth="0.5" ]
+        "github.com/wcatron/query-projects/internal/commands.fetchGitHubMetadata" [ label="fetchGitHubMetadata" penwidth="0.5" tooltip="github.com/wcatron/query-projects/internal/commands.fetchGitHubMetadata | defined in sync.go:66\nat sync.go:73: calling [(*github.com/google/go-github/v71/github.RepositoriesService).Get]" fillcolor="lightblue" ]
+        "github.com/wcatron/query-projects/internal/commands.generateScriptForQuestion" [ fillcolor="lightblue" label="generateScriptForQuestion" penwidth="0.5" tooltip="github.com/wcatron/query-projects/internal/commands.generateScriptForQuestion | defined in ask.go:169\nat ask.go:192: calling [github.com/wcatron/query-projects/internal/projects.ExtractTypeScriptCode]\nat ask.go:187: calling [github.com/wcatron/query-projects/internal/commands.callOpenAI]" ]
+        "github.com/wcatron/query-projects/internal/commands.callOpenAI" [ fillcolor="lightblue" label="callOpenAI" penwidth="0.5" tooltip="github.com/wcatron/query-projects/internal/commands.callOpenAI | defined in ask.go:109" ]
+        "github.com/wcatron/query-projects/internal/commands.CMD_ask" [ fillcolor="lightblue" label="CMD_ask" penwidth="1.5" tooltip="github.com/wcatron/query-projects/internal/commands.CMD_ask | defined in ask.go:36\nat ask.go:38: calling [github.com/wcatron/query-projects/internal/commands.generateScriptForQuestion]\nat ask.go:57: calling [github.com/wcatron/query-projects/internal/commands.getScriptInfo]\nat ask.go:93: calling [github.com/wcatron/query-projects/internal/commands.getScriptInfo]\nat ask.go:82: calling [github.com/wcatron/query-projects/internal/commands.modifyScriptBasedOnInput]\nat ask.go:45: calling [github.com/wcatron/query-projects/internal/projects.LoadProjects]\nat ask.go:61: calling [github.com/wcatron/query-projects/internal/commands.runScriptForProject]\nat ask.go:98: calling [github.com/wcatron/query-projects/internal/commands.runScriptForProject]" ]
+        "github.com/wcatron/query-projects/internal/commands.modifyScriptBasedOnInput" [ penwidth="0.5" tooltip="github.com/wcatron/query-projects/internal/commands.modifyScriptBasedOnInput | defined in ask.go:209\nat ask.go:218: calling [github.com/wcatron/query-projects/internal/commands.callOpenAI]\nat ask.go:223: calling [github.com/wcatron/query-projects/internal/projects.ExtractTypeScriptCode]" fillcolor="lightblue" label="modifyScriptBasedOnInput" ]
+        "github.com/wcatron/query-projects/internal/commands.RunCmdInit" [ tooltip="github.com/wcatron/query-projects/internal/commands.RunCmdInit | defined in run.go:59\nat run.go:60: calling [(*github.com/spf13/cobra.Command).PersistentFlags]\nat run.go:61: calling [(*github.com/spf13/cobra.Command).PersistentFlags]\nat run.go:62: calling [(*github.com/spf13/cobra.Command).PersistentFlags]\nat run.go:61: calling [(*github.com/spf13/pflag.FlagSet).Bool]\nat run.go:60: calling [(*github.com/spf13/pflag.FlagSet).StringSliceP]\nat run.go:62: calling [(*github.com/spf13/pflag.FlagSet).StringSliceP]" fillcolor="lightblue" label="RunCmdInit" penwidth="1.5" ]
+        "github.com/wcatron/query-projects/internal/commands.init" [ fillcolor="lightblue" label="init" penwidth="0.5" tooltip="github.com/wcatron/query-projects/internal/commands.init | defined in .:0\nat add.go:15: calling [github.com/spf13/cobra.ExactArgs]\nat run.go:26: calling [github.com/spf13/cobra.MaximumNArgs]\nat pull.go:13: calling [github.com/wcatron/query-projects/internal/commands.withMetrics]\nat run.go:27: calling [github.com/wcatron/query-projects/internal/commands.withMetrics]" ]
+        "github.com/wcatron/query-projects/internal/commands.withMetrics" [ tooltip="github.com/wcatron/query-projects/internal/commands.withMetrics | defined in middleware.go:11" fillcolor="lightblue" label="withMetrics" penwidth="0.5" ]
+        
+        subgraph "cluster_github.com/fatih/color" {
+        fontname="Tahoma bold";
+URL="/?f=github.com/fatih/color";
+fontsize="16";
+style="filled";
+fillcolor="lightyellow";
+rank="sink";
+label="color";
+tooltip="package: github.com/fatih/color";
+penwidth="0.8";
+        
+        "github.com/fatih/color.New" [ fillcolor="moccasin" label="New" penwidth="1.5" tooltip="github.com/fatih/color.New | defined in color.go:146" ]
+        "(*github.com/fatih/color.Color).SprintfFunc" [ label="(*Color).SprintfFunc" penwidth="1.5" tooltip="(*github.com/fatih/color.Color).SprintfFunc | defined in color.go:392" fillcolor="moccasin" ]
+        
+    }
+
+        subgraph "cluster_github.com/google/go-github/v71/github" {
+        penwidth="0.8";
+fontsize="16";
+fillcolor="lightyellow";
+fontname="Tahoma bold";
+rank="sink";
+label="github";
+style="filled";
+URL="/?f=github.com/google/go-github/v71/github";
+tooltip="package: github.com/google/go-github/v71/github";
+        
+        "github.com/google/go-github/v71/github.NewClient" [ fillcolor="moccasin" label="NewClient" penwidth="1.5" tooltip="github.com/google/go-github/v71/github.NewClient | defined in github.go:330" ]
+        "(*github.com/google/go-github/v71/github.RepositoriesService).Get" [ penwidth="1.5" tooltip="(*github.com/google/go-github/v71/github.RepositoriesService).Get | defined in repos.go:630" fillcolor="moccasin" label="(*RepositoriesService).Get" ]
+        "(*github.com/google/go-github/v71/github.Repository).GetArchived" [ label="(*Repository).GetArchived" penwidth="1.5" tooltip="(*github.com/google/go-github/v71/github.Repository).GetArchived | defined in github-accessors.go:21514" fillcolor="moccasin" ]
+        
+    }
+
+        subgraph "cluster_github.com/rodaine/table" {
+        style="filled";
+fontname="Tahoma bold";
+rank="sink";
+label="table";
+URL="/?f=github.com/rodaine/table";
+fontsize="16";
+fillcolor="lightyellow";
+tooltip="package: github.com/rodaine/table";
+penwidth="0.8";
+        
+        "github.com/rodaine/table.New" [ fillcolor="moccasin" label="New" penwidth="1.5" tooltip="github.com/rodaine/table.New | defined in table.go:142" ]
+        
+    }
+
+        subgraph "cluster_github.com/spf13/cobra" {
+        fillcolor="lightyellow";
+fontname="Tahoma bold";
+label="cobra";
+URL="/?f=github.com/spf13/cobra";
+tooltip="package: github.com/spf13/cobra";
+penwidth="0.8";
+style="filled";
+rank="sink";
+fontsize="16";
+        
+        "(*github.com/spf13/cobra.Command).PersistentFlags" [ label="(*Command).PersistentFlags" penwidth="1.5" tooltip="(*github.com/spf13/cobra.Command).PersistentFlags | defined in command.go:1770" fillcolor="moccasin" ]
+        "github.com/spf13/cobra.ExactArgs" [ label="ExactArgs" penwidth="1.5" tooltip="github.com/spf13/cobra.ExactArgs | defined in args.go:94" fillcolor="moccasin" ]
+        "github.com/spf13/cobra.MaximumNArgs" [ fillcolor="moccasin" label="MaximumNArgs" penwidth="1.5" tooltip="github.com/spf13/cobra.MaximumNArgs | defined in args.go:84" ]
+        
+    }
+
+        subgraph "cluster_github.com/spf13/pflag" {
+        penwidth="0.8";
+fillcolor="lightyellow";
+fontname="Tahoma bold";
+rank="sink";
+label="pflag";
+fontsize="16";
+style="filled";
+URL="/?f=github.com/spf13/pflag";
+tooltip="package: github.com/spf13/pflag";
+        
+        "(*github.com/spf13/pflag.FlagSet).StringSliceP" [ label="(*FlagSet).StringSliceP" penwidth="1.5" tooltip="(*github.com/spf13/pflag.FlagSet).StringSliceP | defined in string_slice.go:143" fillcolor="moccasin" ]
+        "(*github.com/spf13/pflag.FlagSet).Bool" [ fillcolor="moccasin" label="(*FlagSet).Bool" penwidth="1.5" tooltip="(*github.com/spf13/pflag.FlagSet).Bool | defined in bool.go:73" ]
+        
+    }
+
+        subgraph "cluster_github.com/wcatron/query-projects/callvis" {
+        rank="sink";
+label="main";
+penwidth="0.8";
+URL="/?f=github.com/wcatron/query-projects/callvis";
+tooltip="package: github.com/wcatron/query-projects/callvis";
+fontsize="16";
+style="filled";
+fillcolor="lightyellow";
+fontname="Tahoma bold";
+        
+        "github.com/wcatron/query-projects/callvis.main" [ fillcolor="moccasin" label="main" penwidth="0.5" tooltip="github.com/wcatron/query-projects/callvis.main | defined in main.go:11\nat main.go:14: calling [github.com/wcatron/query-projects/internal/commands.CMD_addRepository]\nat main.go:21: calling [github.com/wcatron/query-projects/internal/commands.RunCmdInit]\nat main.go:17: calling [github.com/wcatron/query-projects/internal/commands.CMD_syncRepos]\nat main.go:13: calling [github.com/wcatron/query-projects/internal/commands.CMD_runScript]\nat main.go:18: calling [github.com/wcatron/query-projects/internal/commands.CMD_ask]\nat main.go:16: calling [github.com/wcatron/query-projects/internal/commands.CMD_pullRepos]\nat main.go:15: calling [github.com/wcatron/query-projects/internal/commands.CMD_info]" ]
+        
+    }
+
+        subgraph "cluster_github.com/wcatron/query-projects/internal/outputs" {
+        penwidth="0.8";
+fontname="Tahoma bold";
+rank="sink";
+label="outputs";
+tooltip="package: github.com/wcatron/query-projects/internal/outputs";
+fontsize="16";
+style="filled";
+fillcolor="lightyellow";
+URL="/?f=github.com/wcatron/query-projects/internal/outputs";
+        
+        "github.com/wcatron/query-projects/internal/outputs.FormatOutput" [ fillcolor="moccasin" label="FormatOutput" penwidth="1.5" tooltip="github.com/wcatron/query-projects/internal/outputs.FormatOutput | defined in csv.go:14" ]
+        "github.com/wcatron/query-projects/internal/outputs.PrintToConsole" [ fillcolor="moccasin" label="PrintToConsole" penwidth="1.5" tooltip="github.com/wcatron/query-projects/internal/outputs.PrintToConsole | defined in markdown.go:36" ]
+        "github.com/wcatron/query-projects/internal/outputs.WriteTable" [ tooltip="github.com/wcatron/query-projects/internal/outputs.WriteTable | defined in markdown.go:49" fillcolor="moccasin" label="WriteTable" penwidth="1.5" ]
+        "github.com/wcatron/query-projects/internal/outputs.WriteCSVTable" [ fillcolor="moccasin" label="WriteCSVTable" penwidth="1.5" tooltip="github.com/wcatron/query-projects/internal/outputs.WriteCSVTable | defined in csv.go:22" ]
+        "github.com/wcatron/query-projects/internal/outputs.WriteJSONOutput" [ fillcolor="moccasin" label="WriteJSONOutput" penwidth="1.5" tooltip="github.com/wcatron/query-projects/internal/outputs.WriteJSONOutput | defined in json.go:14" ]
+        
+    }
+
+        subgraph "cluster_github.com/wcatron/query-projects/internal/projects" {
+        rank="sink";
+label="projects";
+URL="/?f=github.com/wcatron/query-projects/internal/projects";
+tooltip="package: github.com/wcatron/query-projects/internal/projects";
+fontsize="16";
+style="filled";
+fillcolor="lightyellow";
+penwidth="0.8";
+fontname="Tahoma bold";
+        
+        "github.com/wcatron/query-projects/internal/projects.LoadProjects" [ fillcolor="moccasin" label="LoadProjects" penwidth="1.5" tooltip="github.com/wcatron/query-projects/internal/projects.LoadProjects | defined in projects.go:83" ]
+        "github.com/wcatron/query-projects/internal/projects.FilterProjectsByTopics" [ label="FilterProjectsByTopics" penwidth="1.5" tooltip="github.com/wcatron/query-projects/internal/projects.FilterProjectsByTopics | defined in projects.go:30" fillcolor="moccasin" ]
+        "github.com/wcatron/query-projects/internal/projects.CloneRepository" [ fillcolor="moccasin" label="CloneRepository" penwidth="1.5" tooltip="github.com/wcatron/query-projects/internal/projects.CloneRepository | defined in projects.go:111" ]
+        "github.com/wcatron/query-projects/internal/projects.SaveProjects" [ fillcolor="moccasin" label="SaveProjects" penwidth="1.5" tooltip="github.com/wcatron/query-projects/internal/projects.SaveProjects | defined in projects.go:101" ]
+        "github.com/wcatron/query-projects/internal/projects.ExtractTypeScriptCode" [ fillcolor="moccasin" label="ExtractTypeScriptCode" penwidth="1.5" tooltip="github.com/wcatron/query-projects/internal/projects.ExtractTypeScriptCode | defined in projects.go:146" ]
+        
+    }
+
+        subgraph "cluster_golang.org/x/oauth2" {
+        penwidth="0.8";
+fontsize="16";
+fillcolor="lightyellow";
+fontname="Tahoma bold";
+label="oauth2";
+URL="/?f=golang.org/x/oauth2";
+tooltip="package: golang.org/x/oauth2";
+style="filled";
+rank="sink";
+        
+        "golang.org/x/oauth2.StaticTokenSource" [ tooltip="golang.org/x/oauth2.StaticTokenSource | defined in oauth2.go:328" fillcolor="moccasin" label="StaticTokenSource" penwidth="1.5" ]
+        "golang.org/x/oauth2.NewClient" [ penwidth="1.5" tooltip="golang.org/x/oauth2.NewClient | defined in oauth2.go:355" fillcolor="moccasin" label="NewClient" ]
+        
+    }
+
+    }
+
+    "github.com/wcatron/query-projects/internal/commands.runScriptsForProjectsList" -> "github.com/wcatron/query-projects/internal/outputs.PrintToConsole" [ color="saddlebrown" tooltip="at run.go:215: calling [github.com/wcatron/query-projects/internal/outputs.PrintToConsole]" ]
+    "github.com/wcatron/query-projects/internal/commands.syncFromGitHubProject" -> "golang.org/x/oauth2.StaticTokenSource" [ color="saddlebrown" tooltip="at sync.go:42: calling [golang.org/x/oauth2.StaticTokenSource]" ]
+    "github.com/wcatron/query-projects/internal/commands.syncFromGitHubProject" -> "github.com/wcatron/query-projects/internal/commands.fetchGitHubMetadata" [ tooltip="at sync.go:49: calling [github.com/wcatron/query-projects/internal/commands.fetchGitHubMetadata]" ]
+    "github.com/wcatron/query-projects/internal/commands.generateScriptForQuestion" -> "github.com/wcatron/query-projects/internal/projects.ExtractTypeScriptCode" [ tooltip="at ask.go:192: calling [github.com/wcatron/query-projects/internal/projects.ExtractTypeScriptCode]" color="saddlebrown" ]
+    "github.com/wcatron/query-projects/internal/commands.displayScriptTable" -> "(*github.com/fatih/color.Color).SprintfFunc" [ color="saddlebrown" tooltip="at run.go:126: calling [(*github.com/fatih/color.Color).SprintfFunc]\nat run.go:127: calling [(*github.com/fatih/color.Color).SprintfFunc]" ]
+    "github.com/wcatron/query-projects/internal/commands.selectScriptInfo" -> "github.com/wcatron/query-projects/internal/commands.getUserSelection" [ tooltip="at run.go:171: calling [github.com/wcatron/query-projects/internal/commands.getUserSelection]" ]
+    "github.com/wcatron/query-projects/internal/commands.syncFromGitHubProject" -> "(*github.com/google/go-github/v71/github.Repository).GetArchived" [ tooltip="at sync.go:56: calling [(*github.com/google/go-github/v71/github.Repository).GetArchived]" color="saddlebrown" ]
+    "github.com/wcatron/query-projects/internal/commands.runScriptsForProjectsList" -> "github.com/wcatron/query-projects/internal/commands.printUniqueResponsesToConsole" [ tooltip="at run.go:212: calling [github.com/wcatron/query-projects/internal/commands.printUniqueResponsesToConsole]" ]
+    "github.com/wcatron/query-projects/callvis.main" -> "github.com/wcatron/query-projects/internal/commands.CMD_addRepository" [ tooltip="at main.go:14: calling [github.com/wcatron/query-projects/internal/commands.CMD_addRepository]" color="saddlebrown" ]
+    "github.com/wcatron/query-projects/internal/commands.CMD_info" -> "github.com/wcatron/query-projects/internal/projects.LoadProjects" [ color="saddlebrown" tooltip="at info.go:22: calling [github.com/wcatron/query-projects/internal/projects.LoadProjects]" ]
+    "github.com/wcatron/query-projects/callvis.main" -> "github.com/wcatron/query-projects/internal/commands.RunCmdInit" [ tooltip="at main.go:21: calling [github.com/wcatron/query-projects/internal/commands.RunCmdInit]" color="saddlebrown" ]
+    "github.com/wcatron/query-projects/internal/commands.runScriptsForProjectsList" -> "github.com/wcatron/query-projects/internal/outputs.WriteCSVTable" [ tooltip="at run.go:224: calling [github.com/wcatron/query-projects/internal/outputs.WriteCSVTable]" color="saddlebrown" ]
+    "github.com/wcatron/query-projects/internal/commands.CMD_ask" -> "github.com/wcatron/query-projects/internal/commands.generateScriptForQuestion" [ tooltip="at ask.go:38: calling [github.com/wcatron/query-projects/internal/commands.generateScriptForQuestion]" ]
+    "github.com/wcatron/query-projects/internal/commands.CMD_runScript" -> "github.com/wcatron/query-projects/internal/projects.FilterProjectsByTopics" [ color="saddlebrown" tooltip="at run.go:70: calling [github.com/wcatron/query-projects/internal/projects.FilterProjectsByTopics]" ]
+    "github.com/wcatron/query-projects/internal/commands.CMD_addRepository" -> "github.com/wcatron/query-projects/internal/projects.SaveProjects" [ color="saddlebrown" tooltip="at add.go:46: calling [github.com/wcatron/query-projects/internal/projects.SaveProjects]" ]
+    "github.com/wcatron/query-projects/internal/commands.syncFromGitHubProject" -> "github.com/google/go-github/v71/github.NewClient" [ color="saddlebrown" tooltip="at sync.go:46: calling [github.com/google/go-github/v71/github.NewClient]" ]
+    "github.com/wcatron/query-projects/callvis.main" -> "github.com/wcatron/query-projects/internal/commands.CMD_syncRepos" [ color="saddlebrown" tooltip="at main.go:17: calling [github.com/wcatron/query-projects/internal/commands.CMD_syncRepos]" ]
+    "github.com/wcatron/query-projects/internal/commands.CMD_ask" -> "github.com/wcatron/query-projects/internal/commands.getScriptInfo" [ tooltip="at ask.go:57: calling [github.com/wcatron/query-projects/internal/commands.getScriptInfo]\nat ask.go:93: calling [github.com/wcatron/query-projects/internal/commands.getScriptInfo]" ]
+    "github.com/wcatron/query-projects/internal/commands.CMD_ask" -> "github.com/wcatron/query-projects/internal/commands.modifyScriptBasedOnInput" [ tooltip="at ask.go:82: calling [github.com/wcatron/query-projects/internal/commands.modifyScriptBasedOnInput]" ]
+    "github.com/wcatron/query-projects/internal/commands.RunCmdInit" -> "(*github.com/spf13/cobra.Command).PersistentFlags" [ color="saddlebrown" tooltip="at run.go:60: calling [(*github.com/spf13/cobra.Command).PersistentFlags]\nat run.go:61: calling [(*github.com/spf13/cobra.Command).PersistentFlags]\nat run.go:62: calling [(*github.com/spf13/cobra.Command).PersistentFlags]" ]
+    "github.com/wcatron/query-projects/internal/commands.CMD_addRepository" -> "github.com/wcatron/query-projects/internal/projects.LoadProjects" [ color="saddlebrown" tooltip="at add.go:24: calling [github.com/wcatron/query-projects/internal/projects.LoadProjects]" ]
+    "github.com/wcatron/query-projects/internal/commands.selectScriptInfo" -> "github.com/wcatron/query-projects/internal/commands.displayScriptTable" [ tooltip="at run.go:168: calling [github.com/wcatron/query-projects/internal/commands.displayScriptTable]" ]
+    "github.com/wcatron/query-projects/internal/commands.runScriptsForProjectsList" -> "github.com/wcatron/query-projects/internal/commands.runScriptsForProjectsList$1" [ arrowhead="normalnoneodot" tooltip="at run.go:186: calling [github.com/wcatron/query-projects/internal/commands.runScriptsForProjectsList$1]" ]
+    "github.com/wcatron/query-projects/internal/commands.CMD_ask" -> "github.com/wcatron/query-projects/internal/projects.LoadProjects" [ color="saddlebrown" tooltip="at ask.go:45: calling [github.com/wcatron/query-projects/internal/projects.LoadProjects]" ]
+    "github.com/wcatron/query-projects/internal/commands.CMD_runScript" -> "github.com/wcatron/query-projects/internal/projects.LoadProjects" [ color="saddlebrown" tooltip="at run.go:66: calling [github.com/wcatron/query-projects/internal/projects.LoadProjects]" ]
+    "github.com/wcatron/query-projects/internal/commands.printUniqueResponsesToConsole" -> "github.com/rodaine/table.New" [ color="saddlebrown" tooltip="at run.go:241: calling [github.com/rodaine/table.New]" ]
+    "github.com/wcatron/query-projects/internal/commands.runScriptsForProjectsList" -> "github.com/wcatron/query-projects/internal/outputs.WriteTable" [ color="saddlebrown" tooltip="at run.go:222: calling [github.com/wcatron/query-projects/internal/outputs.WriteTable]" ]
+    "github.com/wcatron/query-projects/internal/commands.CMD_pullRepos" -> "github.com/wcatron/query-projects/internal/projects.CloneRepository" [ color="saddlebrown" tooltip="at pull.go:28: calling [github.com/wcatron/query-projects/internal/projects.CloneRepository]" ]
+    "github.com/wcatron/query-projects/internal/commands.CMD_ask" -> "github.com/wcatron/query-projects/internal/commands.runScriptForProject" [ tooltip="at ask.go:61: calling [github.com/wcatron/query-projects/internal/commands.runScriptForProject]\nat ask.go:98: calling [github.com/wcatron/query-projects/internal/commands.runScriptForProject]" ]
+    "github.com/wcatron/query-projects/internal/commands.gatherScriptInfos" -> "github.com/wcatron/query-projects/internal/commands.getScriptInfo" [ tooltip="at run.go:114: calling [github.com/wcatron/query-projects/internal/commands.getScriptInfo]" ]
+    "github.com/wcatron/query-projects/internal/commands.modifyScriptBasedOnInput" -> "github.com/wcatron/query-projects/internal/commands.callOpenAI" [ tooltip="at ask.go:218: calling [github.com/wcatron/query-projects/internal/commands.callOpenAI]" ]
+    "github.com/wcatron/query-projects/internal/commands.init" -> "github.com/spf13/cobra.ExactArgs" [ tooltip="at add.go:15: calling [github.com/spf13/cobra.ExactArgs]" color="saddlebrown" ]
+    "github.com/wcatron/query-projects/callvis.main" -> "github.com/wcatron/query-projects/internal/commands.CMD_runScript" [ color="saddlebrown" tooltip="at main.go:13: calling [github.com/wcatron/query-projects/internal/commands.CMD_runScript]" ]
+    "github.com/wcatron/query-projects/internal/commands.CMD_pullRepos" -> "github.com/wcatron/query-projects/internal/projects.FilterProjectsByTopics" [ tooltip="at pull.go:25: calling [github.com/wcatron/query-projects/internal/projects.FilterProjectsByTopics]" color="saddlebrown" ]
+    "github.com/wcatron/query-projects/internal/commands.CMD_syncRepos" -> "github.com/wcatron/query-projects/internal/projects.LoadProjects" [ color="saddlebrown" tooltip="at sync.go:81: calling [github.com/wcatron/query-projects/internal/projects.LoadProjects]" ]
+    "github.com/wcatron/query-projects/internal/commands.syncFromGitHubProject" -> "golang.org/x/oauth2.NewClient" [ color="saddlebrown" tooltip="at sync.go:45: calling [golang.org/x/oauth2.NewClient]" ]
+    "github.com/wcatron/query-projects/internal/commands.init" -> "github.com/spf13/cobra.MaximumNArgs" [ color="saddlebrown" tooltip="at run.go:26: calling [github.com/spf13/cobra.MaximumNArgs]" ]
+    "github.com/wcatron/query-projects/internal/commands.selectScriptInfo" -> "github.com/wcatron/query-projects/internal/commands.gatherScriptInfos" [ tooltip="at run.go:162: calling [github.com/wcatron/query-projects/internal/commands.gatherScriptInfos]" ]
+    "github.com/wcatron/query-projects/internal/commands.runScriptForProject" -> "github.com/wcatron/query-projects/internal/outputs.FormatOutput" [ color="saddlebrown" tooltip="at run.go:284: calling [github.com/wcatron/query-projects/internal/outputs.FormatOutput]" ]
+    "github.com/wcatron/query-projects/internal/commands.generateScriptForQuestion" -> "github.com/wcatron/query-projects/internal/commands.callOpenAI" [ tooltip="at ask.go:187: calling [github.com/wcatron/query-projects/internal/commands.callOpenAI]" ]
+    "github.com/wcatron/query-projects/callvis.main" -> "github.com/wcatron/query-projects/internal/commands.CMD_ask" [ color="saddlebrown" tooltip="at main.go:18: calling [github.com/wcatron/query-projects/internal/commands.CMD_ask]" ]
+    "github.com/wcatron/query-projects/internal/commands.CMD_runScript" -> "github.com/wcatron/query-projects/internal/commands.runScriptsForProjectsList" [ tooltip="at run.go:82: calling [github.com/wcatron/query-projects/internal/commands.runScriptsForProjectsList]" ]
+    "github.com/wcatron/query-projects/internal/commands.CMD_runScript$1" -> "github.com/wcatron/query-projects/internal/commands.getScriptInfo" [ tooltip="at run.go:74: calling [github.com/wcatron/query-projects/internal/commands.getScriptInfo]" ]
+    "github.com/wcatron/query-projects/internal/commands.runScriptsForProjectsList" -> "github.com/wcatron/query-projects/internal/commands.collectResults" [ tooltip="at run.go:200: calling [github.com/wcatron/query-projects/internal/commands.collectResults]" ]
+    "github.com/wcatron/query-projects/internal/commands.runScriptsForProjectsList" -> "github.com/wcatron/query-projects/internal/outputs.WriteJSONOutput" [ tooltip="at run.go:226: calling [github.com/wcatron/query-projects/internal/outputs.WriteJSONOutput]" color="saddlebrown" ]
+    "github.com/wcatron/query-projects/internal/commands.CMD_syncRepos" -> "github.com/wcatron/query-projects/internal/projects.SaveProjects" [ tooltip="at sync.go:106: calling [github.com/wcatron/query-projects/internal/projects.SaveProjects]" color="saddlebrown" ]
+    "github.com/wcatron/query-projects/internal/commands.RunCmdInit" -> "(*github.com/spf13/pflag.FlagSet).Bool" [ color="saddlebrown" tooltip="at run.go:61: calling [(*github.com/spf13/pflag.FlagSet).Bool]" ]
+    "github.com/wcatron/query-projects/internal/commands.init" -> "github.com/wcatron/query-projects/internal/commands.withMetrics" [ tooltip="at pull.go:13: calling [github.com/wcatron/query-projects/internal/commands.withMetrics]\nat run.go:27: calling [github.com/wcatron/query-projects/internal/commands.withMetrics]" ]
+    "github.com/wcatron/query-projects/internal/commands.displayScriptTable" -> "github.com/fatih/color.New" [ color="saddlebrown" tooltip="at run.go:126: calling [github.com/fatih/color.New]\nat run.go:127: calling [github.com/fatih/color.New]" ]
+    "github.com/wcatron/query-projects/internal/commands.runScriptsForProjectsList$1" -> "github.com/wcatron/query-projects/internal/commands.runScriptForProject" [ tooltip="at run.go:188: calling [github.com/wcatron/query-projects/internal/commands.runScriptForProject]" ]
+    "github.com/wcatron/query-projects/callvis.main" -> "github.com/wcatron/query-projects/internal/commands.CMD_pullRepos" [ color="saddlebrown" tooltip="at main.go:16: calling [github.com/wcatron/query-projects/internal/commands.CMD_pullRepos]" ]
+    "github.com/wcatron/query-projects/internal/commands.modifyScriptBasedOnInput" -> "github.com/wcatron/query-projects/internal/projects.ExtractTypeScriptCode" [ color="saddlebrown" tooltip="at ask.go:223: calling [github.com/wcatron/query-projects/internal/projects.ExtractTypeScriptCode]" ]
+    "github.com/wcatron/query-projects/internal/commands.displayScriptTable" -> "github.com/rodaine/table.New" [ color="saddlebrown" tooltip="at run.go:128: calling [github.com/rodaine/table.New]" ]
+    "github.com/wcatron/query-projects/internal/commands.CMD_runScript$1" -> "github.com/wcatron/query-projects/internal/commands.selectScriptInfo" [ tooltip="at run.go:76: calling [github.com/wcatron/query-projects/internal/commands.selectScriptInfo]" ]
+    "github.com/wcatron/query-projects/internal/commands.fetchGitHubMetadata" -> "(*github.com/google/go-github/v71/github.RepositoriesService).Get" [ color="saddlebrown" tooltip="at sync.go:73: calling [(*github.com/google/go-github/v71/github.RepositoriesService).Get]" ]
+    "github.com/wcatron/query-projects/internal/commands.CMD_syncRepos" -> "github.com/wcatron/query-projects/internal/commands.syncFromGitHubProject" [ tooltip="at sync.go:93: calling [github.com/wcatron/query-projects/internal/commands.syncFromGitHubProject]" ]
+    "github.com/wcatron/query-projects/internal/commands.RunCmdInit" -> "(*github.com/spf13/pflag.FlagSet).StringSliceP" [ tooltip="at run.go:60: calling [(*github.com/spf13/pflag.FlagSet).StringSliceP]\nat run.go:62: calling [(*github.com/spf13/pflag.FlagSet).StringSliceP]" color="saddlebrown" ]
+    "github.com/wcatron/query-projects/internal/commands.CMD_addRepository" -> "github.com/wcatron/query-projects/internal/projects.CloneRepository" [ color="saddlebrown" tooltip="at add.go:36: calling [github.com/wcatron/query-projects/internal/projects.CloneRepository]" ]
+    "github.com/wcatron/query-projects/internal/commands.CMD_runScript" -> "github.com/wcatron/query-projects/internal/commands.CMD_runScript$1" [ tooltip="at run.go:77: calling [github.com/wcatron/query-projects/internal/commands.CMD_runScript$1]" ]
+    "github.com/wcatron/query-projects/callvis.main" -> "github.com/wcatron/query-projects/internal/commands.CMD_info" [ color="saddlebrown" tooltip="at main.go:15: calling [github.com/wcatron/query-projects/internal/commands.CMD_info]" ]
+    "github.com/wcatron/query-projects/internal/commands.selectScriptInfo" -> "github.com/wcatron/query-projects/internal/commands.findScriptFiles" [ tooltip="at run.go:156: calling [github.com/wcatron/query-projects/internal/commands.findScriptFiles]" ]
+    "github.com/wcatron/query-projects/internal/commands.CMD_pullRepos" -> "github.com/wcatron/query-projects/internal/projects.LoadProjects" [ tooltip="at pull.go:21: calling [github.com/wcatron/query-projects/internal/projects.LoadProjects]" color="saddlebrown" ]
+}
