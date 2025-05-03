@@ -86,27 +86,30 @@ func CMD_runScript(scriptName string, topics []string, count bool, outputFormats
 	return nil
 }
 
-func selectScriptInfo() (outputs.ScriptInfo, error) {
-	var scriptPaths []string
-	var scriptInfos []outputs.ScriptInfo
-
+// findScriptFiles returns a list of TypeScript files in the scripts folder
+func findScriptFiles() ([]string, error) {
 	files, err := os.ReadDir(projects.ScriptsFolder)
 	if err != nil {
-		return outputs.ScriptInfo{}, err
+		return nil, err
 	}
 
-	// Collect all *.ts files
+	var scriptPaths []string
 	for _, f := range files {
 		if f.Type().IsRegular() && strings.HasSuffix(f.Name(), ".ts") {
 			scriptPaths = append(scriptPaths, filepath.Join(projects.ScriptsFolder, f.Name()))
 		}
 	}
+
 	if len(scriptPaths) == 0 {
-		fmt.Println()
-		return outputs.ScriptInfo{}, fmt.Errorf("No .ts scripts found in the scripts folder: %q", projects.ScriptsFolder)
+		return nil, fmt.Errorf("No .ts scripts found in the scripts folder: %q", projects.ScriptsFolder)
 	}
 
-	// Gather script information
+	return scriptPaths, nil
+}
+
+// gatherScriptInfos collects information about each script
+func gatherScriptInfos(scriptPaths []string) []outputs.ScriptInfo {
+	var scriptInfos []outputs.ScriptInfo
 	for _, sp := range scriptPaths {
 		info, err := getScriptInfo(sp)
 		if err != nil {
@@ -115,8 +118,11 @@ func selectScriptInfo() (outputs.ScriptInfo, error) {
 		}
 		scriptInfos = append(scriptInfos, info)
 	}
+	return scriptInfos
+}
 
-	// Create and display the table
+// displayScriptTable shows a formatted table of available scripts
+func displayScriptTable(scriptInfos []outputs.ScriptInfo) {
 	headerFmt := color.New(color.FgGreen, color.Underline).SprintfFunc()
 	columnFmt := color.New(color.FgYellow).SprintfFunc()
 	tbl := table.New("#", "Name", "Version", "Output")
@@ -130,17 +136,44 @@ func selectScriptInfo() (outputs.ScriptInfo, error) {
 		)
 	}
 	tbl.Print()
+}
 
-	// Ask user to pick a script
+// getUserSelection prompts the user to select a script and returns the index
+func getUserSelection(scriptInfos []outputs.ScriptInfo) (int, error) {
 	fmt.Print("Enter a number: ")
 	reader := bufio.NewReader(os.Stdin)
 	input, _ := reader.ReadString('\n')
 	input = strings.TrimSpace(input)
 	choice, err := strconv.Atoi(input)
 	if err != nil || choice < 1 || choice > len(scriptInfos) {
-		return outputs.ScriptInfo{}, errors.New("invalid selection")
+		return 0, errors.New("invalid selection")
 	}
-	return scriptInfos[choice-1], nil
+	return choice - 1, nil
+}
+
+func selectScriptInfo() (outputs.ScriptInfo, error) {
+	// Find available scripts
+	scriptPaths, err := findScriptFiles()
+	if err != nil {
+		return outputs.ScriptInfo{}, err
+	}
+
+	// Gather information about each script
+	scriptInfos := gatherScriptInfos(scriptPaths)
+	if len(scriptInfos) == 0 {
+		return outputs.ScriptInfo{}, errors.New("no valid scripts found")
+	}
+
+	// Display the table of scripts
+	displayScriptTable(scriptInfos)
+
+	// Get user selection
+	choice, err := getUserSelection(scriptInfos)
+	if err != nil {
+		return outputs.ScriptInfo{}, err
+	}
+
+	return scriptInfos[choice], nil
 }
 
 // runScriptsForProjectsList executes the specified .ts script against all projects.
