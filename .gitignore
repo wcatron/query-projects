@@ -5,4 +5,4 @@
 .env
 
 # Compiled binary
-query-projects
+/query-projects
