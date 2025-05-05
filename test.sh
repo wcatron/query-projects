@@ -14,3 +14,4 @@ cd example
 ../query-projects run scripts/what-version-of-typescript-is-being-used.ts
 ../query-projects run scripts/which-test-framework-is-being-used.ts
 ../query-projects run scripts/get-compiler-options-from-tsconfig.ts
+../query-projects plan plans/test.lua
