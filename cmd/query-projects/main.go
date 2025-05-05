@@ -1,4 +1,4 @@
-package main
+package queryprojects
 
 import (
 	"fmt"
@@ -10,15 +10,16 @@ import (
 )
 
 var cliVersion string // Define the current version of the CLI tool
-func main() {
+
+var rootCmd = &cobra.Command{
+	Use:     "query-projects",
+	Short:   "A CLI that manages repositories and runs scripts across them.",
+	Version: cliVersion,
+}
+
+func Execute() {
 	// Attempt to load an .env file
 	if err := godotenv.Load(); err != nil {
-	}
-
-	rootCmd := &cobra.Command{
-		Use:     "query-projects",
-		Short:   "A CLI that manages repositories and runs scripts across them.",
-		Version: cliVersion,
 	}
 
 	// Add subcommands
@@ -37,7 +38,7 @@ func main() {
 
 	// Execute the root command
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Println("Error:", err)
+		fmt.Println(err)
 		os.Exit(1)
 	}
 }
