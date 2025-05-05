@@ -7,6 +7,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/spf13/cobra"
 	"github.com/wcatron/query-projects/internal/commands"
+	"github.com/wcatron/query-projects/internal/version"
 )
 
 var cliVersion string // Define the current version of the CLI tool
@@ -14,7 +15,7 @@ var cliVersion string // Define the current version of the CLI tool
 var rootCmd = &cobra.Command{
 	Use:     "query-projects",
 	Short:   "A CLI that manages repositories and runs scripts across them.",
-	Version: cliVersion,
+	Version: version.Version(),
 }
 
 func Execute() {
@@ -29,6 +30,7 @@ func Execute() {
 	rootCmd.AddCommand(commands.PullCmd)
 	rootCmd.AddCommand(commands.InfoCmd)
 	rootCmd.AddCommand(commands.SyncCmd)
+	rootCmd.AddCommand(commands.PlanCmd)
 
 	// Add a flag for the run
 	commands.RunCmdInit(commands.RunCmd)
@@ -38,7 +40,7 @@ func Execute() {
 
 	// Execute the root command
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
+		fmt.Println("Error:", err)
 		os.Exit(1)
 	}
 }

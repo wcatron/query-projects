@@ -58,7 +58,7 @@ func CMD_ask(question string) error {
 	if err != nil {
 		return fmt.Errorf("failed to get script info: %w", err)
 	}
-	result, err := runScriptForProject(scriptInfo, randomProject.Path)
+	result, err := runScriptForProject(scriptInfo, randomProject.Path, true)
 	if err != nil {
 		return fmt.Errorf("error running script: %w", err)
 	}
@@ -95,7 +95,7 @@ func CMD_ask(question string) error {
 			fmt.Printf("Failed to get script info: %v\n", err)
 			continue
 		}
-		result, err = runScriptForProject(scriptInfo, randomProject.Path)
+		result, err = runScriptForProject(scriptInfo, randomProject.Path, true)
 		if err != nil {
 			fmt.Printf("Error running script: %v\n", err)
 		} else {
