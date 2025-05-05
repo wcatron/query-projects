@@ -23,25 +23,22 @@ type RepoContext struct {
 }
 
 var PlanCmd = &cobra.Command{
-	Use:   "plan",
+	Use:   "plan [script]",
 	Short: "Plan changes across projects",
+	Args:  cobra.MaximumNArgs(1),
 	RunE: withMetrics(func(cmd *cobra.Command, args []string) error {
 		topics, _ := cmd.Flags().GetStringSlice("topics")
-		return CMD_plan(topics)
+		var script string
+		if len(args) > 0 {
+			script = args[0]
+		}
+		return CMD_plan(topics, script)
 	}),
 }
 
-func CMD_plan(topics []string) error {
+func CMD_plan(topics []string, script string) error {
 	L := lua.NewState()
 	defer L.Close()
-
-	line := liner.NewLiner()
-	defer line.Close()
-
-	line.SetCtrlCAborts(true)
-	line.SetCompleter(func(line string) []string {
-		return completer(line)
-	})
 
 	projectsList, err := projects.LoadProjects()
 	if err != nil {
@@ -56,6 +53,34 @@ func CMD_plan(topics []string) error {
 	for i, project := range targets {
 		repos[i] = newRepo(&project)
 	}
+
+	if script != "" {
+		// Read and execute the script file
+		content, err := os.ReadFile(script)
+		if err != nil {
+			return fmt.Errorf("failed to read script file: %v", err)
+		}
+
+		var wg sync.WaitGroup
+		for _, repo := range repos {
+			wg.Add(1)
+			go func(r RepoContext) {
+				defer wg.Done()
+				runCodeInRepo(r, string(content))
+			}(repo)
+		}
+		wg.Wait()
+		return nil
+	}
+
+	// Start REPL if no script provided
+	line := liner.NewLiner()
+	defer line.Close()
+
+	line.SetCtrlCAborts(true)
+	line.SetCompleter(func(line string) []string {
+		return completer(line)
+	})
 
 	fmt.Println("Custom Lua REPL with Autocomplete. Type `exit` to quit.")
 
@@ -123,7 +148,6 @@ func makePrintFunc(repoName string, logger *strings.Builder) lua.LGFunction {
 func runFunc(project *projects.Project) func(L *lua.LState) int {
 	return func(L *lua.LState) int {
 		script := L.CheckString(1)
-		fmt.Printf("[%s] Running script: %s (in %s)\n", project.Name, script, project.Path)
 		scriptInfo, err := getScriptInfo(script)
 		if err != nil {
 			L.RaiseError("failed to get script info: %v", err)
