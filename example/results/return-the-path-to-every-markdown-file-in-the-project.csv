@@ -411,7 +411,6 @@ Project Path,Status,Output
 ./projects/next.js,Success,.github/actions/next-stats-action/README.md
 ./projects/next.js,Success,UPGRADING.md
 ./projects/ai,Success,CHANGELOG.md
-./projects/ai,Success,.changeset/odd-tables-cross.md
 ./projects/ai,Success,.changeset/README.md
 ./projects/ai,Success,README.md
 ./projects/ai,Success,CONTRIBUTING.md
