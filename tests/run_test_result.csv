@@ -19,6 +19,7 @@ Project Path,Status,Output
 ./projects/next.js,Success,test/development/typescript-plugin/README.md
 ./projects/next.js,Success,test/readme.md
 ./projects/next.js,Success,test/production/app-dir/symbolic-file-links/README.md
+./projects/next.js,Success,test/e2e/app-dir/mdx/pages/pages/import/md-file.md
 ./projects/next.js,Success,test/e2e/react-compiler/reference-library/compiled/README.md
 ./projects/next.js,Success,contributing/repository/linting.md
 ./projects/next.js,Success,contributing/repository/pull-request-descriptions.md
@@ -410,6 +411,7 @@ Project Path,Status,Output
 ./projects/next.js,Success,.github/actions/next-stats-action/README.md
 ./projects/next.js,Success,UPGRADING.md
 ./projects/ai,Success,CHANGELOG.md
+./projects/ai,Success,.changeset/odd-tables-cross.md
 ./projects/ai,Success,.changeset/README.md
 ./projects/ai,Success,README.md
 ./projects/ai,Success,CONTRIBUTING.md

@@ -1,26 +1,17 @@
 package commands
 
 import (
-	"bytes"
-	"encoding/json"
-	"encoding/xml"
 	"fmt"
 	"os"
-	"path/filepath"
 	"strings"
 	"sync"
 
 	"github.com/peterh/liner"
 	"github.com/spf13/cobra"
+	"github.com/wcatron/query-projects/internal/plan"
 	"github.com/wcatron/query-projects/internal/projects"
 	lua "github.com/yuin/gopher-lua"
 )
-
-// RepoContext represents an execution context for one repo
-type RepoContext struct {
-	Project *projects.Project
-	VM      *lua.LState
-}
 
 var PlanCmd = &cobra.Command{
 	Use:   "plan [script]",
@@ -49,7 +40,7 @@ func CMD_plan(topics []string, script string) error {
 	fmt.Printf("[%s] Loaded %d projects\n", "main", len(targets))
 
 	// Create repo contexts from project list
-	repos := make([]RepoContext, len(targets))
+	repos := make([]plan.RepoContext, len(targets))
 	for i, project := range targets {
 		repos[i] = newRepo(&project)
 	}
@@ -64,7 +55,7 @@ func CMD_plan(topics []string, script string) error {
 		var wg sync.WaitGroup
 		for _, repo := range repos {
 			wg.Add(1)
-			go func(r RepoContext) {
+			go func(r plan.RepoContext) {
 				defer wg.Done()
 				runCodeInRepo(r, string(content))
 			}(repo)
@@ -78,9 +69,8 @@ func CMD_plan(topics []string, script string) error {
 	defer line.Close()
 
 	line.SetCtrlCAborts(true)
-	line.SetCompleter(func(line string) []string {
-		return completer(line)
-	})
+	completer := plan.NewCompleter(repos)
+	line.SetCompleter(completer.Complete)
 
 	fmt.Println("Custom Lua REPL with Autocomplete. Type `exit` to quit.")
 
@@ -93,7 +83,7 @@ func CMD_plan(topics []string, script string) error {
 		var wg sync.WaitGroup
 		for _, repo := range repos {
 			wg.Add(1)
-			go func(r RepoContext) {
+			go func(r plan.RepoContext) {
 				defer wg.Done()
 				runCodeInRepo(r, input)
 			}(repo)
@@ -105,16 +95,16 @@ func CMD_plan(topics []string, script string) error {
 	return nil
 }
 
-func newRepo(project *projects.Project) RepoContext {
+func newRepo(project *projects.Project) plan.RepoContext {
 	vm := lua.NewState()
 	// Register DSL
-	vm.SetGlobal("run", vm.NewFunction(runFunc(project)))
-	vm.SetGlobal("value", vm.NewFunction(valueFunc(project)))
+	vm.SetGlobal("run", vm.NewFunction(plan.RunFunc(project)))
+	vm.SetGlobal("value", vm.NewFunction(plan.ValueFunc(project)))
 	vm.SetGlobal("repoName", lua.LString(project.Name))
-	return RepoContext{Project: project, VM: vm}
+	return plan.RepoContext{Project: project, VM: vm}
 }
 
-func runCodeInRepo(repo RepoContext, code string) {
+func runCodeInRepo(repo plan.RepoContext, code string) {
 	var output strings.Builder
 
 	// Replace `print` in Lua
@@ -143,97 +133,4 @@ func makePrintFunc(repoName string, logger *strings.Builder) lua.LGFunction {
 		logger.WriteString(msg + "\n")
 		return 0
 	}
-}
-
-func runFunc(project *projects.Project) func(L *lua.LState) int {
-	return func(L *lua.LState) int {
-		script := L.CheckString(1)
-		scriptInfo, err := getScriptInfo(script)
-		if err != nil {
-			L.RaiseError("failed to get script info: %v", err)
-			return 0
-		}
-		output, err := runScriptForProject(scriptInfo, project.Path, false)
-		if err != nil {
-			L.RaiseError("failed to run script: %v", err)
-			return 0
-		}
-		L.Push(lua.LString(output.StdoutText))
-		return 1
-	}
-}
-
-func valueFunc(project *projects.Project) func(L *lua.LState) int {
-	return func(L *lua.LState) int {
-		file := L.CheckString(1)
-		field := L.CheckString(2)
-
-		data, err := os.ReadFile(filepath.Join(project.Path, file))
-		if err != nil {
-			L.RaiseError("failed to read file %s: %v", file, err)
-			return 0
-		}
-
-		var value string
-		ext := strings.ToLower(filepath.Ext(file))
-		switch ext {
-		case ".json":
-			var jsonData map[string]interface{}
-			if err := json.Unmarshal(data, &jsonData); err != nil {
-				L.RaiseError("failed to parse JSON file %s: %v", file, err)
-				return 0
-			}
-			if val, ok := jsonData[field]; ok {
-				value = fmt.Sprint(val)
-			}
-		case ".xml":
-			var xmlData map[string]interface{}
-			decoder := xml.NewDecoder(bytes.NewReader(data))
-			if err := decoder.Decode(&xmlData); err != nil {
-				L.RaiseError("failed to parse XML file %s: %v", file, err)
-				return 0
-			}
-			if val, ok := xmlData[field]; ok {
-				value = fmt.Sprint(val)
-			}
-		default:
-			L.RaiseError("unsupported file type: %s", ext)
-			return 0
-		}
-
-		if value == "" {
-			// L.RaiseError("field %s not found in file %s", field, file)
-			L.Push(lua.LString(""))
-			return 1
-		}
-
-		L.Push(lua.LString(value))
-		return 1
-	}
-}
-
-func completer(line string) []string {
-
-	// TODO: Actual completion
-
-	// Simulate per-repo context
-	currentRepo := "repo-a"
-	files := map[string][]string{
-		"repo-a": {"package.json", "tsconfig.json"},
-		"repo-b": {"custom.yaml"},
-	}
-	fields := map[string][]string{
-		"package.json": {"version", "name"},
-	}
-
-	if strings.HasPrefix(line, "value(") {
-		var out []string
-		for _, f := range files[currentRepo] {
-			for _, field := range fields[f] {
-				out = append(out, fmt.Sprintf(`%s"%s", "%s"`, line, f, field))
-			}
-		}
-		return out
-	}
-	return []string{"run", "value", "step"}
 }
