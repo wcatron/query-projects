@@ -1,0 +1,5 @@
+{
+  "imports": {
+    "@query-projects/scripts": "jsr:@query-projects/scripts@^0.2.0"
+  }
+}

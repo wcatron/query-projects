@@ -14,16 +14,16 @@ interface PackageJSON {
   devDependencies?: Record<string, string>;
 }
 
-class NodeJS {
-  private static instance: NodeJS;
+class PackageManager {
+  private static instance: PackageManager;
   private _packageJson: PackageJSON | null = null;
   private isLoaded = false;
 
-  static getInstance(): NodeJS {
-    if (!NodeJS.instance) {
-      NodeJS.instance = new NodeJS();
+  static getInstance(): PackageManager {
+    if (!PackageManager.instance) {
+      PackageManager.instance = new PackageManager();
     }
-    return NodeJS.instance;
+    return PackageManager.instance;
   }
 
   private get packageJson(): PackageJSON | null {
@@ -36,7 +36,13 @@ class NodeJS {
       this.isLoaded = true;
       return this._packageJson;
     } catch (err) {
-      throw new Error('package.json not found');
+      // If the package.json file is not found, use an empty object
+      // This is to avoid errors when the package.json file is not found
+      // and to allow the script to run without errors
+      this._packageJson = {};
+      this.isLoaded = true;
+      console.warn('package.json not found, using empty object');
+      return this._packageJson;
     }
   }
 
@@ -57,9 +63,9 @@ class NodeJS {
   }
 }
 
-export const nodeJS: NodeJS = NodeJS.getInstance();
+export const packageManager: PackageManager = PackageManager.getInstance();
 
-export async function setupScript<T extends ScriptConfig['type']>(
+export async function script<T extends ScriptConfig['type']>(
   config: ScriptConfig & { type: T },
   script: () => ScriptReturn<T> | Promise<ScriptReturn<T>>
 ): Promise<void> {

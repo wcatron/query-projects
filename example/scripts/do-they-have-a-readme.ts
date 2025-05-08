@@ -1,6 +1,6 @@
-import { setupScript } from "jsr:@query-projects/scripts";
+import { script } from "jsr:@query-projects/scripts";
 
-setupScript({ type: 'text' }, async () => {
+script({ type: 'text' }, async () => {
   // Define the path to the README.md file
   const readmePath = './README.md';
 

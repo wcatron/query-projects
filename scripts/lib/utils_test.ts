@@ -1,5 +1,5 @@
 import { assertEquals, assertThrows } from "https://deno.land/std@0.220.1/assert/mod.ts";
-import { nodeJS, setupScript, value } from "./utils.ts";
+import { packageManager, script, value } from "./utils.ts";
 
 // Mock console.log
 let consoleOutput: string[] = [];
@@ -31,7 +31,7 @@ function restoreReadTextFileSync() {
   Deno.readTextFileSync = originalReadTextFileSync;
 }
 
-Deno.test("NodeJS dependency tracking", () => {
+Deno.test("packageManager dependency tracking", () => {
   mockConsole();
   const packageJson = `{
     "dependencies": {
@@ -46,23 +46,23 @@ Deno.test("NodeJS dependency tracking", () => {
   mockReadTextFileSync(packageJson);
 
   // Test regular dependencies
-  assertEquals(nodeJS.dependency("typescript"), "4.9.0");
-  assertEquals(nodeJS.dependency("eslint"), "8.0.0");
-  assertEquals(nodeJS.dependency("nonexistent"), null);
+  assertEquals(packageManager.dependency("typescript"), "4.9.0");
+  assertEquals(packageManager.dependency("eslint"), "8.0.0");
+  assertEquals(packageManager.dependency("nonexistent"), undefined);
 
   // Test dev dependencies
-  assertEquals(nodeJS.devDependency("prettier"), "2.8.0");
-  assertEquals(nodeJS.devDependency("jest"), "29.0.0");
-  assertEquals(nodeJS.devDependency("nonexistent"), null);
+  assertEquals(packageManager.devDependency("prettier"), "2.8.0");
+  assertEquals(packageManager.devDependency("jest"), "29.0.0");
+  assertEquals(packageManager.devDependency("nonexistent"), undefined);
 
   // Test getting all dependencies
-  assertEquals(nodeJS.getDependencies(), {
+  assertEquals(packageManager.getDependencies(), {
     typescript: "4.9.0",
     eslint: "8.0.0"
   });
 
   // Test getting all dev dependencies
-  assertEquals(nodeJS.getDevDependencies(), {
+  assertEquals(packageManager.getDevDependencies(), {
     prettier: "2.8.0",
     jest: "29.0.0"
   });
@@ -71,44 +71,50 @@ Deno.test("NodeJS dependency tracking", () => {
   restoreConsole();
 });
 
-Deno.test("NodeJS with missing package.json", () => {
+Deno.test("packageManager with missing package.json", () => {
   mockConsole();
   mockReadTextFileSync(""); // Simulate file not found
 
   // Test with empty dependencies
-  assertEquals(nodeJS.dependency("typescript"), null);
-  assertEquals(nodeJS.devDependency("prettier"), null);
-  assertEquals(nodeJS.getDependencies(), {});
-  assertEquals(nodeJS.getDevDependencies(), {});
+  assertEquals(packageManager.dependency("typescript"), undefined);
+  assertEquals(packageManager.devDependency("prettier"), undefined);
+  assertEquals(packageManager.getDependencies(), {});
+  assertEquals(packageManager.getDevDependencies(), {});
 
   restoreReadTextFileSync();
   restoreConsole();
 });
 
-Deno.test("setupScript with CSV config", () => {
+Deno.test("script with CSV config", () => {
   assertThrows(
-    () => setupScript({ type: "csv" }, () => {}),
+    () => script({ type: "csv" }, () => {
+      return [];
+    }),
     Error,
     "CSV output type requires columns to be specified"
   );
 
   assertThrows(
-    () => setupScript({ type: "csv", columns: [] }, () => {}),
+    () => script({ type: "csv", columns: [] }, () => {
+      return [];
+    }),
     Error,
     "CSV output type requires columns to be specified"
   );
 
   // Test valid CSV config
-  setupScript({ type: "csv", columns: ["name", "version"] }, () => {});
+  script({ type: "csv", columns: ["name", "version"] }, () => {
+    return ["some-name", "some-version"];
+  });
 });
 
-Deno.test("setupScript with --info flag", async () => {
+Deno.test("script with --info flag", async () => {
   mockConsole();
   
   // Create a new instance of the script with --info flag
   const script = new Function(`
-    const { setupScript } = await import("./utils.ts");
-    setupScript({ type: "text" }, () => {});
+    const { script } = await import("./utils.ts");
+    script({ type: "text" }, () => {});
   `);
 
   // Mock Deno.args for this test
@@ -135,10 +141,10 @@ Deno.test("setupScript with --info flag", async () => {
   restoreConsole();
 });
 
-Deno.test("setupScript error handling", () => {
+Deno.test("script error handling", () => {
   mockConsole();
 
-  setupScript({ type: "text" }, () => {
+  script({ type: "text" }, () => {
     throw new Error("Test error");
   });
 
