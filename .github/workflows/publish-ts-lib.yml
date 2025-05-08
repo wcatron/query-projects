@@ -1,0 +1,40 @@
+name: Publish TS
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/**'
+      - '.github/workflows/publish-ts-lib.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'scripts/**'
+      - '.github/workflows/publish-ts-lib.yml'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # Needed for JSR authentication
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.40.0
+
+      - name: Install JSR CLI
+        run: deno install -A -r -f https://jsr.io/@jsr/cli
+
+      - name: Check JSR Configuration
+        run: deno run -A https://jsr.io/@jsr/cli check
+
+      - name: Publish to JSR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: deno run -A https://jsr.io/@jsr/cli publish

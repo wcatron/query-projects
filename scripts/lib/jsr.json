@@ -1,0 +1,9 @@
+{
+  "name": "@query-projects/scripts",
+  "version": "0.2.0",
+  "license": "MIT",
+  "files": [
+    "./utils.ts"
+  ],
+  "exports": "./utils.ts"
+} 
