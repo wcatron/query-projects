@@ -4,14 +4,24 @@ interface ScriptConfig {
 }
 
 type ScriptReturn<T extends ScriptConfig['type']> = 
+  T extends 'csv' ? string[] | undefined | null | void:
+  T extends 'json' ? Record<string, unknown> | undefined | null | void:
+  T extends 'text' ? string | undefined | null | void:
+  never;
+
+
+type ScriptEmitterRow<T extends ScriptConfig['type']> = 
   T extends 'csv' ? string[] :
   T extends 'json' ? Record<string, unknown> :
   T extends 'text' ? string :
   never;
 
+type ScriptEmitter<T extends ScriptConfig['type']> = (row: ScriptEmitterRow<T>) => void;
+
 interface PackageJSON {
   dependencies?: Record<string, string>;
   devDependencies?: Record<string, string>;
+  peerDependencies?: Record<string, string>;
 }
 
 class PackageManager {
@@ -61,13 +71,47 @@ class PackageManager {
   getDevDependencies(): Record<string, string> {
     return this.packageJson?.devDependencies || {};
   }
+
+  // Peer dependencies
+  getPeerDependencies(): Record<string, string> {
+    return this.packageJson?.peerDependencies || {};
+  }
+}
+export const packageManager: PackageManager = PackageManager.getInstance();
+
+function emitter<T extends ScriptConfig['type']>(
+  type: T
+): (row: ScriptEmitterRow<T>) => void {
+  return (row) => {
+    if (type === 'text') {
+      if (typeof row === 'string' || typeof row === 'number') {
+        console.log(row);
+        return;
+      } else {
+        throw new Error('Row with type "text" is not a string or number');
+      }
+    } else if (type === 'csv') {
+      if (Array.isArray(row)) {
+        console.log(row.join(','));
+        return;
+      } else {
+        throw new Error('Row with type "csv" is not an array');
+      }
+    } else if (type === 'json') {
+      if (typeof row === 'object') {
+        console.log(JSON.stringify(row, null, 2));
+        return;
+      } else {
+        throw new Error('Row with type "json" is not an object');
+      }
+    }
+  };
 }
 
-export const packageManager: PackageManager = PackageManager.getInstance();
 
 export async function script<T extends ScriptConfig['type']>(
   config: ScriptConfig & { type: T },
-  script: () => ScriptReturn<T> | Promise<ScriptReturn<T>>
+  script: (emit: ScriptEmitter<T>) => ScriptReturn<T> | Promise<ScriptReturn<T>>
 ): Promise<void> {
   // Validate config
   if (config.type === 'csv' && (!config.columns || config.columns.length === 0)) {
@@ -86,7 +130,7 @@ export async function script<T extends ScriptConfig['type']>(
   }
 
   try {
-    const result = await script();
+    const result = await script(emitter(config.type));
     switch (config.type) {
       case 'csv': {
         const csvResult = result as string[];
