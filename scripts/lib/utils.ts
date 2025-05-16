@@ -24,8 +24,8 @@ interface PackageJSON {
   peerDependencies?: Record<string, string>;
 }
 
-class PackageManager {
-  private static instance: PackageManager;
+export class PackageManager {
+  private static instance: PackageManager | undefined = undefined;
   private _packageJson: PackageJSON | null = null;
   private isLoaded = false;
 
@@ -34,6 +34,10 @@ class PackageManager {
       PackageManager.instance = new PackageManager();
     }
     return PackageManager.instance;
+  }
+  resetInstance() {
+    this._packageJson = null;
+    this.isLoaded = false;
   }
 
   private get packageJson(): PackageJSON | null {
@@ -45,13 +49,13 @@ class PackageManager {
       this._packageJson = JSON.parse(content);
       this.isLoaded = true;
       return this._packageJson;
-    } catch (err) {
+    } catch (_) {
       // If the package.json file is not found, use an empty object
       // This is to avoid errors when the package.json file is not found
       // and to allow the script to run without errors
       this._packageJson = {};
       this.isLoaded = true;
-      console.warn('package.json not found, using empty object');
+      console.debug('package.json could not be read, using empty object');
       return this._packageJson;
     }
   }
@@ -111,12 +115,44 @@ function emitter<T extends ScriptConfig['type']>(
 
 export async function script<T extends ScriptConfig['type']>(
   config: ScriptConfig & { type: T },
-  script: (emit: ScriptEmitter<T>) => ScriptReturn<T> | Promise<ScriptReturn<T>>
-): Promise<void> {
+  script: (emit: ScriptEmitter<T>) => ScriptReturn<T> | Promise<ScriptReturn<T>>,
+  options?: {
+    // If true, the console output will be captured and returned
+    // This is useful for testing and should not be used in production
+    captureConsole?: boolean;
+    captureExit?: boolean;
+  }
+): Promise<{
+  stdout?: string;
+  stderr?: string;
+  exitCode?: number;
+}> {
   // Validate config
   if (config.type === 'csv' && (!config.columns || config.columns.length === 0)) {
     throw new Error('CSV output type requires columns to be specified');
   }
+
+  let stdout = '';
+  let stderr = '';
+  let exitCode = 0;
+  const captureConsole = options?.captureConsole || false;
+  const console = captureConsole ? {
+    log: (...args: any[]) => {
+      stdout += args.join(' ') + '\n';
+    },
+    error: (...args: any[]) => {
+      stderr += args.join(' ') + '\n';
+    },
+  } : globalThis.console;
+  
+  const exit = (code: number) => {
+    if (options?.captureExit) {
+      exitCode = code;
+    } else {
+      Deno.exit(exitCode);
+    }
+  }
+
 
   // Add --info flag handling
   if (Deno.args.includes('--info')) {
@@ -151,8 +187,10 @@ export async function script<T extends ScriptConfig['type']>(
   } catch (err) {
     const error = err as Error;
     console.error(`[ERROR] Script execution failed: ${error.message}`);
-    Deno.exit(1);
+    exit(1);
   }
+
+  return { stdout, stderr, exitCode };
 }
 
 export function value(filename: string, fieldAccessor: string): any {

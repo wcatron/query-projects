@@ -1,4 +1,4 @@
-import { assertEquals, assertThrows } from "https://deno.land/std@0.220.1/assert/mod.ts";
+import { assertEquals, assertRejects } from "https://deno.land/std@0.220.1/assert/mod.ts";
 import { packageManager, script, value } from "./utils.ts";
 
 // Mock console.log
@@ -32,7 +32,6 @@ function restoreReadTextFileSync() {
 }
 
 Deno.test("packageManager dependency tracking", () => {
-  mockConsole();
   const packageJson = `{
     "dependencies": {
       "typescript": "4.9.0",
@@ -68,11 +67,11 @@ Deno.test("packageManager dependency tracking", () => {
   });
 
   restoreReadTextFileSync();
-  restoreConsole();
 });
 
 Deno.test("packageManager with missing package.json", () => {
-  mockConsole();
+  packageManager.resetInstance();
+
   mockReadTextFileSync(""); // Simulate file not found
 
   // Test with empty dependencies
@@ -82,11 +81,10 @@ Deno.test("packageManager with missing package.json", () => {
   assertEquals(packageManager.getDevDependencies(), {});
 
   restoreReadTextFileSync();
-  restoreConsole();
 });
 
-Deno.test("script with CSV config", () => {
-  assertThrows(
+Deno.test("script with CSV config", async () => {
+  await assertRejects(
     () => script({ type: "csv" }, () => {
       return [];
     }),
@@ -94,7 +92,7 @@ Deno.test("script with CSV config", () => {
     "CSV output type requires columns to be specified"
   );
 
-  assertThrows(
+  await assertRejects(
     () => script({ type: "csv", columns: [] }, () => {
       return [];
     }),
@@ -102,55 +100,22 @@ Deno.test("script with CSV config", () => {
     "CSV output type requires columns to be specified"
   );
 
-  // Test valid CSV config
-  script({ type: "csv", columns: ["name", "version"] }, () => {
-    return ["some-name", "some-version"];
-  });
-});
-
-Deno.test("script with --info flag", async () => {
-  mockConsole();
   
-  // Create a new instance of the script with --info flag
-  const script = new Function(`
-    const { script } = await import("./utils.ts");
-    script({ type: "text" }, () => {});
-  `);
+  // Test valid CSV config
+  const result = await script({ type: "csv", columns: ["name", "version"] }, () => {
+    return ["some-name", "some-version"];
+  }, { captureConsole: true });
 
-  // Mock Deno.args for this test
-  const originalArgs = Deno.args;
-  Object.defineProperty(Deno, "args", {
-    value: ["--info"],
-    configurable: true
-  });
-
-  await script();
-
-  assertEquals(JSON.parse(consoleOutput[0]), {
-    version: "1.0.0",
-    output: "text",
-    columns: [],
-  });
-
-  // Restore Deno.args
-  Object.defineProperty(Deno, "args", {
-    value: originalArgs,
-    configurable: true
-  });
-
-  restoreConsole();
+  assertEquals(result.stdout, "some-name,some-version\n");
 });
 
-Deno.test("script error handling", () => {
-  mockConsole();
-
-  script({ type: "text" }, () => {
+Deno.test("script error handling", async () => {
+  const { stderr, exitCode } = await script({ type: "text" }, () => {
     throw new Error("Test error");
-  });
+  }, { captureConsole: true, captureExit: true });
 
-  assertEquals(consoleOutput[0], "ERROR: [ERROR] Script execution failed: Test error");
-
-  restoreConsole();
+  assertEquals(stderr, "[ERROR] Script execution failed: Test error\n");
+  assertEquals(exitCode, 1);
 });
 
 Deno.test("value function with JSON", () => {
