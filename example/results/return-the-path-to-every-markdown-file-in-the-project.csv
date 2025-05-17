@@ -21,6 +21,9 @@ Project Path,Status,path
 ./projects/next.js,Success,test/production/app-dir/symbolic-file-links/README.md
 ./projects/next.js,Success,test/e2e/app-dir/mdx/pages/pages/import/md-file.md
 ./projects/next.js,Success,test/e2e/react-compiler/reference-library/compiled/README.md
+./projects/next.js,Success,.changeset/README.md
+./projects/next.js,Success,.changeset/loose-cows-pump.md
+./projects/next.js,Success,.changeset/lovely-bulldogs-dress.md
 ./projects/next.js,Success,contributing/repository/linting.md
 ./projects/next.js,Success,contributing/repository/pull-request-descriptions.md
 ./projects/next.js,Success,contributing/repository/release-channels-publishing.md
