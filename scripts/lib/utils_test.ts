@@ -2,24 +2,7 @@ import { assertEquals, assertRejects } from "https://deno.land/std@0.220.1/asser
 import { packageManager, script, value } from "./utils.ts";
 
 // Mock console.log
-let consoleOutput: string[] = [];
-const originalConsoleLog = console.log;
-const originalConsoleError = console.error;
 
-function mockConsole() {
-  consoleOutput = [];
-  console.log = (...args: unknown[]) => {
-    consoleOutput.push(args.map(String).join(" "));
-  };
-  console.error = (...args: unknown[]) => {
-    consoleOutput.push(`ERROR: ${args.map(String).join(" ")}`);
-  };
-}
-
-function restoreConsole() {
-  console.log = originalConsoleLog;
-  console.error = originalConsoleError;
-}
 
 // Mock Deno.readTextFileSync
 const originalReadTextFileSync = Deno.readTextFileSync;
@@ -32,6 +15,8 @@ function restoreReadTextFileSync() {
 }
 
 Deno.test("packageManager dependency tracking", () => {
+  packageManager.resetInstance();
+
   const packageJson = `{
     "dependencies": {
       "typescript": "4.9.0",
@@ -83,6 +68,24 @@ Deno.test("packageManager with missing package.json", () => {
   restoreReadTextFileSync();
 });
 
+Deno.test("packageManager peer dependencies", () => {
+  packageManager.resetInstance();
+  const packageJson = `{
+    "peerDependencies": {
+      "react": ">=16.8.0",
+      "react-dom": ">=16.8.0"
+    }
+  }`;
+  mockReadTextFileSync(packageJson);
+  
+  assertEquals(packageManager.getPeerDependencies(), {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  });
+
+  restoreReadTextFileSync();
+});
+
 Deno.test("script with CSV config", async () => {
   await assertRejects(
     () => script({ type: "csv" }, () => {
@@ -100,13 +103,66 @@ Deno.test("script with CSV config", async () => {
     "CSV output type requires columns to be specified"
   );
 
-  
   // Test valid CSV config
   const result = await script({ type: "csv", columns: ["name", "version"] }, () => {
     return ["some-name", "some-version"];
   }, { captureConsole: true });
 
   assertEquals(result.stdout, "some-name,some-version\n");
+});
+
+Deno.test("script emitter with different types", async () => {
+  // Test text emitter
+  const resultText = await script({ type: "text" }, (emit) => {
+    emit("test string");
+  }, { captureConsole: true });
+  assertEquals(resultText.stdout, "test string\n");
+
+  // Test json emitter
+  const resultJSON = await script({ type: "json" }, (emit) => {
+    emit({ key: "value" });
+  }, { captureConsole: true });
+  assertEquals(resultJSON.stdout, '{\n  "key": "value"\n}\n');
+
+  // Test csv emitter with multiple rows
+  const resultCSV = await script({ type: "csv", columns: ["col1", "col2"] }, (emit) => {
+    emit(["row1", "row2"]);
+    emit(["row3", "row4"]);
+  }, { captureConsole: true });
+  assertEquals(resultCSV.stdout, "row1,row2\nrow3,row4\n");
+});
+
+Deno.test("script error cases", async () => {
+  // Test invalid emitter type for text
+  const resultText = await script({ type: 'text' }, (emit) => {
+    // deno-lint-ignore no-explicit-any
+    emit({'a':'b'} as any); // Invalid type
+  }, {
+    captureConsole: true,
+    captureExit: true
+  })
+  assertEquals(resultText.exitCode, 1)
+  assertEquals(resultText.stderr,  '[ERROR] Script execution failed: Row with type "text" is not a string or number\n')
+
+  // Test invalid emitter type for csv
+  const resultCSV = await script({ type: "csv", columns: ["col1"] }, (emit) => {
+    emit({} as any); // Invalid type
+  }, {
+    captureConsole: true,
+    captureExit: true
+  })
+  assertEquals(resultCSV.exitCode, 1)
+  assertEquals(resultCSV.stderr, '[ERROR] Script execution failed: Row with type "csv" is not an array\n')
+
+  // Test invalid emitter type for csv
+  const resultJSON = await script({ type: "json" }, (emit) => {
+    emit("not an object" as any); // Invalid type
+  }, {
+    captureConsole: true,
+    captureExit: true
+  })
+  assertEquals(resultJSON.exitCode, 1)
+  assertEquals(resultJSON.stderr, '[ERROR] Script execution failed: Row with type "json" is not an object\n')
 });
 
 Deno.test("script error handling", async () => {
@@ -129,14 +185,6 @@ Deno.test("value function with JSON", () => {
   }`;
 
   mockReadTextFileSync(jsonContent);
-
-  // Test simple field access
-  assertEquals(value("package.json", "dependencies"), {
-    typescript: {
-      version: "4.9.0",
-      type: "dev"
-    }
-  });
 
   // Test nested field access
   assertEquals(value("package.json", "dependencies.typescript.version"), "4.9.0");

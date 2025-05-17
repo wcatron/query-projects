@@ -10,13 +10,7 @@ type ScriptReturn<T extends ScriptConfig['type']> =
   never;
 
 
-type ScriptEmitterRow<T extends ScriptConfig['type']> = 
-  T extends 'csv' ? string[] :
-  T extends 'json' ? Record<string, unknown> :
-  T extends 'text' ? string :
-  never;
-
-type ScriptEmitter<T extends ScriptConfig['type']> = (row: ScriptEmitterRow<T>) => void;
+type ScriptEmitter<T extends ScriptConfig['type']> = (row: ScriptReturn<T>) => void;
 
 interface PackageJSON {
   dependencies?: Record<string, string>;
@@ -84,8 +78,9 @@ export class PackageManager {
 export const packageManager: PackageManager = PackageManager.getInstance();
 
 function emitter<T extends ScriptConfig['type']>(
-  type: T
-): (row: ScriptEmitterRow<T>) => void {
+  type: T,
+  console: Console
+): (row: ScriptReturn<T>) => void {
   return (row) => {
     if (type === 'text') {
       if (typeof row === 'string' || typeof row === 'number') {
@@ -102,7 +97,7 @@ function emitter<T extends ScriptConfig['type']>(
         throw new Error('Row with type "csv" is not an array');
       }
     } else if (type === 'json') {
-      if (typeof row === 'object') {
+      if (typeof row === 'object' && row !== null) {
         console.log(JSON.stringify(row, null, 2));
         return;
       } else {
@@ -143,7 +138,7 @@ export async function script<T extends ScriptConfig['type']>(
     error: (...args: any[]) => {
       stderr += args.join(' ') + '\n';
     },
-  } : globalThis.console;
+  } as Console : globalThis.console;
   
   const exit = (code: number) => {
     if (options?.captureExit) {
@@ -153,36 +148,21 @@ export async function script<T extends ScriptConfig['type']>(
     }
   }
 
-
   // Add --info flag handling
   if (Deno.args.includes('--info')) {
-    const info = {
+    console.log(JSON.stringify({
       version: '1.0.0',
       output: config.type,
       columns: config.columns || [],
-    };
-    console.log(JSON.stringify(info));
+    }));
     Deno.exit(0);
   }
 
   try {
-    const result = await script(emitter(config.type));
-    switch (config.type) {
-      case 'csv': {
-        const csvResult = result as string[];
-        console.log(csvResult.join(','));
-        break;
-      }
-      case 'json': {
-        const jsonResult = result as Record<string, unknown>;
-        console.log(JSON.stringify(jsonResult, null, 2));
-        break;
-      }
-      case 'text': {
-        const textResult = result as string;
-        console.log(textResult);
-        break;
-      }
+    const emit = emitter(config.type, console);
+    const result = await script(emit);
+    if (result) {
+      emit(result);
     }
   } catch (err) {
     const error = err as Error;
@@ -193,7 +173,7 @@ export async function script<T extends ScriptConfig['type']>(
   return { stdout, stderr, exitCode };
 }
 
-export function value(filename: string, fieldAccessor: string): any {
+export function value(filename: string, fieldAccessor: string): string | number | null {
   try {
     const content = Deno.readTextFileSync(filename);
     const ext = filename.split('.').pop()?.toLowerCase();
@@ -216,6 +196,7 @@ export function value(filename: string, fieldAccessor: string): any {
   }
 }
 
+// deno-lint-ignore no-explicit-any
 function getNestedValue(obj: any, path: string): any {
   return path.split('.').reduce((current, key) => {
     return current && current[key] !== undefined ? current[key] : null;

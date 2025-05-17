@@ -1,4 +1,4 @@
-Project Path,Status,Output
+Project Path,Status,path
 ./projects/next.js,Success,CODE_OF_CONDUCT.md
 ./projects/next.js,Success,license.md
 ./projects/next.js,Success,bench/vercel/README.md

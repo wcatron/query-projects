@@ -32,7 +32,7 @@ func TestRun(t *testing.T) {
 	// Unable to get test working as command fails in CI
 	skipCI(t)
 	// Define the command and arguments
-	cmd := exec.Command("../query-projects", "run", "scripts/return-the-path-to-every-markdown-file-in-the-project.ts", "--output=csv")
+	cmd := exec.Command("../query-projects", "run", "scripts/do-they-have-a-readme.ts", "--output=csv")
 
 	// Set the working directory to the example directory
 	cmd.Dir = "../example"
