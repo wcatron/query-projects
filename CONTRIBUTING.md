@@ -24,14 +24,13 @@ TODO: Document a typical watch based appoach to local development.
 
 ## Style Guide
 
-- Follow the existing code style.
-- Use `gofmt` to format your code.
+- Use `gofmt -s -w .` to format your code.
 - Write clear and concise commit messages.
 
 ## Testing
 
-- Run `go test ./tests/... ./commands/...` to execute all tests.
-- Add new tests for your code.
+- Run `go test ./tests/... ./internal/...` to execute all tests.
+- Run `go test ./tests/... ./internal/... --cover -coverprofile=coverage.out` to check coverage. View coverage using `go tool cover -html=coverage.out`.
 
 ## Visualizing
 

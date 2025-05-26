@@ -5,5 +5,8 @@
   "files": [
     "./utils.ts"
   ],
-  "exports": "./utils.ts"
+  "exports": "./utils.ts",
+  "tasks": {
+    "test:cov": "deno test --coverage=coverage utils_test.ts"
+  }
 } 

@@ -7,4 +7,5 @@
 # Compiled binary
 /query-projects
 
-/coverage
+**/coverage
+/coverage.out

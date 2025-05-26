@@ -1,10 +1,6 @@
 import { assertEquals, assertRejects } from "https://deno.land/std@0.220.1/assert/mod.ts";
 import { packageManager, script, value } from "./utils.ts";
 
-// Mock console.log
-
-
-// Mock Deno.readTextFileSync
 const originalReadTextFileSync = Deno.readTextFileSync;
 function mockReadTextFileSync(content: string) {
   Deno.readTextFileSync = () => content;
@@ -17,7 +13,7 @@ function restoreReadTextFileSync() {
 Deno.test("packageManager dependency tracking", () => {
   packageManager.resetInstance();
 
-  const packageJson = `{
+  mockReadTextFileSync(`{
     "dependencies": {
       "typescript": "4.9.0",
       "eslint": "8.0.0"
@@ -26,8 +22,7 @@ Deno.test("packageManager dependency tracking", () => {
       "prettier": "2.8.0",
       "jest": "29.0.0"
     }
-  }`;
-  mockReadTextFileSync(packageJson);
+  }`);
 
   // Test regular dependencies
   assertEquals(packageManager.dependency("typescript"), "4.9.0");
@@ -57,7 +52,7 @@ Deno.test("packageManager dependency tracking", () => {
 Deno.test("packageManager with missing package.json", () => {
   packageManager.resetInstance();
 
-  mockReadTextFileSync(""); // Simulate file not found
+  mockReadTextFileSync(``); // Simulate file not found
 
   // Test with empty dependencies
   assertEquals(packageManager.dependency("typescript"), undefined);
@@ -70,13 +65,12 @@ Deno.test("packageManager with missing package.json", () => {
 
 Deno.test("packageManager peer dependencies", () => {
   packageManager.resetInstance();
-  const packageJson = `{
+  mockReadTextFileSync(`{
     "peerDependencies": {
       "react": ">=16.8.0",
       "react-dom": ">=16.8.0"
     }
-  }`;
-  mockReadTextFileSync(packageJson);
+  }`);
   
   assertEquals(packageManager.getPeerDependencies(), {
     "react": ">=16.8.0",
@@ -175,16 +169,14 @@ Deno.test("script error handling", async () => {
 });
 
 Deno.test("value function with JSON", () => {
-  const jsonContent = `{
+  mockReadTextFileSync(`{
     "dependencies": {
       "typescript": {
         "version": "4.9.0",
         "type": "dev"
       }
     }
-  }`;
-
-  mockReadTextFileSync(jsonContent);
+  }`);
 
   // Test nested field access
   assertEquals(value("package.json", "dependencies.typescript.version"), "4.9.0");
@@ -198,14 +190,12 @@ Deno.test("value function with JSON", () => {
 });
 
 Deno.test("value function with XML", () => {
-  const xmlContent = `
+  mockReadTextFileSync(`
     <settings>
       <debug>true</debug>
       <version>1.0.0</version>
     </settings>
-  `;
-
-  mockReadTextFileSync(xmlContent);
+  `);
 
   // Test XML field access
   assertEquals(value("config.xml", "debug"), "true");

@@ -145,32 +145,23 @@ func getPossibleFiles(repo RepoContext, partialPath string) []string {
 	return out
 }
 
-func getPossibleFields(repo RepoContext, filePath string, partialField string) []string {
-	// Read the file
-	data, err := os.ReadFile(filepath.Join(repo.Project.Path, filePath))
-	if err != nil {
-		return []string{}
-	}
-
-	// Handle based on file extension
-	ext := strings.ToLower(filepath.Ext(filePath))
+func getPossibleFieldsXML(data []byte, partialField string) []string {
 	var out []string
-
-	if ext == ".json" {
-		var jsonData map[string]interface{}
-		if err := json.Unmarshal(data, &jsonData); err == nil {
+	var xmlData interface{}
+	if err := xml.Unmarshal(data, &xmlData); err == nil {
+		if root, ok := xmlData.(map[string]interface{}); ok {
 			// Split the partial field into parts
 			parts := strings.Split(partialField, ".")
 			if len(parts) == 1 {
 				// Single level field
-				for field := range jsonData {
+				for field := range root {
 					if strings.HasPrefix(field, partialField) {
 						out = append(out, field)
 					}
 				}
 			} else {
 				// Nested field
-				current := jsonData
+				current := root
 				// Navigate through the nested structure
 				for i := 0; i < len(parts)-1; i++ {
 					part := parts[i]
@@ -196,50 +187,68 @@ func getPossibleFields(repo RepoContext, filePath string, partialField string) [
 				}
 			}
 		}
-	} else if ext == ".xml" {
-		// For XML files, parse and get root element attributes/child elements
-		var xmlData interface{}
-		if err := xml.Unmarshal(data, &xmlData); err == nil {
-			if root, ok := xmlData.(map[string]interface{}); ok {
-				// Split the partial field into parts
-				parts := strings.Split(partialField, ".")
-				if len(parts) == 1 {
-					// Single level field
-					for field := range root {
-						if strings.HasPrefix(field, partialField) {
-							out = append(out, field)
-						}
+	}
+}
+
+func getPossibleFieldsJSON(data []byte, partialField string) []string {
+	var out []string
+	var jsonData map[string]interface{}
+	if err := json.Unmarshal(data, &jsonData); err == nil {
+		// Split the partial field into parts
+		parts := strings.Split(partialField, ".")
+		if len(parts) == 1 {
+			// Single level field
+			for field := range jsonData {
+				if strings.HasPrefix(field, partialField) {
+					out = append(out, field)
+				}
+			}
+		} else {
+			// Nested field
+			current := jsonData
+			// Navigate through the nested structure
+			for i := 0; i < len(parts)-1; i++ {
+				part := parts[i]
+				// Check if the current level exists and is a map
+				if val, ok := current[part]; ok {
+					if nextMap, ok := val.(map[string]interface{}); ok {
+						current = nextMap
+					} else {
+						// Not a map, can't go deeper
+						return out
 					}
 				} else {
-					// Nested field
-					current := root
-					// Navigate through the nested structure
-					for i := 0; i < len(parts)-1; i++ {
-						part := parts[i]
-						// Check if the current level exists and is a map
-						if val, ok := current[part]; ok {
-							if nextMap, ok := val.(map[string]interface{}); ok {
-								current = nextMap
-							} else {
-								// Not a map, can't go deeper
-								return out
-							}
-						} else {
-							// Part doesn't exist
-							return out
-						}
-					}
-					// Get completions for the last part
-					lastPart := parts[len(parts)-1]
-					for field := range current {
-						if strings.HasPrefix(field, lastPart) {
-							out = append(out, strings.Join(append(parts[:len(parts)-1], field), "."))
-						}
-					}
+					// Part doesn't exist
+					return out
+				}
+			}
+			// Get completions for the last part
+			lastPart := parts[len(parts)-1]
+			for field := range current {
+				if strings.HasPrefix(field, lastPart) {
+					out = append(out, strings.Join(append(parts[:len(parts)-1], field), "."))
 				}
 			}
 		}
 	}
-
 	return out
+}
+
+func getPossibleFields(repo RepoContext, filePath string, partialField string) []string {
+	// Read the file
+	data, err := os.ReadFile(filepath.Join(repo.Project.Path, filePath))
+	if err != nil {
+		return []string{}
+	}
+
+	// Handle based on file extension
+	ext := strings.ToLower(filepath.Ext(filePath))
+
+	if ext == ".json" {
+		return getPossibleFieldsJSON(data, partialField)
+	} else if ext == ".xml" {
+		return getPossibleFieldsXML(data, partialField)
+	}
+
+	return []string{}
 }
