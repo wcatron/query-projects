@@ -188,6 +188,7 @@ func getPossibleFieldsXML(data []byte, partialField string) []string {
 			}
 		}
 	}
+	return out
 }
 
 func getPossibleFieldsJSON(data []byte, partialField string) []string {
