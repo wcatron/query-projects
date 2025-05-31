@@ -7,6 +7,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"regexp"
+	"slices"
 	"strings"
 )
 
@@ -77,16 +78,70 @@ func contains(slice []string, item string) bool {
 }
 
 type ProjectsJSON struct {
-	Projects []Project `json:"projects"`
+	RootDirectory string
+	Projects      []Project `json:"projects"`
+}
+
+func findFileInParents(startDir, fileName string) (string, error) {
+	currentDir := startDir
+
+	for {
+		filePath := filepath.Join(currentDir, fileName)
+		_, err := os.Stat(filePath)
+		if err == nil {
+			return filePath, nil // File found
+		} else if !os.IsNotExist(err) {
+			return "", err // Some other error occurred
+		}
+
+		parentDir := filepath.Dir(currentDir)
+		if parentDir == currentDir {
+			return "", fmt.Errorf("file %s not found in parent directories", fileName)
+		}
+		currentDir = parentDir
+	}
+}
+
+func findProjectsDir() (string, error) {
+	cwd, _ := os.Getwd()
+	// Use QUERY_PROJECTS_DIRECTORY when not storing all projects under the meta project
+	// TODO: Fully bake out that feature.
+	dir, hasDir := os.LookupEnv("QUERY_PROJECTS_DIRECTORY")
+	if hasDir {
+		return dir, nil
+	} else {
+		foundFile, err := findFileInParents(cwd, ProjectsFile)
+		if err != nil {
+			return "", err
+		}
+		return filepath.Dir(foundFile), nil
+	}
+}
+
+func InProject(pj *ProjectsJSON) *Project {
+	cwd, _ := os.Getwd()
+	if cwd != pj.RootDirectory {
+		index := slices.IndexFunc(pj.Projects, func(project Project) bool {
+			return filepath.Join(pj.RootDirectory, project.Path) == cwd
+		})
+		return &pj.Projects[index]
+	} else {
+		return nil
+	}
 }
 
 func LoadProjects() (*ProjectsJSON, error) {
-	data, err := os.ReadFile(ProjectsFile)
+	projectsDir, err := findProjectsDir()
+	if err != nil {
+		return nil, err
+	}
+	data, err := os.ReadFile(filepath.Join(projectsDir, ProjectsFile))
 	if err != nil {
 		// If the file doesn't exist, return an empty structure
-		if os.IsNotExist(err) {
+		// TODO: Figure out why??
+		/* if os.IsNotExist(err) {
 			return &ProjectsJSON{}, nil
-		}
+		}*/
 		return nil, err
 	}
 
@@ -94,6 +149,7 @@ func LoadProjects() (*ProjectsJSON, error) {
 	if err := json.Unmarshal(data, &pj); err != nil {
 		return nil, err
 	}
+	pj.RootDirectory = projectsDir
 	return &pj, nil
 }
 

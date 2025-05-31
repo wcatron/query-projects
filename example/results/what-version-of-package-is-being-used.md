@@ -1,0 +1,6 @@
+| Project Path | Status | Output |
+| --- | --- | --- | 
+| ./projects/next.js | Success | 5.8.2 |
+| ./projects/ai | Success | 5.6.3 |
+| ./projects/storage | Success | 5.7.3 |
+| ./projects/swr | Success | 5.1.3 |

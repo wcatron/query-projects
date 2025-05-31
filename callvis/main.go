@@ -10,7 +10,7 @@ import (
 
 func main() {
 	// Add all subcommands
-	commands.CMD_runScript("example.ts", []string{}, false, []string{})
+	commands.CMD_runScript("example.ts", []string{}, false, []string{}, []string{})
 	commands.CMD_addRepository("https://github.com/test/test")
 	commands.CMD_info()
 	commands.CMD_pullRepos([]string{})

@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/wcatron/query-projects/internal/outputs"
+	"github.com/wcatron/query-projects/internal/projects"
 )
 
 // GetScriptInfo executes a script with the --info flag and returns the parsed JSON output.
@@ -31,17 +32,22 @@ func GetScriptInfo(scriptPath string) (outputs.ScriptInfo, error) {
 }
 
 // RunScriptForProject runs a TypeScript script (with Deno) in the specified project directory.
-func RunScriptForProject(scriptInfo outputs.ScriptInfo, projectPath string, print bool) (outputs.Result, error) {
+func RunScriptForProject(pj *projects.ProjectsJSON, scriptInfo outputs.ScriptInfo, projectPath string, args []string, print bool) (outputs.Result, error) {
 	if print {
-		fmt.Printf("Running %s for %s...\n", scriptInfo.Path, projectPath)
+		fmt.Printf("Running %s with args [%s] for %s...\n", scriptInfo.Path, strings.Join(args, " "), projectPath)
 	}
 
-	// Get cwd
-	cwd, _ := os.Getwd()
-	scriptPath := filepath.Join(cwd, scriptInfo.Path)
+	var rootDirectory string
+	if pj == nil {
+		rootDirectory, _ = os.Getwd()
+	} else {
+		rootDirectory = pj.RootDirectory
+	}
 
-	cmd := exec.Command("deno", "run", "--allow-all", scriptPath)
-	cmd.Dir = projectPath
+	scriptPath := filepath.Join(rootDirectory, scriptInfo.Path)
+
+	cmd := exec.Command("deno", "run", "--allow-all", scriptPath, strings.Join(args, " "))
+	cmd.Dir = filepath.Join(rootDirectory, projectPath)
 
 	stdoutPipe, err := cmd.StdoutPipe()
 	if err != nil {

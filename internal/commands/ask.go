@@ -16,6 +16,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/wcatron/query-projects/internal/projects"
+	"github.com/wcatron/query-projects/internal/scripts"
 )
 
 var AskCmd = &cobra.Command{
@@ -54,11 +55,11 @@ func CMD_ask(question string) error {
 
 	cwd, _ := os.Getwd()
 	fmt.Printf("Running script for project: %s\n", randomProject.Name)
-	scriptInfo, err := getScriptInfo(filepath.Join(cwd, projects.ScriptsFolder, scriptName))
+	scriptInfo, err := getScriptInfo(filepath.Join(cwd, projects.ScriptsFolder, scriptName), *projectsList)
 	if err != nil {
 		return fmt.Errorf("failed to get script info: %w", err)
 	}
-	result, err := runScriptForProject(scriptInfo, randomProject.Path, true)
+	result, err := scripts.RunScriptForProject(projectsList, scriptInfo, randomProject.Path, []string{}, true)
 	if err != nil {
 		return fmt.Errorf("error running script: %w", err)
 	}
@@ -90,12 +91,12 @@ func CMD_ask(question string) error {
 		randomIndex = rand.Intn(len(projectsList.Projects))
 		randomProject = projectsList.Projects[randomIndex]
 		fmt.Printf("Running next script for project: %s\n", randomProject.Name)
-		scriptInfo, err = getScriptInfo(filepath.Join(cwd, projects.ScriptsFolder, scriptName))
+		scriptInfo, err = getScriptInfo(filepath.Join(cwd, projects.ScriptsFolder, scriptName), *projectsList)
 		if err != nil {
 			fmt.Printf("Failed to get script info: %v\n", err)
 			continue
 		}
-		result, err = runScriptForProject(scriptInfo, randomProject.Path, true)
+		result, err = scripts.RunScriptForProject(projectsList, scriptInfo, randomProject.Path, []string{}, true)
 		if err != nil {
 			fmt.Printf("Error running script: %v\n", err)
 		} else {

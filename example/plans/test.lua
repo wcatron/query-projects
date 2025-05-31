@@ -12,7 +12,7 @@ else
 end
 
 if major > 0 then
-    tsVersion = run("scripts/what-version-of-typescript-is-being-used.ts")
+    tsVersion = run("scripts/what-version-of-package-is-being-used.ts", "typescript")
     print("tsVersion: " .. tsVersion)
     if tsVersion == "5.1.3" then
         run("scripts/get-compiler-options-from-tsconfig.ts")

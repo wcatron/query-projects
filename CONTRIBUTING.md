@@ -69,7 +69,10 @@ go install github.com/fzipp/gocyclo/cmd/gocyclo@latest
 gocyclo -over 10 **/*.go
 ```
 
+## Releases
+Versioning is automatic using commit messages. See https://github.com/PaulHatch/semantic-version for more information.
+
 ## Communication
 
 - Use GitHub issues for bug reports and feature requests.
-- Join our [Slack channel/Discord server] for discussions.
+- We don't currently have a slack or discord.

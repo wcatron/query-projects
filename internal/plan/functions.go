@@ -18,12 +18,13 @@ import (
 func RunFunc(project *projects.Project) func(L *lua.LState) int {
 	return func(L *lua.LState) int {
 		script := L.CheckString(1)
+		arg := L.OptString(2, "")
 		scriptInfo, err := scripts.GetScriptInfo(script)
 		if err != nil {
 			L.RaiseError("failed to get script info: %v", err)
 			return 0
 		}
-		output, err := scripts.RunScriptForProject(scriptInfo, project.Path, false)
+		output, err := scripts.RunScriptForProject(nil, scriptInfo, project.Path, []string{arg}, false)
 		if err != nil {
 			L.RaiseError("failed to run script: %v", err)
 			return 0

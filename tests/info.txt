@@ -6,5 +6,5 @@ Available scripts:
 - how-activily-maintained-is-the-project.ts
 - invalid-ts.ts
 - return-the-path-to-every-markdown-file-in-the-project.ts
-- what-version-of-typescript-is-being-used.ts
+- what-version-of-package-is-being-used.ts
 - which-test-framework-is-being-used.ts

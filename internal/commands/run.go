@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -18,29 +17,26 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/wcatron/query-projects/internal/outputs"
 	"github.com/wcatron/query-projects/internal/projects"
+	"github.com/wcatron/query-projects/internal/scripts"
 )
 
 var RunCmd = &cobra.Command{
 	Use:   "run [scriptName]",
 	Short: "Run scripts across all projects in your configuration.",
-	Args:  cobra.MaximumNArgs(1),
 	RunE: withMetrics(func(cmd *cobra.Command, args []string) error {
-		// Optional argument: the user can provide a script name or path
-		var scriptName string
-		if len(args) == 1 {
-			scriptName = args[0]
-		}
 		// Get the topics from the command line flags
 		topics, _ := cmd.Flags().GetStringSlice("topics")
 		count, _ := cmd.Flags().GetBool("count")
 		outputFormats, _ := cmd.Flags().GetStringSlice("output")
-		return CMD_runScript(scriptName, topics, count, outputFormats)
+		scriptName, _ := cmd.Flags().GetString("script")
+		return CMD_runScript(scriptName, topics, count, outputFormats, args)
 	}),
 }
 
 // getScriptInfo executes a script with the --info flag and returns the parsed JSON output.
-func getScriptInfo(scriptPath string) (outputs.ScriptInfo, error) {
+func getScriptInfo(scriptPath string, pj projects.ProjectsJSON) (outputs.ScriptInfo, error) {
 	cmd := exec.Command("deno", "run", "--allow-all", scriptPath, "--info")
+	cmd.Dir = pj.RootDirectory
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Printf("# %s \n%s", scriptPath, output)
@@ -58,12 +54,13 @@ func getScriptInfo(scriptPath string) (outputs.ScriptInfo, error) {
 }
 
 func RunCmdInit(cmd *cobra.Command) {
-	cmd.PersistentFlags().StringSliceP("topics", "t", nil, "Filter projects by topics")
 	cmd.PersistentFlags().Bool("count", false, "Count the unique responses from the script")
-	cmd.PersistentFlags().StringSliceP("output", "o", nil, "Specify output formats (md, csv, json)")
+	cmd.PersistentFlags().StringSliceP("output", "o", nil, "Comma seperated output formats (md, csv, json)")
+	cmd.PersistentFlags().StringSliceP("topics", "t", nil, "Filter projects by topics")
+	cmd.PersistentFlags().String("script", "s", "Path to script to run")
 }
 
-func CMD_runScript(scriptName string, topics []string, count bool, outputFormats []string) error {
+func CMD_runScript(scriptName string, topics []string, count bool, outputFormats []string, args []string) error {
 	projectsList, err := projects.LoadProjects()
 	if err != nil {
 		return err
@@ -72,16 +69,21 @@ func CMD_runScript(scriptName string, topics []string, count bool, outputFormats
 
 	scriptInfo, err := func() (outputs.ScriptInfo, error) {
 		if scriptName != "" {
-			return getScriptInfo(scriptName) // path or name provided
+			return getScriptInfo(scriptName, *projectsList) // path or name provided
 		}
-		return selectScriptInfo() // prompt user to pick
+		return selectScriptInfo(*projectsList) // prompt user to pick
 	}()
 	if err != nil {
 		return err
 	}
 
-	if err := runScriptsForProjectsList(scriptInfo, targets, count, outputFormats); err != nil {
-		return fmt.Errorf("running %s: %w", scriptInfo.Path, err)
+	targetOveride := projects.InProject(projectsList)
+	if targetOveride != nil {
+		targets = []projects.Project{*targetOveride}
+	}
+
+	if err := runScriptsForProjectsList(projectsList, scriptInfo, targets, count, outputFormats, args); err != nil {
+		return fmt.Errorf("error running %s: %w", scriptInfo.Path, err)
 	}
 
 	return nil
@@ -109,10 +111,10 @@ func findScriptFiles() ([]string, error) {
 }
 
 // gatherScriptInfos collects information about each script
-func gatherScriptInfos(scriptPaths []string) []outputs.ScriptInfo {
+func gatherScriptInfos(scriptPaths []string, pj projects.ProjectsJSON) []outputs.ScriptInfo {
 	var scriptInfos []outputs.ScriptInfo
 	for _, sp := range scriptPaths {
-		info, err := getScriptInfo(sp)
+		info, err := getScriptInfo(sp, pj)
 		if err != nil {
 			fmt.Printf("Error getting info for script %s: %v\n", sp, err)
 			continue
@@ -152,7 +154,7 @@ func getUserSelection(scriptInfos []outputs.ScriptInfo) (int, error) {
 	return choice - 1, nil
 }
 
-func selectScriptInfo() (outputs.ScriptInfo, error) {
+func selectScriptInfo(pj projects.ProjectsJSON) (outputs.ScriptInfo, error) {
 	// Find available scripts
 	scriptPaths, err := findScriptFiles()
 	if err != nil {
@@ -160,7 +162,7 @@ func selectScriptInfo() (outputs.ScriptInfo, error) {
 	}
 
 	// Gather information about each script
-	scriptInfos := gatherScriptInfos(scriptPaths)
+	scriptInfos := gatherScriptInfos(scriptPaths, pj)
 	if len(scriptInfos) == 0 {
 		return outputs.ScriptInfo{}, errors.New("no valid scripts found")
 	}
@@ -178,7 +180,7 @@ func selectScriptInfo() (outputs.ScriptInfo, error) {
 }
 
 // runScriptsForProjectsList executes the specified .ts script against all projects.
-func runScriptsForProjectsList(scriptInfo outputs.ScriptInfo, projectsList []projects.Project, count bool, outputFormats []string) error {
+func runScriptsForProjectsList(pj *projects.ProjectsJSON, scriptInfo outputs.ScriptInfo, projectsList []projects.Project, count bool, outputFormats []string, args []string) error {
 	var wg sync.WaitGroup
 	resultsChan := make(chan outputs.Result, len(projectsList))
 
@@ -186,7 +188,7 @@ func runScriptsForProjectsList(scriptInfo outputs.ScriptInfo, projectsList []pro
 		wg.Add(1)
 		go func(project projects.Project, index int) {
 			defer wg.Done()
-			r, err := runScriptForProject(scriptInfo, project.Path, true)
+			r, err := scripts.RunScriptForProject(pj, scriptInfo, project.Path, args, true)
 			r.Index = index
 			if err != nil {
 				fmt.Printf("Error in project %s: %v\n", project.Name, err)
@@ -244,82 +246,6 @@ func printUniqueResponsesToConsole(results []outputs.Result) {
 		tbl.AddRow(strings.TrimSpace(response), fmt.Sprintf("%d", count))
 	}
 	tbl.Print()
-}
-
-// runScriptForProject runs a TypeScript script (with Deno) in the specified project directory.
-func runScriptForProject(scriptInfo outputs.ScriptInfo, projectPath string, print bool) (outputs.Result, error) {
-	if print {
-		fmt.Printf("Running %s for %s...\n", scriptInfo.Path, projectPath)
-	}
-
-	// Get cwd
-	cwd, _ := os.Getwd()
-	scriptPath := filepath.Join(cwd, scriptInfo.Path)
-
-	cmd := exec.Command("deno", "run", "--allow-all", scriptPath)
-	cmd.Dir = projectPath
-
-	stdoutPipe, err := cmd.StdoutPipe()
-	if err != nil {
-		return outputs.Result{}, err
-	}
-	stderrPipe, err := cmd.StderrPipe()
-	if err != nil {
-		return outputs.Result{}, err
-	}
-
-	if err := cmd.Start(); err != nil {
-		return outputs.Result{}, err
-	}
-
-	stdoutBytes, _ := io.ReadAll(stdoutPipe)
-	stderrBytes, _ := io.ReadAll(stderrPipe)
-
-	// Wait for command completion
-	err = cmd.Wait()
-
-	StdoutText := string(stdoutBytes)
-	StderrText := string(stderrBytes)
-
-	// Format CSV output if applicable
-	if print {
-		if scriptInfo.Output == "csv" && len(StdoutText) > 0 {
-			fmt.Printf("[%s] CSV Output:\n", projectPath)
-			fmt.Println(outputs.FormatOutput(StdoutText, scriptInfo.Columns))
-		} else if len(StdoutText) > 0 {
-			fmt.Printf("[%s] stdout:\n%s\n", projectPath, StdoutText)
-		}
-		if len(StderrText) > 0 {
-			fmt.Printf("[%s] stderr:\n%s\n", projectPath, StderrText)
-		}
-	}
-
-	var status string
-	if err == nil {
-		if print {
-			fmt.Printf("Successfully ran %s for %s\n", scriptInfo.Path, projectPath)
-		}
-		status = "Success"
-	} else {
-		if exitErr, ok := err.(*exec.ExitError); ok {
-			status = fmt.Sprintf("Failed (exit code %d)", exitErr.ExitCode())
-			if print {
-				fmt.Printf("Script %s failed for %s: %s\n", scriptInfo.Path, projectPath, exitErr.Error())
-			}
-		} else {
-			status = "Error"
-			if print {
-				fmt.Printf("Error running script %s for %s: %v\n", scriptInfo.Path, projectPath, err)
-			}
-		}
-	}
-
-	return outputs.Result{
-		ProjectPath: projectPath,
-		Status:      status,
-		StdoutText:  strings.TrimSpace(StdoutText),
-		StderrText:  strings.TrimSpace(StderrText),
-	}, nil
 }
 
 func collectResults(resultsChan <-chan outputs.Result, total int) []outputs.Result {
