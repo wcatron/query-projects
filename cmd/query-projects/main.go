@@ -32,11 +32,12 @@ func Execute() {
 	rootCmd.AddCommand(commands.SyncCmd)
 	rootCmd.AddCommand(commands.PlanCmd)
 
-	// Add a flag for the run
+	// Add a flags for commands
 	commands.RunCmdInit(commands.RunCmd)
 
 	// Add flags for the root command
 	rootCmd.PersistentFlags().StringSliceP("topics", "t", nil, "Filter projects by topics")
+	rootCmd.PersistentFlags().Bool("debug", false, "Include additional information for debugging")
 
 	// Execute the root command
 	if err := rootCmd.Execute(); err != nil {
