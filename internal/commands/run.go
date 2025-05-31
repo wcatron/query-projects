@@ -43,6 +43,7 @@ func getScriptInfo(scriptPath string) (outputs.ScriptInfo, error) {
 	cmd := exec.Command("deno", "run", "--allow-all", scriptPath, "--info")
 	output, err := cmd.CombinedOutput()
 	if err != nil {
+		fmt.Printf("# %s \n%s", scriptPath, output)
 		return outputs.ScriptInfo{}, fmt.Errorf("failed to run script with --info: %w", err)
 	}
 

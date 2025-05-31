@@ -21,8 +21,19 @@ Project Path,Status,path
 ./projects/next.js,Success,test/production/app-dir/symbolic-file-links/README.md
 ./projects/next.js,Success,test/e2e/app-dir/mdx/pages/pages/import/md-file.md
 ./projects/next.js,Success,test/e2e/react-compiler/reference-library/compiled/README.md
+./projects/next.js,Success,.changeset/swift-socks-find.md
+./projects/next.js,Success,.changeset/seven-seas-run.md
+./projects/next.js,Success,.changeset/dry-roses-nail.md
+./projects/next.js,Success,.changeset/shaggy-owls-visit.md
+./projects/next.js,Success,.changeset/tough-peaches-burn.md
+./projects/next.js,Success,.changeset/shaggy-pears-tell.md
+./projects/next.js,Success,.changeset/spotty-hotels-train.md
+./projects/next.js,Success,.changeset/tricky-planes-worry.md
 ./projects/next.js,Success,.changeset/README.md
+./projects/next.js,Success,.changeset/smooth-bears-run.md
+./projects/next.js,Success,.changeset/shy-impalas-add.md
 ./projects/next.js,Success,.changeset/loose-cows-pump.md
+./projects/next.js,Success,.changeset/giant-bushes-sink.md
 ./projects/next.js,Success,.changeset/lovely-bulldogs-dress.md
 ./projects/next.js,Success,contributing/repository/linting.md
 ./projects/next.js,Success,contributing/repository/pull-request-descriptions.md
@@ -36,6 +47,7 @@ Project Path,Status,path
 ./projects/next.js,Success,contributing/core/building.md
 ./projects/next.js,Success,contributing/core/developing-using-local-app.md
 ./projects/next.js,Success,contributing/docs/adding-documentation.md
+./projects/next.js,Success,turbopack/benchmark-apps/README.md
 ./projects/next.js,Success,turbopack/crates/turbopack-bench/README.md
 ./projects/next.js,Success,turbopack/crates/turbopack-ecmascript-runtime/README.md
 ./projects/next.js,Success,turbopack/crates/turbo-static/readme.md
@@ -415,6 +427,7 @@ Project Path,Status,path
 ./projects/next.js,Success,UPGRADING.md
 ./projects/ai,Success,CHANGELOG.md
 ./projects/ai,Success,.changeset/README.md
+./projects/ai,Success,.changeset/strange-flies-remember.md
 ./projects/ai,Success,README.md
 ./projects/ai,Success,CONTRIBUTING.md
 ./projects/ai,Success,examples/nuxt-openai/README.md
@@ -444,6 +457,8 @@ Project Path,Status,path
 ./projects/ai,Success,packages/cohere/README.md
 ./projects/ai,Success,packages/svelte/CHANGELOG.md
 ./projects/ai,Success,packages/svelte/README.md
+./projects/ai,Success,packages/vercel/CHANGELOG.md
+./projects/ai,Success,packages/vercel/README.md
 ./projects/ai,Success,packages/togetherai/CHANGELOG.md
 ./projects/ai,Success,packages/togetherai/README.md
 ./projects/ai,Success,packages/luma/CHANGELOG.md

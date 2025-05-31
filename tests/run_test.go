@@ -6,6 +6,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"regexp"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -56,6 +57,30 @@ func TestRun(t *testing.T) {
 
 	// Compare the output with the expected snapshot
 	if diff := cmp.Diff(string(expectedOutput), string(resultOutput)); diff != "" {
+		t.Errorf("Output mismatch (-expected +got):\n%s", diff)
+	}
+}
+
+func TestRunBadScript(t *testing.T) {
+	// Unable to get test working as command fails in CI
+	skipCI(t)
+	// Define the command and arguments
+	cmd := exec.Command("../query-projects", "run", "scripts/invalid-ts.ts")
+
+	// Set the working directory to the example directory
+	cmd.Dir = "../example"
+
+	// Run the command
+	output, _ := cmd.CombinedOutput()
+	outputStr := string(output)
+
+	// Remove first line
+	outputStr = outputStr[0:strings.Index(outputStr, "<eof>")]
+
+	expectedOutput := "# scripts/invalid-ts.ts \n\x1b[0m\x1b[1m\x1b[31merror\x1b[0m: The module's source code could not be parsed: Expected ';', '}' or "
+
+	// Compare the output with the expected snapshot
+	if diff := cmp.Diff(string(expectedOutput), string(outputStr)); diff != "" {
 		t.Errorf("Output mismatch (-expected +got):\n%s", diff)
 	}
 }
