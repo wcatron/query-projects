@@ -105,6 +105,8 @@ This command will fetch metadata for all projects listed in the `projects.json` 
 
 ## Contributing
 
+See [contributing](./CONTRIBUTING.md).
+
 ## Similar Tools
 
 - https://github.com/nosarthur/gita (python)

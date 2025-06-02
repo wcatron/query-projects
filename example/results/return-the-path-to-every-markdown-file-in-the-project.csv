@@ -426,8 +426,8 @@ Project Path,Status,path
 ./projects/next.js,Success,.github/actions/next-stats-action/README.md
 ./projects/next.js,Success,UPGRADING.md
 ./projects/ai,Success,CHANGELOG.md
+./projects/ai,Success,.changeset/stale-cherries-heal.md
 ./projects/ai,Success,.changeset/README.md
-./projects/ai,Success,.changeset/strange-flies-remember.md
 ./projects/ai,Success,README.md
 ./projects/ai,Success,CONTRIBUTING.md
 ./projects/ai,Success,examples/nuxt-openai/README.md

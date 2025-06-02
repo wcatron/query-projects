@@ -9,3 +9,5 @@
 
 **/coverage
 /coverage.out
+
+/example/results/results.db

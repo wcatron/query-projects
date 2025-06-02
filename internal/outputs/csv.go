@@ -36,7 +36,7 @@ func WriteCSVTable(info ScriptInfo, results []Result) error {
 
 	// Write headers
 	headers := []string{"Project Path", "Status"}
-	if info.Columns != nil {
+	if len(info.Columns) > 0 {
 		headers = append(headers, info.Columns...)
 	} else {
 		headers = append(headers, "Output")
