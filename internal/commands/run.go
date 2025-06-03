@@ -57,7 +57,7 @@ func RunCmdInit(cmd *cobra.Command) {
 	cmd.PersistentFlags().Bool("count", false, "Count the unique responses from the script")
 	cmd.PersistentFlags().StringSliceP("output", "o", nil, "Comma seperated output formats (md, csv, json)")
 	cmd.PersistentFlags().StringSliceP("topics", "t", nil, "Filter projects by topics")
-	cmd.PersistentFlags().String("script", "s", "Path to script to run")
+	cmd.PersistentFlags().StringP("script", "s", "", "Path to script to run")
 }
 
 func CMD_runScript(scriptName string, topics []string, count bool, outputFormats []string, args []string) error {
