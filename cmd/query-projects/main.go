@@ -36,6 +36,7 @@ func Execute() {
 	// Add a flags for commands
 	commands.RunCmdInit(commands.RunCmd)
 	commands.LoadCmdInit(commands.LoadCmd)
+	commands.PullCmdInit(commands.PullCmd)
 
 	// Add flags for the root command
 	rootCmd.PersistentFlags().StringSliceP("topics", "t", nil, "Filter projects by topics")

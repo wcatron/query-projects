@@ -31,10 +31,20 @@ func GetScriptInfo(scriptPath string) (outputs.ScriptInfo, error) {
 	return info, nil
 }
 
+// prefixLines adds "<prefix> " in front of every line of s.
+func prefixLines(s, prefix string) string {
+	if s == "" {
+		return ""
+	}
+	p := prefix + "\t"
+	// Trim a trailing newline so we don’t end up with an empty last line.
+	return p + strings.ReplaceAll(strings.TrimSuffix(s, "\n"), "\n", "\n"+p)
+}
+
 // RunScriptForProject runs a TypeScript script (with Deno) in the specified project directory.
 func RunScriptForProject(pj *projects.ProjectsJSON, scriptInfo outputs.ScriptInfo, projectPath string, args []string, print bool) (outputs.Result, error) {
 	if print {
-		fmt.Printf("Running %s with args [%s] for %s...\n", scriptInfo.Path, strings.Join(args, " "), projectPath)
+		fmt.Printf("%s Running %s...\n", projects.ProjectPathFmt(projectPath), ScriptPathFmt(scriptInfo.Path))
 	}
 
 	var rootDirectory string
@@ -71,36 +81,33 @@ func RunScriptForProject(pj *projects.ProjectsJSON, scriptInfo outputs.ScriptInf
 	StdoutText := string(stdoutBytes)
 	StderrText := string(stderrBytes)
 
-	// Format CSV output if applicable
 	if print {
-		if scriptInfo.Output == "csv" && len(StdoutText) > 0 {
-			fmt.Printf("[%s] CSV Output:\n", projectPath)
-			fmt.Println(outputs.FormatOutput(StdoutText, scriptInfo.Columns))
-		} else if len(StdoutText) > 0 {
-			fmt.Printf("[%s] stdout:\n%s\n", projectPath, StdoutText)
+		if len(StdoutText) > 0 {
+			fmt.Printf("%s\n", prefixLines(StdoutText, projects.ProjectPathFmt(projectPath)))
 		}
 		if len(StderrText) > 0 {
-			fmt.Printf("[%s] stderr:\n%s\n", projectPath, StderrText)
+			fmt.Printf("%s\n", prefixLines(StderrText, projects.ProjectPathFmt(projectPath)))
 		}
 	}
 
 	var status string
 	if err == nil {
-		if print {
-			fmt.Printf("Successfully ran %s for %s\n", scriptInfo.Path, projectPath)
-		}
 		status = "Success"
 	} else {
 		if exitErr, ok := err.(*exec.ExitError); ok {
+			// TODO: Determine if this status is ever reached
 			status = fmt.Sprintf("Failed (exit code %d)", exitErr.ExitCode())
 			if print {
-				fmt.Printf("Script %s failed for %s: %s\n", scriptInfo.Path, projectPath, exitErr.Error())
+				fmt.Printf("%s Script %s failed %s\n", projects.ProjectPathFmt(projectPath), scriptInfo.Path, exitErr.Error())
 			}
 		} else {
 			status = "Error"
 			if print {
-				fmt.Printf("Error running script %s for %s: %v\n", scriptInfo.Path, projectPath, err)
+				fmt.Printf("%s Error running script %s error %v\n", projects.ProjectPathFmt(projectPath), scriptInfo.Path, err)
 			}
+		}
+		if print {
+			fmt.Printf("%s %s %s\n", projects.ProjectPathFmt(projectPath), status, ScriptPathFmt(scriptInfo.Path))
 		}
 	}
 

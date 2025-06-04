@@ -31,6 +31,7 @@ Project Path,Status,path
 ./projects/next.js,Success,.changeset/tricky-planes-worry.md
 ./projects/next.js,Success,.changeset/README.md
 ./projects/next.js,Success,.changeset/smooth-bears-run.md
+./projects/next.js,Success,.changeset/pretty-suns-watch.md
 ./projects/next.js,Success,.changeset/shy-impalas-add.md
 ./projects/next.js,Success,.changeset/loose-cows-pump.md
 ./projects/next.js,Success,.changeset/giant-bushes-sink.md
@@ -426,7 +427,6 @@ Project Path,Status,path
 ./projects/next.js,Success,.github/actions/next-stats-action/README.md
 ./projects/next.js,Success,UPGRADING.md
 ./projects/ai,Success,CHANGELOG.md
-./projects/ai,Success,.changeset/stale-cherries-heal.md
 ./projects/ai,Success,.changeset/README.md
 ./projects/ai,Success,README.md
 ./projects/ai,Success,CONTRIBUTING.md

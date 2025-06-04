@@ -1,5 +1,4 @@
 {
-  "RootDirectory": "/Users/westoncatron/github/query-projects/example",
   "projects": [
     {
       "name": "next.js",
@@ -50,8 +49,8 @@
         "homepage": "https://nextjs.org",
         "default_branch": "canary",
         "created_at": "2016-10-05T23:32:51Z",
-        "pushed_at": "2025-06-02T10:41:43Z",
-        "updated_at": "2025-06-02T11:43:36Z",
+        "pushed_at": "2025-06-04T11:47:57Z",
+        "updated_at": "2025-06-04T11:48:03Z",
         "html_url": "https://github.com/vercel/next.js",
         "clone_url": "https://github.com/vercel/next.js.git",
         "git_url": "git://github.com/vercel/next.js.git",
@@ -59,15 +58,15 @@
         "svn_url": "https://github.com/vercel/next.js",
         "language": "JavaScript",
         "fork": false,
-        "forks_count": 28490,
-        "network_count": 28490,
-        "open_issues_count": 3227,
-        "open_issues": 3227,
-        "stargazers_count": 132217,
-        "subscribers_count": 1480,
-        "watchers_count": 132217,
-        "watchers": 132217,
-        "size": 2253122,
+        "forks_count": 28506,
+        "network_count": 28506,
+        "open_issues_count": 3222,
+        "open_issues": 3222,
+        "stargazers_count": 132243,
+        "subscribers_count": 1479,
+        "watchers_count": 132243,
+        "watchers": 132243,
+        "size": 2256709,
         "organization": {
           "login": "vercel",
           "id": 14985020,
@@ -158,6 +157,9 @@
         "trees_url": "https://api.github.com/repos/vercel/next.js/git/trees{/sha}",
         "teams_url": "https://api.github.com/repos/vercel/next.js/teams",
         "visibility": "public"
+      },
+      "git": {
+        "depth": "1"
       }
     },
     {
@@ -210,8 +212,8 @@
         "homepage": "https://ai-sdk.dev",
         "default_branch": "main",
         "created_at": "2023-05-23T15:04:08Z",
-        "pushed_at": "2025-06-02T10:03:42Z",
-        "updated_at": "2025-06-02T12:01:45Z",
+        "pushed_at": "2025-06-04T10:42:00Z",
+        "updated_at": "2025-06-04T11:39:08Z",
         "html_url": "https://github.com/vercel/ai",
         "clone_url": "https://github.com/vercel/ai.git",
         "git_url": "git://github.com/vercel/ai.git",
@@ -219,15 +221,15 @@
         "svn_url": "https://github.com/vercel/ai",
         "language": "TypeScript",
         "fork": false,
-        "forks_count": 2310,
-        "network_count": 2310,
-        "open_issues_count": 673,
-        "open_issues": 673,
-        "stargazers_count": 14621,
-        "subscribers_count": 82,
-        "watchers_count": 14621,
-        "watchers": 14621,
-        "size": 33087,
+        "forks_count": 2320,
+        "network_count": 2320,
+        "open_issues_count": 684,
+        "open_issues": 684,
+        "stargazers_count": 14684,
+        "subscribers_count": 83,
+        "watchers_count": 14684,
+        "watchers": 14684,
+        "size": 33518,
         "organization": {
           "login": "vercel",
           "id": 14985020,
@@ -363,7 +365,7 @@
         "homepage": "https://vercel.com/storage",
         "default_branch": "main",
         "created_at": "2022-07-06T15:41:25Z",
-        "pushed_at": "2025-05-30T21:50:03Z",
+        "pushed_at": "2025-06-04T09:54:02Z",
         "updated_at": "2025-05-29T16:59:26Z",
         "html_url": "https://github.com/vercel/storage",
         "clone_url": "https://github.com/vercel/storage.git",
@@ -380,7 +382,7 @@
         "subscribers_count": 46,
         "watchers_count": 547,
         "watchers": 547,
-        "size": 91651,
+        "size": 91654,
         "organization": {
           "login": "vercel",
           "id": 14985020,
@@ -465,6 +467,9 @@
         "trees_url": "https://api.github.com/repos/vercel/storage/git/trees{/sha}",
         "teams_url": "https://api.github.com/repos/vercel/storage/teams",
         "visibility": "public"
+      },
+      "git": {
+        "shallow-since": "3.months.ago"
       }
     },
     {
@@ -516,7 +521,7 @@
         "default_branch": "main",
         "created_at": "2019-10-28T18:16:01Z",
         "pushed_at": "2025-04-17T10:10:37Z",
-        "updated_at": "2025-06-01T18:59:30Z",
+        "updated_at": "2025-06-04T08:33:32Z",
         "html_url": "https://github.com/vercel/swr",
         "clone_url": "https://github.com/vercel/swr.git",
         "git_url": "git://github.com/vercel/swr.git",
@@ -528,10 +533,10 @@
         "network_count": 1266,
         "open_issues_count": 167,
         "open_issues": 167,
-        "stargazers_count": 31530,
+        "stargazers_count": 31537,
         "subscribers_count": 218,
-        "watchers_count": 31530,
-        "watchers": 31530,
+        "watchers_count": 31537,
+        "watchers": 31537,
         "size": 3504,
         "organization": {
           "login": "vercel",

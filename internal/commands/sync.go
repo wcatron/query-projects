@@ -36,7 +36,7 @@ func syncFromGitHubProject(project projects.Project) (projects.Project, error) {
 	ctx := context.Background()
 	githubToken := os.Getenv("GITHUB_TOKEN")
 	if githubToken == "" {
-		return project, errors.New("GITHUB_TOKEN environment variable is not set")
+		return project, errors.New("GITHUB_TOKEN environment variable is not set\n")
 	}
 
 	ts := oauth2.StaticTokenSource(

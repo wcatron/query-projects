@@ -7,7 +7,7 @@ cd example
 ../query-projects info
 ../query-projects sync
 ../query-projects pull
-../query-projects run --script scripts/do-they-have-a-readme.ts --output json
+../query-projects run --script scripts/do-they-have-a-readme.ts --output json,csv
 ../query-projects run --script scripts/does-the-project-have-a-linter.ts --output csv
 ../query-projects run --script scripts/how-activily-maintained-is-the-project.ts --output md
 ../query-projects run --script scripts/return-the-path-to-every-markdown-file-in-the-project.ts --output csv

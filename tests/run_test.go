@@ -77,7 +77,7 @@ func TestRunBadScript(t *testing.T) {
 	// Remove first line
 	outputStr = outputStr[0:strings.Index(outputStr, "<eof>")]
 
-	expectedOutput := "# scripts/invalid-ts.ts \n\x1b[0m\x1b[1m\x1b[31merror\x1b[0m: The module's source code could not be parsed: Expected ';', '}' or "
+	expectedOutput := "\x1b[33mscripts/invalid-ts.ts\x1b[0m \n\x1b[0m\x1b[1m\x1b[31merror\x1b[0m: The module's source code could not be parsed: Expected ';', '}' or "
 
 	// Compare the output with the expected snapshot
 	if diff := cmp.Diff(string(expectedOutput), string(outputStr)); diff != "" {

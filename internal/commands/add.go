@@ -2,6 +2,7 @@ package commands
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -15,12 +16,21 @@ var AddCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		repoURL := args[0]
-		return CMD_addRepository(repoURL)
+		token, _ := cmd.Flags().GetString("githubToken")
+		user, _ := cmd.Flags().GetString("githubUser")
+		return CMD_addRepository(repoURL, token, user)
 	},
 }
 
+func AddCmdInit(cmd *cobra.Command) {
+	token := os.Getenv("GITHUB_TOKEN")
+	user := os.Getenv("GITHUB_USER")
+	cmd.PersistentFlags().StringP("githubToken", "", token, "Token to pull private github repositories defaults to GITHUB_TOKEN env.")
+	cmd.PersistentFlags().StringP("githubUser", "", user, "User for token to pull private github repositories defaults to GITHUB_USER env.")
+}
+
 // CMD_addRepository clones the repo (if not present) and stores it in projects.json.
-func CMD_addRepository(repoURL string) error {
+func CMD_addRepository(repoURL string, token string, user string) error {
 	projectsList, err := projects.LoadProjects()
 	if err != nil {
 		return err
@@ -33,7 +43,8 @@ func CMD_addRepository(repoURL string) error {
 	}
 	projectPath := filepath.Join("projects", projectName)
 
-	if err := projects.CloneRepository(repoURL, projectPath); err != nil {
+	flags := make(map[string]string)
+	if err := projects.CloneRepository(repoURL, projectPath, token, user, true, flags); err != nil {
 		return err
 	}
 
