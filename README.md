@@ -7,7 +7,7 @@
 A cli for running scripts across your organizations repos.
 
 - Manages a local copy of all your repos for fast up-to-date access to the current state of your system. `query-projects add`, `query-projects pull`, and `query-projects sync`.
-- Provides a Typescript and Lua (Currently referred to as "plans") scripting system to run analysis across your codebases with `query-projects run`.
+- Provides a Typescript and Lua (Currently referred to as "plans") scripting system to run deterministic analysis across your codebases with `query-projects run`.
 - Explores ways to use AI to generate analysis across your codebases with `query-projects ask`.
 
 ## Getting Started (User Guide)
@@ -130,9 +130,112 @@ A note on authentication with GitHub:
 
 ### Create Scripts
 
-- **Ask GPT**: Use the `ask` command to generate new scripts via OpenAI (assuming you have `OPENAI_API_KEY` set in your environment).
-- `OPENAI_API_KEY`: Your OpenAI API key. This is required for querying GPT.
-- `OPENAI_API_BASE`: The base URL for the OpenAI API. Defaults to `https://api.openai.com/v1` if not set.
+There are several ways to create scripts for use with `query-projects`:
+
+#### 1. Using GPT (AI-Generated Scripts)
+
+The `ask` command allows you to generate scripts using OpenAI's GPT models. This is a useful way to get results for a given question quickly without having to write the script yourself. 
+
+```bash
+# Generate and run a script to analyze the 
+query-projects ask "How many services are still using Node 18?"
+
+# Generate a script with specific requirements
+query-projects ask "Find all React components that use the useState hook"
+```
+
+Requirements:
+- `OPENAI_API_KEY`: Your OpenAI API key
+- `OPENAI_API_BASE`: (Optional) Base URL for the OpenAI API. Defaults to `https://api.openai.com/v1`
+
+#### 2. Manual Script Creation
+
+You can create scripts manually in either TypeScript or Lua. Scripts should be placed in a `scripts` directory.
+
+TypeScript Example (`scripts/find-ts-files.ts`):
+```typescript
+import { script } from "../scripts/lib/utils.ts";
+
+await script({ type: "text" }, () => {
+  // Your script logic here
+  return "Script output"
+});
+```
+
+Lua Example (`scripts/find-ts-files.lua`):
+```lua
+-- Your Lua script logic here
+return "Script output"
+```
+
+#### 3. Script Output Types
+
+Scripts can output data in different formats:
+
+- **Text**: Simple string output
+  ```typescript
+  await script({ type: "text" }, (emit) => {
+    emit("Hello");
+    emit("World");
+  });
+  ```
+
+- **CSV**: Tabular data with columns
+  ```typescript
+  await script({ 
+    type: "csv",
+    columns: ["name", "version"]
+  }, (emit) => {
+    emit(["typescript", "4.9.0"]);
+  });
+  ```
+
+- **JSON**: Structured data
+  ```typescript
+  await script({ type: "json" }, (emit) => {
+    emit({
+      name: "project",
+      version: "1.0.0"
+    });
+  });
+  ```
+
+#### 4. Script Utilities
+
+The `utils.ts` library provides helpful functions for common tasks:
+
+- `packageManager`: Access package.json information
+  ```typescript
+  const version = packageManager.dependency("typescript");
+  ```
+
+- `value`: Extract values from configuration files
+  ```typescript
+  const version = value("package.json", "dependencies.typescript");
+  ```
+
+#### 5. Best Practices
+
+1. **Error Handling**: Always include proper error handling in your scripts only stdout is captured in the final analysis
+   ```typescript
+   try {
+     // Script logic
+   } catch (error) {
+     console.error("Script failed:", error);
+   }
+   ```
+
+2. **Output Formatting**: Choose the appropriate output type for your data
+   - Use CSV for tabular data
+   - Use JSON for structured data
+   - Use text for simple outputs
+
+3. **Performance**: Consider the impact of your script on large codebases
+   - Use efficient file operations
+   - Avoid unnecessary file reads
+   - Consider using caching for repeated operations
+
+4. **Documentation**: Include comments explaining what your script does and how to use it
 
 ### Run Scripts
 
