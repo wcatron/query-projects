@@ -239,7 +239,121 @@ The `utils.ts` library provides helpful functions for common tasks:
 
 ### Run Scripts
 
+The `run` command executes scripts across your tracked repositories. It supports both TypeScript (and Lua should be added in the future), with various options for filtering and output formatting.
 
+#### Basic Usage
+
+```bash
+# Run a TypeScript script
+query-projects run --script scripts/find-ts-files.ts
+```
+
+#### Output Options
+
+The `--output` flag allows you to specify the format(s) for script results:
+
+```bash
+# Output in multiple formats
+query-projects run --script scripts/find-ts-files.ts --output md,csv,json
+
+# Default behavior: automatically choose format based on content
+query-projects run --script scripts/find-ts-files.ts
+```
+
+Output format selection:
+- **JSON**: Used when outputs are valid JSON objects
+- **CSV**: Used for tabular data or when outputs are single-line
+- **Markdown**: Used for text-based outputs or when outputs contain multiple lines
+
+#### Project Filtering
+
+Filter which projects to run the script against using topics:
+
+```bash
+# Run on projects with specific topics
+query-projects run scripts/find-ts-files.ts --topics typescript,react
+
+# Run on projects with required/excluded topics
+query-projects run scripts/find-ts-files.ts --topics +typescript,-deprecated
+```
+
+Topic filtering syntax:
+- `+topic`: Project must have this topic
+- `-topic`: Project must not have this topic
+- `topic`: Project may have this topic (inclusive search)
+
+#### Response Counting
+
+Use the `--count` flag to quickly analyze the distribution of script responses:
+
+```bash
+# Count unique responses
+query-projects run scripts/find-ts-files.ts --count
+```
+
+This will output a table showing:
+- Each unique response
+- Number of occurrences
+- Percentage of total responses
+
+Note: The count feature works best with simple string responses (no line breaks).
+
+#### Script Environment
+
+Scripts have access to:
+1. The current project's root directory as the *current working directory*
+2. The `jsr:@query-projects/scripts` library for common utilities
+3. Standard Deno APIs
+4. Any arguments passed to `query-projects run` (i.e. `query-projects run typescript`)
+
+Example script checking version of dependency:
+```typescript
+
+import { script, packageManager } from "jsr:@query-projects/scripts";
+
+script({ type: 'text' }, () => {
+  const packageStr = Deno.args[0];
+
+  const projectPath = Deno.cwd();
+  
+  return packageManager.dependency(packageStr) || packageManager.devDependency(packageStr);
+});
+
+```
+
+#### Error Handling
+
+- Script errors are captured and reported per project
+- The command continues running on other projects even if some fail
+- Error messages are included in the final output
+
+#### Performance Tips
+
+1. **Caching**: Consider caching expensive operations
+2. **Selective Processing**: Use topic filtering to run only on relevant projects
+3. **Output Size**: Keep outputs concise to improve performance and ease analysis
+
+#### Example Use Cases
+
+1. **Dependency Analysis**:
+```bash
+query-projects run --script scripts/check-deps.ts --topics +typescript
+```
+
+2. **Code Quality Checks**:
+```bash
+query-projects run--script scripts/lint-check.ts --output md,csv
+```
+
+3. **Configuration Audit**:
+```bash
+query-projects run--script scripts/check-config.ts --topics +react
+```
+
+4. **Custom Metrics**:
+```bash
+query-projects run--script scripts/custom-metrics.ts --count
+```
 
 ## Contributing
 
