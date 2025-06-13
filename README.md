@@ -4,7 +4,11 @@
 [![CodeQL](https://github.com/wcatron/query-projects/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/wcatron/query-projects/actions/workflows/github-code-scanning/codeql)
 [![Go Cyclo Complexity Check](https://github.com/wcatron/query-projects/actions/workflows/gocyclo.yml/badge.svg)](https://github.com/wcatron/query-projects/actions/workflows/gocyclo.yml)
 
-A simple cli for running scripts across many repositories.
+A cli for running scripts across your organizations repos.
+
+- Manages a local copy of all your repos for fast up-to-date access to the current state of your system. `query-projects add`, `query-projects pull`, and `query-projects sync`.
+- Provides a Typescript and Lua (Currently referred to as "plans") scripting system to run analysis across your codebases with `query-projects run`.
+- Explores ways to use AI to generate analysis across your codebases with `query-projects ask`.
 
 ## Getting Started (User Guide)
 
@@ -38,7 +42,7 @@ query-projects add <repo-url>
 
 This command clones the repository (if not already present) into a projects/ folder.
 
-It also updates (or creates) the projects.json file with the new project’s information.
+It also updates (or creates) the projects.json file with the new project's information.
 
 Confirm your project was added:
 
@@ -46,7 +50,7 @@ Confirm your project was added:
 query-projects info
 ```
 
-You should see a JSON entry for your new repository.
+You should see the "Number of Projects" value incremented by 1.
 
 ### Topic Filtering
 
@@ -93,14 +97,45 @@ query-projects sync github
 ```
 This command will fetch metadata for all projects listed in the `projects.json` file from GitHub and update the project metadata with topics and archive status.
 
+
+### Pulling Updates
+
+The `pull` command allows you to update all tracked repositories with the latest changes from their remote sources. This command is useful for keeping your local copies of repositories up to date.
+
+Example usage:
+```
+# Pull updates for all projects
+query-projects pull
+
+# Pull updates for specific topics
+query-projects pull --topics typescript,react
+
+# Pull updates with required/excluded topics
+query-projects pull --topics +typescript,-deprecated
+```
+
+The `pull` command supports the same topic filtering as the `run` command:
+- Use `+` prefix for required topics
+- Use `-` prefix for excluded topics
+- No prefix for an inclusive search
+
+The command will:
+1. Update each repository using `git pull`
+2. Show the status of each update
+3. Report any errors that occur during the update process
+
+A note on authentication with GitHub:
+- Ideal: Use your system's git configuration
+- Optional: Provide a `GITHUB_TOKEN` env with a personal access token
+
+### Create Scripts
+
+- **Ask GPT**: Use the `ask` command to generate new scripts via OpenAI (assuming you have `OPENAI_API_KEY` set in your environment).
 - `OPENAI_API_KEY`: Your OpenAI API key. This is required for querying GPT.
 - `OPENAI_API_BASE`: The base URL for the OpenAI API. Defaults to `https://api.openai.com/v1` if not set.
 
-### Next Steps:
+### Run Scripts
 
-- **Ask GPT**: Use the `ask` command to generate new scripts via OpenAI (assuming you have `OPENAI_API_KEY` set in your environment).
-- **Run Scripts**: Use the `run` command to execute TypeScript scripts across all tracked projects.
-- **Pull Updates**: Use the `pull` command to update all tracked repositories with the latest changes.
 
 
 ## Contributing
