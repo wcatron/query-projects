@@ -556,6 +556,7 @@ Project Path,Status,path
 ./projects/swr,Success,examples/infinite-scroll/README.md
 ./projects/swr,Success,examples/autocomplete-suggestions/README.md
 ./projects/swr,Success,examples/api-hooks/README.md
+./projects/swr,Success,examples/suspense-global/README.md
 ./projects/swr,Success,examples/basic-typescript/README.md
 ./projects/swr,Success,examples/basic/README.md
 ./projects/swr,Success,examples/prefetch-preload/README.md
