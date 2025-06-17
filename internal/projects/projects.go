@@ -289,7 +289,7 @@ func CloneRepository(repoURL string, projectPath string, githubToken string, git
 			}
 			// Git repo exists, do `git pull`
 			fmt.Printf("%s Repo cloned. Pulling latest changes from %s\n", ProjectPathFmt(projectPath), repoURL)
-			args := append([]string{"-C", projectPath, "fetch"}, flagArgs...)
+			args := append([]string{"-C", projectPath, "pull"}, flagArgs...)
 			fmt.Printf("git %s\n", strings.Join(args, " "))
 			cmd := exec.Command("git", args...)
 			out, err := cmd.CombinedOutput()
