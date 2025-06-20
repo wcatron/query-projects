@@ -1,0 +1,46 @@
+version: '1'
+
+project_name: query-projects
+
+builds:
+  - id: default
+    main: .
+    goos: [darwin, linux, windows]
+    goarch: [amd64, arm64]
+    ldflags:
+      - "-X version.cliVersion={{.Version}}"
+    binary: query-projects
+
+archives:
+  - format: tar.gz
+    files:
+      - LICENSE
+      - README.md
+
+checksum:
+  name_template: "checksums.txt"
+
+release:
+  github:
+    owner: wcatron
+    name: query-projects
+    draft: false
+    prerelease: auto
+
+brews:
+  - name: query-projects
+    tap:
+      owner: wcatron
+      name: homebrew-query-projects
+    commit_author:
+      name: GitHub Actions
+      email: actions@github.com
+    description: "CLI to query across multiple projects"
+    homepage: "https://github.com/wcatron/query-projects"
+    bin: query-projects
+    aliases:
+      - qp
+    dependencies:
+      - name: go
+    test:
+      - qp --help
