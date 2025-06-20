@@ -12,7 +12,24 @@ A cli for running scripts across your organizations repos.
 
 ## Getting Started (User Guide)
 
-### Installation
+### Installation: via Homebrew (Recommended)
+
+If you have [Homebrew](https://brew.sh) installed:
+
+```bash
+brew tap wcatron/query-projects
+brew install query-projects
+```
+
+This installs the CLI as query-projects and adds a convenient alias qp.
+
+Verify installation:
+
+```
+qp --help
+```
+
+### Installation: via Go
 Prerequisites:
 Go 1.18+ installed on your system.
 Install the CLI directly from GitHub:
