@@ -46,7 +46,7 @@ func PrintToConsole(results []Result) {
 }
 
 // WriteTable creates a .md table summarizing the results with their output
-func WriteTable(scriptPath string, results []Result) error {
+func WriteTable(rootDirectory string, scriptPath string, results []Result) error {
 	filename := filepath.Base(scriptPath)
 	resultsFilenameForScript := strings.TrimSuffix(filename, ".ts")
 
@@ -54,10 +54,10 @@ func WriteTable(scriptPath string, results []Result) error {
 	var sb strings.Builder = createMarkdownString(results)
 
 	// Write to file: e.g. results/foo.md
-	tableFilePath := filepath.Join(projects.ResultsFolder, resultsFilenameForScript+".md")
+	tableFilePath := filepath.Join(rootDirectory, projects.ResultsFolder, resultsFilenameForScript+".md")
 	if err := os.WriteFile(tableFilePath, []byte(sb.String()), 0644); err != nil {
 		return err
 	}
-	fmt.Printf("Results written to %s\n", tableFilePath)
+	fmt.Printf("Results written to %s\n", CleanPath(tableFilePath))
 	return nil
 }

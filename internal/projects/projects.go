@@ -32,6 +32,7 @@ type Project struct {
 	Git      map[string]string `json:"git,omitempty"`
 }
 
+// This is the defineition
 func FilterProjectsByTopics(projects []Project, topics []string) []Project {
 	var filteredProjects []Project
 	for _, project := range projects {

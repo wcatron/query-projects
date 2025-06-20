@@ -15,8 +15,10 @@ import (
 
 func parseResultsPath(s string) (string, error) {
 	// `(?m)` enables multi-line mode; `.+` captures everything up to the line break
+	ansi := regexp.MustCompile(`\x1b\[[0-9;]*m`)
+	cleanOutput := ansi.ReplaceAllString(s, "")
 	re := regexp.MustCompile(`(?m)^Results written to (.+)$`)
-	m := re.FindStringSubmatch(s)
+	m := re.FindStringSubmatch(cleanOutput)
 	if len(m) == 2 {
 		return m[1], nil // m[1] is the captured path
 	}

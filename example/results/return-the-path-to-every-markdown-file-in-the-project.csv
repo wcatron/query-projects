@@ -20,8 +20,10 @@ Project Path,Status,path
 ./projects/next.js,Success,test/readme.md
 ./projects/next.js,Success,test/production/app-dir/symbolic-file-links/README.md
 ./projects/next.js,Success,test/e2e/app-dir/mdx/pages/pages/import/md-file.md
+./projects/next.js,Success,test/e2e/app-dir/preferred-region/README.md
 ./projects/next.js,Success,test/e2e/react-compiler/reference-library/compiled/README.md
 ./projects/next.js,Success,.changeset/swift-socks-find.md
+./projects/next.js,Success,.changeset/empty-paths-check.md
 ./projects/next.js,Success,.changeset/seven-seas-run.md
 ./projects/next.js,Success,.changeset/dry-roses-nail.md
 ./projects/next.js,Success,.changeset/shaggy-owls-visit.md
@@ -288,7 +290,6 @@ Project Path,Status,path
 ./projects/next.js,Success,examples/with-typescript/README.md
 ./projects/next.js,Success,examples/with-goober/README.md
 ./projects/next.js,Success,examples/with-graphql-react/README.md
-./projects/next.js,Success,examples/with-fauna/README.md
 ./projects/next.js,Success,examples/with-knex/README.md
 ./projects/next.js,Success,examples/with-meilisearch/README.md
 ./projects/next.js,Success,examples/with-recoil/README.md
@@ -371,9 +372,9 @@ Project Path,Status,path
 ./projects/next.js,Success,packages/next/src/compiled/react-is/README.md
 ./projects/next.js,Success,packages/next/src/compiled/regenerator-runtime/README.md
 ./projects/next.js,Success,packages/next/src/compiled/@babel/runtime/README.md
+./projects/next.js,Success,packages/next/src/next-devtools/README.md
 ./projects/next.js,Success,packages/next/src/lib/memory/README.md
 ./projects/next.js,Success,packages/next/src/build/webpack/loaders/lightningcss-loader/README.md
-./projects/next.js,Success,packages/next/src/client/components/react-dev-overlay/README.md
 ./projects/next.js,Success,packages/eslint-plugin-next/README.md
 ./projects/next.js,Success,packages/next-codemod/license.md
 ./projects/next.js,Success,packages/next-codemod/bin/__testfixtures__/peer-dep-out-of-range/README.md

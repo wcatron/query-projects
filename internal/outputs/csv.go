@@ -19,12 +19,12 @@ func FormatOutput(csvText string, columns []string) string {
 }
 
 // WriteCSVTable creates a .csv file summarizing the results
-func WriteCSVTable(info ScriptInfo, results []Result) error {
+func WriteCSVTable(rootDirectory string, info ScriptInfo, results []Result) error {
 	filename := filepath.Base(info.Path)
 	resultsFilenameForScript := strings.TrimSuffix(filename, ".ts")
 
 	// Open the CSV file for writing
-	tableFilePath := filepath.Join(projects.ResultsFolder, resultsFilenameForScript+".csv")
+	tableFilePath := filepath.Join(rootDirectory, projects.ResultsFolder, resultsFilenameForScript+".csv")
 	file, err := os.Create(tableFilePath)
 	if err != nil {
 		return err
@@ -56,6 +56,6 @@ func WriteCSVTable(info ScriptInfo, results []Result) error {
 		}
 	}
 
-	fmt.Printf("Results written to %s\n", tableFilePath)
+	fmt.Printf("Results written to %s\n", CleanPath(tableFilePath))
 	return nil
 }

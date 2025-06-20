@@ -45,9 +45,9 @@ func main() {
 			Index:       0,
 		},
 	}
-	_ = outputs.WriteTable(scriptInfo.Path, results)
-	_ = outputs.WriteCSVTable(scriptInfo, results)
-	_ = outputs.WriteJSONOutput(scriptInfo.Path, results)
+	_ = outputs.WriteTable("", scriptInfo.Path, results)
+	_ = outputs.WriteCSVTable("", scriptInfo, results)
+	_ = outputs.WriteJSONOutput("", scriptInfo.Path, results)
 
 	// Simulate project management
 	_, _ = projects.LoadProjects()

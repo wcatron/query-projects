@@ -11,7 +11,7 @@ import (
 )
 
 // WriteJSONOutput creates a .json file summarizing the results
-func WriteJSONOutput(scriptPath string, results []Result) error {
+func WriteJSONOutput(rootDirectory string, scriptPath string, results []Result) error {
 	filename := filepath.Base(scriptPath)
 	resultsFilenameForScript := strings.TrimSuffix(filename, ".ts")
 
@@ -45,11 +45,11 @@ func WriteJSONOutput(scriptPath string, results []Result) error {
 		return fmt.Errorf("marshal results: %w", err)
 	}
 
-	tableFilePath := filepath.Join(projects.ResultsFolder, resultsFilenameForScript+".json")
+	tableFilePath := filepath.Join(rootDirectory, projects.ResultsFolder, resultsFilenameForScript+".json")
 	if err := os.WriteFile(tableFilePath, data, 0o644); err != nil {
 		return fmt.Errorf("write results file: %w", err)
 	}
 
-	fmt.Printf("Results written to %s\n", tableFilePath)
+	fmt.Printf("Results written to %s\n", CleanPath(tableFilePath))
 	return nil
 }

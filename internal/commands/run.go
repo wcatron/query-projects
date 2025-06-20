@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -27,71 +28,66 @@ var RunCmd = &cobra.Command{
 		// Get the topics from the command line flags
 		topics, _ := cmd.Flags().GetStringSlice("topics")
 		count, _ := cmd.Flags().GetBool("count")
+		all, _ := cmd.Flags().GetBool("all")
 		outputFormats, _ := cmd.Flags().GetStringSlice("output")
 		scriptName, _ := cmd.Flags().GetString("script")
-		return CMD_runScript(scriptName, topics, count, outputFormats, args)
+		return CMD_runScript(scriptName, topics, all, count, outputFormats, args)
 	}),
-}
-
-// getScriptInfo executes a script with the --info flag and returns the parsed JSON output.
-func getScriptInfo(scriptPath string, pj projects.ProjectsJSON) (outputs.ScriptInfo, error) {
-	cmd := exec.Command("deno", "run", "--allow-all", scriptPath, "--info")
-	cmd.Dir = pj.RootDirectory
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		fmt.Printf("%s \n%s", scripts.ScriptPathFmt(scriptPath), output)
-		return outputs.ScriptInfo{}, fmt.Errorf("failed to run script with --info: %w", err)
-	}
-
-	var info outputs.ScriptInfo
-	if err := json.Unmarshal(output, &info); err != nil {
-		return outputs.ScriptInfo{}, fmt.Errorf("failed to parse script info: %w", err)
-	}
-
-	info.Path = scriptPath
-
-	return info, nil
 }
 
 func RunCmdInit(cmd *cobra.Command) {
 	cmd.PersistentFlags().Bool("count", false, "Count the unique responses from the script")
+	cmd.PersistentFlags().Bool("all", false, "Run all scripts")
 	cmd.PersistentFlags().StringSliceP("output", "o", nil, "Comma seperated output formats (md, csv, json)")
 	cmd.PersistentFlags().StringSliceP("topics", "t", nil, "Filter projects by topics")
 	cmd.PersistentFlags().StringP("script", "s", "", "Path to script to run")
 }
 
-func CMD_runScript(scriptName string, topics []string, count bool, outputFormats []string, args []string) error {
+func CMD_runScript(scriptName string, topics []string, all bool, count bool, outputFormats []string, args []string) error {
 	projectsList, err := projects.LoadProjects()
 	if err != nil {
 		return err
 	}
 	targets := projects.FilterProjectsByTopics(projectsList.Projects, topics)
 
-	scriptInfo, err := func() (outputs.ScriptInfo, error) {
-		if scriptName != "" {
-			return getScriptInfo(scriptName, *projectsList) // path or name provided
-		}
-		return selectScriptInfo(*projectsList) // prompt user to pick
-	}()
-	if err != nil {
-		return err
-	}
-
+	// If cwd is inside a project, only run for that project - useful for debugging
 	targetOveride := projects.InProject(projectsList)
 	if targetOveride != nil {
 		targets = []projects.Project{*targetOveride}
 	}
 
-	if err := runScriptsForProjectsList(projectsList, scriptInfo, targets, count, outputFormats, args); err != nil {
-		return fmt.Errorf("error running %s: %w", scriptInfo.Path, err)
+	scriptInfos, err := getScriptInfos(*projectsList)
+	if err != nil {
+		return err
+	}
+
+	if all {
+		for _, scriptInfo := range scriptInfos {
+			if err := runScriptForProjectsList(projectsList, scriptInfo, targets, count, outputFormats, args); err != nil {
+				return fmt.Errorf("error running %s: %w", scriptInfo.Path, err)
+			}
+		}
+	} else {
+		scriptInfo, err := func() (outputs.ScriptInfo, error) {
+			if scriptName != "" {
+				return getScriptInfo(scriptName, *projectsList)
+			}
+			return selectScriptInfo(scriptInfos)
+		}()
+		if err != nil {
+			return err
+		}
+		if err := runScriptForProjectsList(projectsList, scriptInfo, targets, count, outputFormats, args); err != nil {
+			return fmt.Errorf("error running %s: %w", scriptInfo.Path, err)
+		}
 	}
 
 	return nil
 }
 
 // findScriptFiles returns a list of TypeScript files in the scripts folder
-func findScriptFiles() ([]string, error) {
-	files, err := os.ReadDir(projects.ScriptsFolder)
+func findScriptFiles(pj projects.ProjectsJSON) ([]string, error) {
+	files, err := os.ReadDir(path.Join(pj.RootDirectory, projects.ScriptsFolder))
 	if err != nil {
 		return nil, err
 	}
@@ -110,8 +106,8 @@ func findScriptFiles() ([]string, error) {
 	return scriptPaths, nil
 }
 
-// gatherScriptInfos collects information about each script
-func gatherScriptInfos(scriptPaths []string, pj projects.ProjectsJSON) []outputs.ScriptInfo {
+// getScriptInfosFromPaths collects information about each script
+func getScriptInfosFromPaths(scriptPaths []string, pj projects.ProjectsJSON) []outputs.ScriptInfo {
 	var scriptInfos []outputs.ScriptInfo
 	for _, sp := range scriptPaths {
 		info, err := getScriptInfo(sp, pj)
@@ -141,6 +137,54 @@ func displayScriptTable(scriptInfos []outputs.ScriptInfo) {
 	tbl.Print()
 }
 
+func getScriptInfos(pj projects.ProjectsJSON) ([]outputs.ScriptInfo, error) {
+	// Find available scripts
+	scriptPaths, err := findScriptFiles(pj)
+	if err != nil {
+		return []outputs.ScriptInfo{}, err
+	}
+
+	// Gather information about each script
+	scriptInfos := getScriptInfosFromPaths(scriptPaths, pj)
+	if len(scriptInfos) == 0 {
+		return []outputs.ScriptInfo{}, errors.New("no valid scripts found")
+	}
+	return scriptInfos, nil
+}
+
+// getScriptInfo executes a script with the --info flag and returns the parsed JSON output.
+func getScriptInfo(scriptPath string, pj projects.ProjectsJSON) (outputs.ScriptInfo, error) {
+	cmd := exec.Command("deno", "run", "--allow-all", scriptPath, "--info")
+	cmd.Dir = pj.RootDirectory
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		fmt.Printf("%s \n%s", scripts.ScriptPathFmt(scriptPath), output)
+		return outputs.ScriptInfo{}, fmt.Errorf("failed to run script with --info: %w", err)
+	}
+
+	var info outputs.ScriptInfo
+	if err := json.Unmarshal(output, &info); err != nil {
+		return outputs.ScriptInfo{}, fmt.Errorf("failed to parse script info: %w", err)
+	}
+
+	info.Path = scriptPath
+
+	return info, nil
+}
+
+func selectScriptInfo(scriptInfos []outputs.ScriptInfo) (outputs.ScriptInfo, error) {
+	// Display the table of scripts
+	displayScriptTable(scriptInfos)
+
+	// Get user selection
+	choice, err := getUserSelection(scriptInfos)
+	if err != nil {
+		return outputs.ScriptInfo{}, err
+	}
+
+	return scriptInfos[choice], nil
+}
+
 // getUserSelection prompts the user to select a script and returns the index
 func getUserSelection(scriptInfos []outputs.ScriptInfo) (int, error) {
 	fmt.Print("Enter a number: ")
@@ -154,33 +198,8 @@ func getUserSelection(scriptInfos []outputs.ScriptInfo) (int, error) {
 	return choice - 1, nil
 }
 
-func selectScriptInfo(pj projects.ProjectsJSON) (outputs.ScriptInfo, error) {
-	// Find available scripts
-	scriptPaths, err := findScriptFiles()
-	if err != nil {
-		return outputs.ScriptInfo{}, err
-	}
-
-	// Gather information about each script
-	scriptInfos := gatherScriptInfos(scriptPaths, pj)
-	if len(scriptInfos) == 0 {
-		return outputs.ScriptInfo{}, errors.New("no valid scripts found")
-	}
-
-	// Display the table of scripts
-	displayScriptTable(scriptInfos)
-
-	// Get user selection
-	choice, err := getUserSelection(scriptInfos)
-	if err != nil {
-		return outputs.ScriptInfo{}, err
-	}
-
-	return scriptInfos[choice], nil
-}
-
-// runScriptsForProjectsList executes the specified .ts script against all projects.
-func runScriptsForProjectsList(pj *projects.ProjectsJSON, scriptInfo outputs.ScriptInfo, projectsList []projects.Project, count bool, outputFormats []string, args []string) error {
+// runScriptForProjectsList executes the specified .ts script against all projects.
+func runScriptForProjectsList(pj *projects.ProjectsJSON, scriptInfo outputs.ScriptInfo, projectsList []projects.Project, count bool, outputFormats []string, args []string) error {
 	var wg sync.WaitGroup
 	resultsChan := make(chan outputs.Result, len(projectsList))
 
@@ -214,21 +233,23 @@ func runScriptsForProjectsList(pj *projects.ProjectsJSON, scriptInfo outputs.Scr
 	if count {
 		printUniqueResponsesToConsole(results)
 	} else {
-		// Always print results in markdown to the console
 		outputs.PrintToConsole(results)
 	}
 
-	// Generate outputs based on the specified or determined formats
 	for _, format := range outputFormats {
+		var err error
 		switch format {
 		case "md":
-			outputs.WriteTable(scriptInfo.Path, results)
+			err = outputs.WriteTable(pj.RootDirectory, scriptInfo.Path, results)
 		case "csv":
-			outputs.WriteCSVTable(scriptInfo, results)
+			err = outputs.WriteCSVTable(pj.RootDirectory, scriptInfo, results)
 		case "json":
-			outputs.WriteJSONOutput(scriptInfo.Path, results)
+			err = outputs.WriteJSONOutput(pj.RootDirectory, scriptInfo.Path, results)
 		default:
 			fmt.Printf("Unsupported output format: %s\n", format)
+		}
+		if err != nil {
+			fmt.Printf("\u001B[31mError:\033[0m Failed to write %s\n%s\n", format, err)
 		}
 	}
 

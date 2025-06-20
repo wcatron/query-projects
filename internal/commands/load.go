@@ -8,10 +8,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	_ "github.com/mattn/go-sqlite3" // SQLite driver
+	_ "github.com/mattn/go-sqlite3"
 	"github.com/spf13/cobra"
 	"github.com/wcatron/query-projects/internal/projects"
-	// still needed for withMetrics
 )
 
 var LoadCmd = &cobra.Command{
@@ -87,7 +86,6 @@ func loadSingleCSV(db *sql.DB, csvPath string) error {
 		return err
 	}
 
-	// INSERT statement like: INSERT INTO table (c1,c2,…) VALUES (?,?,…)
 	placeholders := strings.Repeat("?,", len(headers))
 	placeholders = placeholders[:len(placeholders)-1]
 	stmtText := fmt.Sprintf(`INSERT INTO "%s" (%s) VALUES (%s)`,

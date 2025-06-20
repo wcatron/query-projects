@@ -15,3 +15,10 @@ cd example
 ../query-projects run --script scripts/which-test-framework-is-being-used.ts
 ../query-projects run --script scripts/get-compiler-options-from-tsconfig.ts
 ../query-projects plan plans/test.lua
+
+# Run all scripts in one project
+cd projects/ai
+../../../query-projects run --all
+
+cd ../../
+../query-projects run --all
