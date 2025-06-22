@@ -12,7 +12,7 @@ A cli for running scripts across your organizations repos.
 
 ## Getting Started (User Guide)
 
-### Installation: via Homebrew (Recommended)
+### Installation: via Homebrew (In-progress)
 
 If you have [Homebrew](https://brew.sh) installed:
 
