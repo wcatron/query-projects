@@ -137,14 +137,13 @@ func displayScriptTable(scriptInfos []outputs.ScriptInfo) {
 	tbl.Print()
 }
 
+// getScriptInfos Gets script info for all scripts in the
 func getScriptInfos(pj projects.ProjectsJSON) ([]outputs.ScriptInfo, error) {
-	// Find available scripts
 	scriptPaths, err := findScriptFiles(pj)
 	if err != nil {
 		return []outputs.ScriptInfo{}, err
 	}
 
-	// Gather information about each script
 	scriptInfos := getScriptInfosFromPaths(scriptPaths, pj)
 	if len(scriptInfos) == 0 {
 		return []outputs.ScriptInfo{}, errors.New("no valid scripts found")
@@ -168,16 +167,13 @@ func getScriptInfo(scriptPath string, pj projects.ProjectsJSON) (outputs.ScriptI
 	}
 
 	info.Path = scriptPath
-
 	return info, nil
 }
 
 func selectScriptInfo(scriptInfos []outputs.ScriptInfo) (outputs.ScriptInfo, error) {
-	// Display the table of scripts
 	displayScriptTable(scriptInfos)
 
-	// Get user selection
-	choice, err := getUserSelection(scriptInfos)
+	choice, err := promptUserSelectNumber(len(scriptInfos))
 	if err != nil {
 		return outputs.ScriptInfo{}, err
 	}
@@ -185,14 +181,14 @@ func selectScriptInfo(scriptInfos []outputs.ScriptInfo) (outputs.ScriptInfo, err
 	return scriptInfos[choice], nil
 }
 
-// getUserSelection prompts the user to select a script and returns the index
-func getUserSelection(scriptInfos []outputs.ScriptInfo) (int, error) {
+// promptUserSelectNumber prompts the user to select a script and returns the index
+func promptUserSelectNumber(validLength int) (int, error) {
 	fmt.Print("Enter a number: ")
 	reader := bufio.NewReader(os.Stdin)
 	input, _ := reader.ReadString('\n')
 	input = strings.TrimSpace(input)
 	choice, err := strconv.Atoi(input)
-	if err != nil || choice < 1 || choice > len(scriptInfos) {
+	if err != nil || choice < 1 || choice > validLength {
 		return 0, errors.New("invalid selection")
 	}
 	return choice - 1, nil

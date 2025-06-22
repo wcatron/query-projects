@@ -12,7 +12,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"time"
 
 	"github.com/spf13/cobra"
 	"github.com/wcatron/query-projects/internal/projects"
@@ -42,14 +41,11 @@ func CMD_ask(question string) error {
 	}
 	fmt.Printf("Generated script: ./%s/%s\n", projects.ScriptsFolder, scriptName)
 
-	// Load projectsList
 	projectsList, err := projects.LoadProjects()
 	if err != nil {
 		return fmt.Errorf("failed to load projects: %w", err)
 	}
 
-	// Run the script for a random project
-	rand.Seed(time.Now().UnixNano())
 	randomIndex := rand.Intn(len(projectsList.Projects))
 	randomProject := projectsList.Projects[randomIndex]
 
